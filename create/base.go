@@ -1,8 +1,8 @@
 /*
  * @Author: Jerry.Yang
  * @Date: 2022-09-19 16:57:50
- * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-19 17:24:03
+ * @LastEditors: yangjie04@qutoutiao.net
+ * @LastEditTime: 2022-09-20 10:55:19
  * @Description: base
  */
 package create
@@ -15,7 +15,9 @@ import (
 	"os/exec"
 )
 
-type CreateBaseInterface interface{}
+type CreateBaseInterface interface {
+	CreateFile(dirName string, fileName string, fileContent string) error
+}
 
 type CreateBase struct{}
 
