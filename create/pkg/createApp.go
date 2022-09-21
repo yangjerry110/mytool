@@ -2,7 +2,7 @@
  * @Author: yangjie04@qutoutiao.net
  * @Date: 2022-09-20 10:51:10
  * @LastEditors: yangjie04@qutoutiao.net
- * @LastEditTime: 2022-09-20 10:54:07
+ * @LastEditTime: 2022-09-20 11:25:48
  * @Description: pkg
  */
 package pkg
@@ -11,9 +11,11 @@ import (
 	"github.com/yangjerry110/mytool/create"
 )
 
-type CreateAppInterface interface {
+type CreateAppPkgInterface interface {
 	CreateApp(projectName string, appName string, method string)
 }
+
+type CreateAppPkg struct{}
 
 /**
  * @description: CreateApp

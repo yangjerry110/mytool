@@ -2,16 +2,18 @@
  * @Author: yangjie04@qutoutiao.net
  * @Date: 2022-09-20 10:53:41
  * @LastEditors: yangjie04@qutoutiao.net
- * @LastEditTime: 2022-09-20 10:53:46
+ * @LastEditTime: 2022-09-20 11:25:54
  * @Description: createDao
  */
 package pkg
 
 import "github.com/yangjerry110/mytool/create"
 
-type CreateDaoInterface interface {
+type CreateDaoPkgInterface interface {
 	CreateDao(projectName string, daoName string, modelName string, authorName ...string)
 }
+
+type CreateDaoPkg struct{}
 
 /**
  * @description: CreateDaoFunc
