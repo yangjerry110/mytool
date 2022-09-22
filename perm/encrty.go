@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-20 11:30:16
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-20 19:34:49
+ * @LastEditTime: 2022-09-22 16:21:58
  * @Description: encrty 加密
  */
 package perm
@@ -21,10 +21,10 @@ import (
 type (
 	EncrtyInterface interface {
 		Encrty(permPath string, inputStr string) (string, error)
-		doRasEncrty(permPath string, inputStr string) (string, error)
+		DoRsaEncrty(permPath string, inputStr string) (string, error)
 	}
 
-	RasEncrty struct{}
+	RsaEncrty struct{}
 )
 
 /**
@@ -35,7 +35,7 @@ type (
  * @date: 2022-09-20 11:40:30
  * @return {*}
  */
-func (r *RasEncrty) Encrty(permPath string, inputStr string) (string, error) {
+func (r *RsaEncrty) Encrty(permPath string, inputStr string) (string, error) {
 
 	/**
 	 * @step
@@ -72,7 +72,7 @@ func (r *RasEncrty) Encrty(permPath string, inputStr string) (string, error) {
 	 * @开启协程，获取加密之后的数据
 	 **/
 	go func() {
-		outputStr, err := r.doRasEncrty(permPath, inputStr)
+		outputStr, err := r.DoRsaEncrty(permPath, inputStr)
 		if err != nil {
 			doRascrtyChan <- ""
 		} else {
@@ -93,14 +93,14 @@ func (r *RasEncrty) Encrty(permPath string, inputStr string) (string, error) {
 }
 
 /**
- * @description: doRasEncrty
+ * @description: doRsaEncrty
  * @param {string} permPath
  * @param {string} inputStr
  * @author: Jerry.Yang
  * @date: 2022-09-20 11:40:21
  * @return {*}
  */
-func (r *RasEncrty) doRasEncrty(permPath string, inputStr string) (string, error) {
+func (r *RsaEncrty) DoRsaEncrty(permPath string, inputStr string) (string, error) {
 	/**
 	 * @step
 	 * @打开公钥文件

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-20 19:28:19
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-22 14:55:24
+ * @LastEditTime: 2022-09-22 16:21:47
  * @Description: decrty 解密
  */
 package perm
@@ -21,10 +21,10 @@ import (
 type (
 	DecrtyInterface interface {
 		Decrty(permPath string, inputStr string) (string, error)
-		doRasDecrty(inputStr string) (string, error)
+		DoRsaDecrty(inputStr string) (string, error)
 	}
 
-	RasDecrty struct{}
+	RsaDecrty struct{}
 )
 
 /**
@@ -35,7 +35,7 @@ type (
  * @date: 2022-09-20 19:32:21
  * @return {*}
  */
-func (r *RasDecrty) Decrty(permPath string, inputStr string) (string, error) {
+func (r *RsaDecrty) Decrty(permPath string, inputStr string) (string, error) {
 
 	/**
 	 * @step
@@ -72,7 +72,7 @@ func (r *RasDecrty) Decrty(permPath string, inputStr string) (string, error) {
 	 * @协程处理
 	 **/
 	go func() {
-		outputStr, err := r.doRasDecrty(permPath, inputStr)
+		outputStr, err := r.DoRsaDecrty(permPath, inputStr)
 		if err != nil {
 			doRasDecrtyChan <- ""
 		} else {
@@ -93,14 +93,14 @@ func (r *RasDecrty) Decrty(permPath string, inputStr string) (string, error) {
 }
 
 /**
- * @description: doRasDecrty
+ * @description: DoRsaDecrty
  * @param {string} inputStr
  * @param {string} permPath
  * @author: Jerry.Yang
  * @date: 2022-09-20 19:32:12
  * @return {*}
  */
-func (r *RasDecrty) doRasDecrty(permPath string, inputStr string) (string, error) {
+func (r *RsaDecrty) DoRsaDecrty(permPath string, inputStr string) (string, error) {
 	/**
 	 * @step
 	 * @进行base64 decode

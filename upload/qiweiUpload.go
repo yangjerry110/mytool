@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-21 18:50:50
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-21 19:17:58
+ * @LastEditTime: 2022-09-22 16:47:54
  * @Description: qiwei upload
  */
 package upload
@@ -18,14 +18,12 @@ import (
 
 	"github.com/google/uuid"
 	mytoolCommon "github.com/yangjerry110/mytool/common"
-	mytoolCommonPkg "github.com/yangjerry110/mytool/common/pkg"
 	mytoolHttp "github.com/yangjerry110/mytool/http"
-	mytoolHttpPkg "github.com/yangjerry110/mytool/http/pkg"
 )
 
 type (
 	QiweiUploadInterface interface {
-		UploadMedia() error
+		Upload() error
 	}
 
 	QiweiUpload struct{}
@@ -47,7 +45,7 @@ type (
  * @date: 2022-09-21 18:56:23
  * @return {*}
  */
-func (q *QiweiUploadMedia) UploadMedia() error {
+func (q *QiweiUploadMedia) Upload() error {
 
 	/**
 	 * @step
@@ -70,7 +68,7 @@ func (q *QiweiUploadMedia) UploadMedia() error {
 	 * @获取accessToken
 	 **/
 	qiweiCommon := mytoolCommon.QiweiCommon{AppId: q.AppId, CropId: q.CropId, CropSecret: q.CropSecret}
-	err := mytoolCommonPkg.GetQiweiAccessToken(&qiweiCommon)
+	err := qiweiCommon.GetQiweiAccessToken()
 	if err != nil {
 		return err
 	}
@@ -178,7 +176,7 @@ func (q *QiweiUploadMedia) UploadMedia() error {
 		Options: httpOptions,
 		Output:  resp,
 	}
-	mytoolHttpPkg.HttpRequest(&httpClient)
+	httpClient.HttpRequest()
 
 	/**
 	 * @step

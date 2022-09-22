@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-22 14:05:52
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-22 14:47:43
+ * @LastEditTime: 2022-09-22 16:37:25
  * @Description: ali oss
  */
 package upload
@@ -37,12 +37,12 @@ type (
 		DownloadDoamin  string
 	}
 
-	AliOssUploadFormLocalFile struct {
+	AliOssUploadFromLocalFile struct {
 		AliOssUpload
 		LocalFilePath string
 	}
 
-	AliOssUpLoadFormFileUrl struct {
+	AliOssUpLoadFromFileUrl struct {
 		AliOssUpload
 		FileUrl string
 	}
@@ -127,7 +127,7 @@ func (a *AliOssUpload) Upload() error {
  * @date: 2022-09-22 14:34:56
  * @return {*}
  */
-func (a AliOssUploadFormLocalFile) Upload() error {
+func (a AliOssUploadFromLocalFile) Upload() error {
 
 	/**
 	 * @step
@@ -200,7 +200,7 @@ func (a AliOssUploadFormLocalFile) Upload() error {
  * @date: 2022-09-22 14:38:03
  * @return {*}
  */
-func (a *AliOssUpLoadFormFileUrl) Upload() error {
+func (a *AliOssUpLoadFromFileUrl) Upload() error {
 
 	/**
 	 * @step
@@ -289,12 +289,12 @@ func (a *AliOssUpload) CreateBucket(aliyunOssClient *aliyunOss.Client) (*aliyunO
 }
 
 /**
- * @description: AliOssUploadFormLocalFile GetFileData
+ * @description: AliOssUploadFromLocalFile GetFileData
  * @author: Jerry.Yang
  * @date: 2022-09-22 14:33:04
  * @return {*}
  */
-func (a *AliOssUploadFormLocalFile) GetFileData() ([]byte, error) {
+func (a *AliOssUploadFromLocalFile) GetFileData() ([]byte, error) {
 	/**
 	 * @step
 	 * @读取本地文件
@@ -341,12 +341,12 @@ func (a *AliOssUploadFormLocalFile) GetFileData() ([]byte, error) {
 }
 
 /**
- * @description: AliOssUpLoadFormFileUrl GetFileData
+ * @description: AliOssUpLoadFromFileUrl GetFileData
  * @author: Jerry.Yang
  * @date: 2022-09-22 14:36:41
  * @return {*}
  */
-func (a *AliOssUpLoadFormFileUrl) GetFileData() ([]byte, error) {
+func (a *AliOssUpLoadFromFileUrl) GetFileData() ([]byte, error) {
 	/**
 	 * @step
 	 * @获取网络图片相关的资源
@@ -439,12 +439,12 @@ func (a *AliOssUpload) CheckParams() error {
 }
 
 /**
- * @description: AliOssUploadFormLocalFile CheckParams
+ * @description: AliOssUploadFromLocalFile CheckParams
  * @author: Jerry.Yang
  * @date: 2022-09-22 14:47:00
  * @return {*}
  */
-func (a *AliOssUploadFormLocalFile) CheckParams() error {
+func (a *AliOssUploadFromLocalFile) CheckParams() error {
 	err := a.AliOssUpload.CheckParams()
 	if err != nil {
 		return err
@@ -457,12 +457,12 @@ func (a *AliOssUploadFormLocalFile) CheckParams() error {
 }
 
 /**
- * @description: AliOssUpLoadFormFileUrl CheckParams
+ * @description: AliOssUpLoadFromFileUrl CheckParams
  * @author: Jerry.Yang
  * @date: 2022-09-22 14:47:51
  * @return {*}
  */
-func (a *AliOssUpLoadFormFileUrl) CheckParams() error {
+func (a *AliOssUpLoadFromFileUrl) CheckParams() error {
 	err := a.AliOssUpload.CheckParams()
 	if err != nil {
 		return err

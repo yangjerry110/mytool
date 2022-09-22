@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-21 15:30:12
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-22 14:51:06
+ * @LastEditTime: 2022-09-22 16:49:21
  * @Description: 企微通知
  */
 package notice
@@ -14,11 +14,8 @@ import (
 	"fmt"
 
 	mytoolCommon "github.com/yangjerry110/mytool/common"
-	mytoolCommonPkg "github.com/yangjerry110/mytool/common/pkg"
 	mytoolHttp "github.com/yangjerry110/mytool/http"
-	mytoolHttpPkg "github.com/yangjerry110/mytool/http/pkg"
 	mytoolUpload "github.com/yangjerry110/mytool/upload"
-	mytoolUploadPkg "github.com/yangjerry110/mytool/upload/pkg"
 )
 
 type (
@@ -128,7 +125,7 @@ func (q *QiweiNotice) NotifyMessage() (bool, error) {
 	 * @获取accessToken
 	 **/
 	qiweiCommon := mytoolCommon.QiweiCommon{AppId: q.AppId, CropId: q.CropId, CropSecret: q.CropSecret}
-	err = mytoolCommonPkg.GetQiweiAccessToken(&qiweiCommon)
+	err = qiweiCommon.GetQiweiAccessToken()
 	if err != nil {
 		return false, err
 	}
@@ -356,7 +353,7 @@ func (n *NotifyImageMessage) FormatNofifyParams(qiweiNotice *QiweiNotice) ([]byt
 		MediaType:     qiweiNotice.MediaType,
 		QiweiFilePath: qiweiNotice.QiweiFilePath,
 	}
-	err = mytoolUploadPkg.QiweiUploadMedia(&qiweiUploadMedia)
+	err = qiweiUploadMedia.Upload()
 	if err != nil {
 		return nil, err
 	}
@@ -610,7 +607,7 @@ func (q *QiweiNotice) DoNotify(accessToken string, qiweiMsg []byte) (bool, error
 		Options: httpOptions,
 		Output:  resp,
 	}
-	mytoolHttpPkg.HttpRequest(&httpClient)
+	httpClient.HttpRequest()
 
 	/**
 	 * @step

@@ -2,10 +2,10 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-19 16:57:50
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-20 10:55:19
+ * @LastEditTime: 2022-09-22 15:55:50
  * @Description: base
  */
-package create
+package cmd
 
 import (
 	"errors"

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-22 11:28:53
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-22 11:59:17
+ * @LastEditTime: 2022-09-22 16:49:55
  * @Description: qiwei bot notice
  */
 package notice
@@ -16,7 +16,6 @@ import (
 	"errors"
 
 	mytoolHttp "github.com/yangjerry110/mytool/http"
-	mytoolHttpPkg "github.com/yangjerry110/mytool/http/pkg"
 )
 
 type (
@@ -470,7 +469,7 @@ func (q *QiweiBotNotice) DoNotify(QiweiBotNoticeReq []byte) error {
 		Options: httpOptions,
 		Output:  resp,
 	}
-	mytoolHttpPkg.HttpRequest(&httpClient)
+	httpClient.HttpRequest()
 
 	/**
 	 * @step

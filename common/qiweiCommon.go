@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-21 17:42:36
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-21 17:50:13
+ * @LastEditTime: 2022-09-22 16:50:30
  * @Description: qiwei common
  */
 package common
@@ -14,7 +14,6 @@ import (
 
 	"github.com/patrickmn/go-cache"
 	"github.com/yangjerry110/mytool/http"
-	"github.com/yangjerry110/mytool/http/pkg"
 )
 
 type (
@@ -28,6 +27,12 @@ type (
 	}
 )
 
+/**
+ * @description: GetQiweiAccessToken
+ * @author: Jerry.Yang
+ * @date: 2022-09-22 16:02:25
+ * @return {*}
+ */
 func (q *QiweiCommon) GetQiweiAccessToken() error {
 	/**
 	 * @step
@@ -78,7 +83,7 @@ func (q *QiweiCommon) GetQiweiAccessToken() error {
 		Url:    url,
 		Output: resp,
 	}
-	pkg.HttpRequest(&httpClient)
+	httpClient.HttpRequest()
 
 	/**
 	 * @step

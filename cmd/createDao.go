@@ -2,10 +2,10 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-19 14:37:33
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-19 17:41:32
+ * @LastEditTime: 2022-09-22 15:55:44
  * @Description: createDao
  */
-package create
+package cmd
 
 import (
 	"errors"

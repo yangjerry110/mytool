@@ -1,20 +1,17 @@
 /*
  * @Author: Jerry.Yang
- * @Date: 2022-09-22 14:25:44
+ * @Date: 2022-09-22 15:53:38
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-22 14:26:59
- * @Description: pkg
+ * @LastEditTime: 2022-09-22 15:57:29
+ * @Description: create
  */
-package pkg
+package cmd
 
-import "github.com/yangjerry110/mytool/create"
+import "github.com/yangjerry110/mytool/cmd"
 
-type CreatePkgInterface interface {
-	CreateApp(projectName string, appName string, method string)
-	CreateDao(projectName string, daoName string, modelName string, authorName ...string)
-}
+type CreateInterface interface{}
 
-type CreatePkg struct{}
+type Create struct{}
 
 /**
  * @description: CreateApp
@@ -26,7 +23,7 @@ type CreatePkg struct{}
  * @return {*}
  */
 func CreateApp(projectName string, appName string, method string) {
-	createAppObj := create.CreateApp{}
+	createAppObj := cmd.CreateApp{}
 	createAppObj.CreateApp(projectName, appName, method)
 }
 
@@ -41,6 +38,6 @@ func CreateApp(projectName string, appName string, method string) {
  * @return {*}
  */
 func CreateDao(projectName string, daoName string, modelName string, authorName ...string) {
-	createDaoObj := create.CreateDao{}
+	createDaoObj := cmd.CreateDao{}
 	createDaoObj.CreatedDao(projectName, daoName, modelName, authorName...)
 }
