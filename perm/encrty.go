@@ -1,7 +1,7 @@
 /*
- * @Author: yangjie04@qutoutiao.net
+ * @Author: Jerry.Yang
  * @Date: 2022-09-20 11:30:16
- * @LastEditors: yangjie04@qutoutiao.net
+ * @LastEditors: Jerry.Yang
  * @LastEditTime: 2022-09-20 19:34:49
  * @Description: encrty 加密
  */
@@ -31,7 +31,7 @@ type (
  * @description: Encrty
  * @param {string} permPath
  * @param {string} inputStr
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-20 11:40:30
  * @return {*}
  */
@@ -96,7 +96,7 @@ func (r *RasEncrty) Encrty(permPath string, inputStr string) (string, error) {
  * @description: doRasEncrty
  * @param {string} permPath
  * @param {string} inputStr
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-20 11:40:21
  * @return {*}
  */

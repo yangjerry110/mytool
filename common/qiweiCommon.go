@@ -1,7 +1,7 @@
 /*
- * @Author: yangjie04@qutoutiao.net
+ * @Author: Jerry.Yang
  * @Date: 2022-09-21 17:42:36
- * @LastEditors: yangjie04@qutoutiao.net
+ * @LastEditors: Jerry.Yang
  * @LastEditTime: 2022-09-21 17:50:13
  * @Description: qiwei common
  */

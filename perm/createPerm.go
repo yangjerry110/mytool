@@ -1,7 +1,7 @@
 /*
- * @Author: yangjie04@qutoutiao.net
+ * @Author: Jerry.Yang
  * @Date: 2022-09-20 11:17:29
- * @LastEditors: yangjie04@qutoutiao.net
+ * @LastEditors: Jerry.Yang
  * @LastEditTime: 2022-09-21 10:30:43
  * @Description: createPerm
  */
@@ -27,7 +27,7 @@ type (
  * @description: CreatePermFunc
  * @param {int32} byteSize
  * @param {string} permPath
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-20 11:24:42
  * @return {*}
  */

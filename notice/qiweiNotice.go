@@ -1,8 +1,8 @@
 /*
- * @Author: yangjie04@qutoutiao.net
+ * @Author: Jerry.Yang
  * @Date: 2022-09-21 15:30:12
  * @LastEditors: yangjie04@qutoutiao.net
- * @LastEditTime: 2022-09-22 11:59:01
+ * @LastEditTime: 2022-09-22 14:51:06
  * @Description: 企微通知
  */
 package notice
@@ -101,7 +101,7 @@ type (
 
 /**
  * @description: NotifyMessage
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-21 18:33:53
  * @return {*}
  */
@@ -213,7 +213,7 @@ func (q *QiweiNotice) NotifyMessage() (bool, error) {
 /**
  * @description: FormatNotifyParams
  * @param {*QiweiNotice} qiweiNotice
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-21 18:14:49
  * @return {*}
  */
@@ -271,7 +271,7 @@ func (n *NotifyTextMessage) FormatNotifyParams(qiweiNotice *QiweiNotice) ([]byte
 /**
  * @description: FormatNofifyParams
  * @param {*QiweiNotice} qiweiNotice
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-21 18:16:36
  * @return {*}
  */
@@ -329,7 +329,7 @@ func (n *NotifyMarkdownMessage) FormatNofifyParams(qiweiNotice *QiweiNotice) ([]
 /**
  * @description: FormatNofifyParams
  * @param {*QiweiNotice} qiweiNotice
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-21 18:19:21
  * @return {*}
  */
@@ -404,7 +404,7 @@ func (n *NotifyImageMessage) FormatNofifyParams(qiweiNotice *QiweiNotice) ([]byt
 /**
  * @description: FormatNofifyParams
  * @param {*QiweiNotice} qiweiNotice
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-21 18:21:55
  * @return {*}
  */
@@ -473,7 +473,7 @@ func (n *NotifyCardMessage) FormatNofifyParams(qiweiNotice *QiweiNotice) ([]byte
 /**
  * @description: FormatNofifyParams
  * @param {*QiweiNotice} qiweiNotice
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-21 18:22:46
  * @return {*}
  */
@@ -561,7 +561,7 @@ func (n *NotifyNewsMessage) FormatNofifyParams(qiweiNotice *QiweiNotice) ([]byte
  * @description: DoNotify
  * @param {string} accessToken
  * @param {[]byte} qiweiMsg
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-21 18:33:24
  * @return {*}
  */
@@ -624,7 +624,7 @@ func (q *QiweiNotice) DoNotify(accessToken string, qiweiMsg []byte) (bool, error
 
 /**
  * @description: CheckParams
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-21 19:10:08
  * @return {*}
  */
@@ -658,7 +658,7 @@ func (q *QiweiNotice) CheckParams() error {
 /**
  * @description: CheckParams
  * @param {*QiweiNotice} qiweiNotice
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-21 19:16:13
  * @return {*}
  */
@@ -672,7 +672,7 @@ func (n *NotifyTextMessage) CheckParams(qiweiNotice *QiweiNotice) error {
 /**
  * @description: CheckParams
  * @param {*QiweiNotice} qiweiNotice
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-21 19:16:59
  * @return {*}
  */
@@ -686,7 +686,7 @@ func (n *NotifyMarkdownMessage) CheckParams(qiweiNotice *QiweiNotice) error {
 /**
  * @description: CheckParams
  * @param {*QiweiNotice} qiweiNotice
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 10:43:17
  * @return {*}
  */
@@ -708,7 +708,7 @@ func (n *NotifyImageMessage) CheckParams(qiweiNotice *QiweiNotice) error {
 /**
  * @description: CheckParams
  * @param {*QiweiNotice} qiweiNotice
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 10:45:18
  * @return {*}
  */
@@ -734,7 +734,7 @@ func (n *NotifyCardMessage) CheckParams(qiweiNotice *QiweiNotice) error {
 /**
  * @description: CheckParams
  * @param {*QiweiNotice} qiweiNotice
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 10:47:29
  * @return {*}
  */

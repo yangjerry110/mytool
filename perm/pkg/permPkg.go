@@ -1,7 +1,7 @@
 /*
- * @Author: yangjie04@qutoutiao.net
+ * @Author: Jerry.Yang
  * @Date: 2022-09-22 14:20:20
- * @LastEditors: yangjie04@qutoutiao.net
+ * @LastEditors: Jerry.Yang
  * @LastEditTime: 2022-09-22 14:27:43
  * @Description: pkg
  */
@@ -21,7 +21,7 @@ type PermPkg struct{}
  * @description: RasCreatePerm
  * @param {int32} byteSize
  * @param {string} permPath
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 14:23:06
  * @return {*}
  */
@@ -34,7 +34,7 @@ func RasCreatePerm(byteSize int32, permPath string) (bool, error) {
  * @description: RasDecrty
  * @param {string} permPath
  * @param {string} inputStr
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 14:23:13
  * @return {*}
  */
@@ -47,7 +47,7 @@ func RasDecrty(permPath string, inputStr string) (string, error) {
  * @description: RasEncrty
  * @param {string} permPath
  * @param {string} inputStr
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 14:23:21
  * @return {*}
  */

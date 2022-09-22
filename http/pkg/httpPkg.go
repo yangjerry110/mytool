@@ -1,7 +1,7 @@
 /*
- * @Author: yangjie04@qutoutiao.net
+ * @Author: Jerry.Yang
  * @Date: 2022-09-21 17:18:14
- * @LastEditors: yangjie04@qutoutiao.net
+ * @LastEditors: Jerry.Yang
  * @LastEditTime: 2022-09-22 14:27:15
  * @Description: http client pkg
  */
@@ -20,7 +20,7 @@ type HttpPkg struct{}
 /**
  * @description: HttpRequest
  * @param {*http.HttpClient} httpClient
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-21 17:20:41
  * @return {*}
  */

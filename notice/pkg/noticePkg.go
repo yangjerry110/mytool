@@ -1,7 +1,7 @@
 /*
- * @Author: yangjie04@qutoutiao.net
+ * @Author: Jerry.Yang
  * @Date: 2022-09-21 18:34:04
- * @LastEditors: yangjie04@qutoutiao.net
+ * @LastEditors: Jerry.Yang
  * @LastEditTime: 2022-09-22 14:27:28
  * @Description: qiwei notice
  */
@@ -19,7 +19,7 @@ type NoticePkg struct{}
 /**
  * @description: QiweiNotifyMessage
  * @param {*notice.QiweiNotice} qiweiNotice
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 11:58:32
  * @return {*}
  */
@@ -30,7 +30,7 @@ func QiweiNotifyMessage(qiweiNotice *notice.QiweiNotice) (bool, error) {
 /**
  * @description: QiweiBotNotifyMessage
  * @param {*notice.QiweiBotNotice} qiweiBotNotice
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 11:58:21
  * @return {*}
  */

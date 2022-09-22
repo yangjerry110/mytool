@@ -1,7 +1,7 @@
 /*
- * @Author: yangjie04@qutoutiao.net
+ * @Author: Jerry.Yang
  * @Date: 2022-09-21 16:08:24
- * @LastEditors: yangjie04@qutoutiao.net
+ * @LastEditors: Jerry.Yang
  * @LastEditTime: 2022-09-21 16:57:41
  * @Description: options
  */
@@ -38,7 +38,7 @@ const OPTION_HEADERS = "headers"
 /**
  * @description: SetHeaders
  * @param {map[string]string} value
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-21 16:32:35
  * @return {*}
  */
@@ -52,7 +52,7 @@ func (h *HttpOptions) SetHeaders(value map[string]string) HttpOptionFunc {
 /**
  * @description: setTimeOut
  * @param {int} value
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-03-08 11:17:32
  * @return {*}
  */
@@ -66,7 +66,7 @@ func (h *HttpOptions) SetOutTime(value int) HttpOptionFunc {
 /**
  * @description: GetHeaders
  * @param {map[string]HttpOption} httpOptions
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-21 16:59:40
  * @return {*}
  */
@@ -92,7 +92,7 @@ func (h *HttpOptions) GetHeaders(httpOptions map[string]HttpOption) map[string]s
 /**
  * @description: GetOutTime
  * @param {map[string]HttpOption} httpOptions
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-21 16:49:46
  * @return {*}
  */
@@ -132,7 +132,7 @@ func (h *HttpOptions) GetOutTime(httpOptions map[string]HttpOption) int {
 /**
  * @description: SetOptions
  * @param {[]Option} options
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-03-01 15:44:58
  * @return {*}
  */

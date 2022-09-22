@@ -1,7 +1,7 @@
 /*
- * @Author: yangjie04@qutoutiao.net
+ * @Author: Jerry.Yang
  * @Date: 2022-09-21 19:18:09
- * @LastEditors: yangjie04@qutoutiao.net
+ * @LastEditors: Jerry.Yang
  * @LastEditTime: 2022-09-22 14:39:58
  * @Description: qiwei upload
  */
@@ -21,7 +21,7 @@ type UploadPkg struct{}
 /**
  * @description: QiweiUploadMedia
  * @param {*upload.QiweiUploadMedia} qiweiUploadMedia
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-21 19:19:59
  * @return {*}
  */
@@ -32,7 +32,7 @@ func QiweiUploadMedia(qiweiUploadMedia *upload.QiweiUploadMedia) error {
 /**
  * @description: AliOssUpload
  * @param {*upload.AliOssUpload} AliOssUpload
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 14:20:11
  * @return {*}
  */
@@ -43,7 +43,7 @@ func AliOssUpload(AliOssUpload *upload.AliOssUpload) error {
 /**
  * @description: AliOssUploadFromLocalFile
  * @param {upload.AliOssUploadFormLocalFile} aliOssUploadFormLocalFile
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 14:39:09
  * @return {*}
  */
@@ -54,7 +54,7 @@ func AliOssUploadFromLocalFile(aliOssUploadFormLocalFile upload.AliOssUploadForm
 /**
  * @description: AliOssUploadFormFileUrl
  * @param {upload.AliOssUpLoadFormFileUrl} aliOssUploadFormFileUrl
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 14:39:57
  * @return {*}
  */

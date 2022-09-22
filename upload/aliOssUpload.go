@@ -1,7 +1,7 @@
 /*
- * @Author: yangjie04@qutoutiao.net
+ * @Author: Jerry.Yang
  * @Date: 2022-09-22 14:05:52
- * @LastEditors: yangjie04@qutoutiao.net
+ * @LastEditors: Jerry.Yang
  * @LastEditTime: 2022-09-22 14:47:43
  * @Description: ali oss
  */
@@ -50,7 +50,7 @@ type (
 
 /**
  * @description: AliOssUpload Upload
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 14:08:04
  * @return {*}
  */
@@ -123,7 +123,7 @@ func (a *AliOssUpload) Upload() error {
 
 /**
  * @description: AliOssUploadFormLocalFile Upload
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 14:34:56
  * @return {*}
  */
@@ -196,7 +196,7 @@ func (a AliOssUploadFormLocalFile) Upload() error {
 
 /**
  * @description: AliOssUpLoadFormFileUrl
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 14:38:03
  * @return {*}
  */
@@ -269,7 +269,7 @@ func (a *AliOssUpLoadFormFileUrl) Upload() error {
 
 /**
  * @description: CreateClient
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 14:12:39
  * @return {*}
  */
@@ -280,7 +280,7 @@ func (a *AliOssUpload) CreateClient() (*aliyunOss.Client, error) {
 /**
  * @description: CreateBucket
  * @param {*aliyunOss.Client} aliyunOssClient
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 14:12:47
  * @return {*}
  */
@@ -290,7 +290,7 @@ func (a *AliOssUpload) CreateBucket(aliyunOssClient *aliyunOss.Client) (*aliyunO
 
 /**
  * @description: AliOssUploadFormLocalFile GetFileData
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 14:33:04
  * @return {*}
  */
@@ -342,7 +342,7 @@ func (a *AliOssUploadFormLocalFile) GetFileData() ([]byte, error) {
 
 /**
  * @description: AliOssUpLoadFormFileUrl GetFileData
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 14:36:41
  * @return {*}
  */
@@ -399,7 +399,7 @@ func (a *AliOssUpLoadFormFileUrl) GetFileData() ([]byte, error) {
 
 /**
  * @description: CheckParams
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 14:43:53
  * @return {*}
  */
@@ -440,7 +440,7 @@ func (a *AliOssUpload) CheckParams() error {
 
 /**
  * @description: AliOssUploadFormLocalFile CheckParams
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 14:47:00
  * @return {*}
  */
@@ -458,7 +458,7 @@ func (a *AliOssUploadFormLocalFile) CheckParams() error {
 
 /**
  * @description: AliOssUpLoadFormFileUrl CheckParams
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 14:47:51
  * @return {*}
  */

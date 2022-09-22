@@ -1,7 +1,7 @@
 /*
- * @Author: yangjie04@qutoutiao.net
+ * @Author: Jerry.Yang
  * @Date: 2022-09-21 15:47:47
- * @LastEditors: yangjie04@qutoutiao.net
+ * @LastEditors: Jerry.Yang
  * @LastEditTime: 2022-09-21 17:29:37
  * @Description: client 请求连接
  */
@@ -29,7 +29,7 @@ type (
 
 /**
  * @description: HttpRequest
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-21 16:02:35
  * @return {*}
  */

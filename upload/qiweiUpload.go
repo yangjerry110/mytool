@@ -1,7 +1,7 @@
 /*
- * @Author: yangjie04@qutoutiao.net
+ * @Author: Jerry.Yang
  * @Date: 2022-09-21 18:50:50
- * @LastEditors: yangjie04@qutoutiao.net
+ * @LastEditors: Jerry.Yang
  * @LastEditTime: 2022-09-21 19:17:58
  * @Description: qiwei upload
  */
@@ -43,7 +43,7 @@ type (
 
 /**
  * @description: UploadMedia
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-21 18:56:23
  * @return {*}
  */

@@ -1,7 +1,7 @@
 /*
- * @Author: yangjie04@qutoutiao.net
+ * @Author: Jerry.Yang
  * @Date: 2022-09-22 11:28:53
- * @LastEditors: yangjie04@qutoutiao.net
+ * @LastEditors: Jerry.Yang
  * @LastEditTime: 2022-09-22 11:59:17
  * @Description: qiwei bot notice
  */
@@ -67,7 +67,7 @@ type (
 
 /**
  * @description: NotifyMessage
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 11:34:14
  * @return {*}
  */
@@ -159,7 +159,7 @@ func (q *QiweiBotNotice) NotifyMessage() (bool, error) {
 /**
  * @description: NotifyBotTextMessage FormatNotifyBotParams
  * @param {*QiweiBotNotice} qiweiBotNotice
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 11:50:18
  * @return {*}
  */
@@ -219,7 +219,7 @@ func (n *NotifyBotTextMessage) FormatNotifyBotParams(qiweiBotNotice *QiweiBotNot
 /**
  * @description: NotifyBotMarkdownMessage FormatNotifyBotParams
  * @param {*QiweiBotNotice} qiweiBotNotice
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 11:50:39
  * @return {*}
  */
@@ -279,7 +279,7 @@ func (n *NotifyBotMarkdownMessage) FormatNotifyBotParams(qiweiBotNotice *QiweiBo
 /**
  * @description: NotifyBotImageMessage FormatNotifyBotParams
  * @param {*QiweiBotNotice} qiweiBotNotice
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 11:50:52
  * @return {*}
  */
@@ -354,7 +354,7 @@ func (n *NotifyBotImageMessage) FormatNotifyBotParams(qiweiBotNotice *QiweiBotNo
 /**
  * @description: NotifyBotNewsMessage FormatNotifyBotParams
  * @param {*QiweiBotNotice} qiweiBotNotice
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 11:51:05
  * @return {*}
  */
@@ -427,7 +427,7 @@ func (n *NotifyBotNewsMessage) FormatNotifyBotParams(qiweiBotNotice *QiweiBotNot
 /**
  * @description: DoNotify
  * @param {[]byte} QiweiBotNoticeReq
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 11:57:00
  * @return {*}
  */
@@ -484,7 +484,7 @@ func (q *QiweiBotNotice) DoNotify(QiweiBotNoticeReq []byte) error {
 
 /**
  * @description: CheckParams
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 11:37:09
  * @return {*}
  */
@@ -498,7 +498,7 @@ func (q *QiweiBotNotice) CheckParams() error {
 /**
  * @description: CheckParams
  * @param {*QiweiBotNotice} qiweiBotNotice
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 11:40:19
  * @return {*}
  */
@@ -512,7 +512,7 @@ func (n *NotifyBotTextMessage) CheckParams(qiweiBotNotice *QiweiBotNotice) error
 /**
  * @description: NotifyBotMarkdownMessage CheckParams
  * @param {*QiweiBotNotice} qiweiBotNotice
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 11:42:12
  * @return {*}
  */
@@ -526,7 +526,7 @@ func (n *NotifyBotMarkdownMessage) CheckParams(qiweiBotNotice *QiweiBotNotice) e
 /**
  * @description: NotifyBotImageMessage CheckParams
  * @param {*QiweiBotNotice} qiweiBotNotice
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 11:44:35
  * @return {*}
  */
@@ -540,7 +540,7 @@ func (n *NotifyBotImageMessage) CheckParams(qiweiBotNotice *QiweiBotNotice) erro
 /**
  * @description: NotifyBotNewsMessage CheckParams
  * @param {*QiweiBotNotice} qiweiBotNotice
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-22 11:48:06
  * @return {*}
  */

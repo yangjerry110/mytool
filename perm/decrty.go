@@ -1,7 +1,7 @@
 /*
- * @Author: yangjie04@qutoutiao.net
+ * @Author: Jerry.Yang
  * @Date: 2022-09-20 19:28:19
- * @LastEditors: yangjie04@qutoutiao.net
+ * @LastEditors: Jerry.Yang
  * @LastEditTime: 2022-09-20 19:37:25
  * @Description: decrty 解密
  */
@@ -31,7 +31,7 @@ type (
  * @description: Decrty
  * @param {string} permPath
  * @param {string} inputStr
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-20 19:32:21
  * @return {*}
  */
@@ -95,7 +95,7 @@ func (r *RasDecrty) Decrty(permPath string, inputStr string) (string, error) {
 /**
  * @description: doRasDecrty
  * @param {string} inputStr
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-20 19:32:12
  * @return {*}
  */

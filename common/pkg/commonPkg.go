@@ -1,7 +1,7 @@
 /*
- * @Author: yangjie04@qutoutiao.net
+ * @Author: Jerry.Yang
  * @Date: 2022-09-21 17:45:07
- * @LastEditors: yangjie04@qutoutiao.net
+ * @LastEditors: Jerry.Yang
  * @LastEditTime: 2022-09-22 14:28:33
  * @Description: qiwei common pkg
  */
@@ -18,7 +18,7 @@ type CommonPkg struct{}
 /**
  * @description: GetQiweiAccessToken
  * @param {*common.QiweiCommon} qiweiCommon
- * @author: yangjie04@qutoutiao.net
+ * @author: Jerry.Yang
  * @date: 2022-09-21 17:47:48
  * @return {*}
  */
