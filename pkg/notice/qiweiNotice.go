@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-22 16:10:30
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-22 16:20:19
+ * @LastEditTime: 2022-09-22 18:14:20
  * @Description: qiwei notice
  */
 package notice
@@ -51,27 +51,27 @@ type QiweiNotice struct{}
 
 /**
  * @description: QiweiNotifyMessage
- * @param {string} AppId
- * @param {string} MsgType
- * @param {string} CropId
- * @param {string} CropSecret
- * @param {string} AgentId
- * @param {string} DepartmentIds
- * @param {string} TagIds
- * @param {string} UserIds
- * @param {int32} Safe
- * @param {string} SendMsg
- * @param {string} MediaData
- * @param {string} MediaType
- * @param {string} Title
- * @param {string} Description
- * @param {string} Url
- * @param {string} PicUrl
+ * @param {string} AppId appId
+ * @param {string} MsgType 消息类型
+ * @param {string} CropId 公司id
+ * @param {string} CropSecret 公司秘钥
+ * @param {string} AgentId 通知的qiwei应用的id
+ * @param {string} DepartmentIds 通知的组织架构集合
+ * @param {string} TagIds 通知的Tag集合
+ * @param {string} UserIds 通知的人
+ * @param {int32} Safe safe
+ * @param {string} SendMsg 通知的消息
+ * @param {string} MediaData 通知的媒体消息内容
+ * @param {string} MediaType 通知的媒体消息类型
+ * @param {string} Title 标题
+ * @param {string} Description 简介
+ * @param {string} Url 链接
+ * @param {string} PicUrl 图片链接
  * @param {int32} EnableIdTrans
- * @param {string} Btntxt
- * @param {string} AppletId
- * @param {string} AppletPagepath
- * @param {string} QiweiFilePath
+ * @param {string} Btntxt news消息时候的按钮
+ * @param {string} AppletId AppletId 小程序id
+ * @param {string} AppletPagepath AppletPagepath 小程序链接
+ * @param {string} QiweiFilePath 通知媒体消息的时候，存放媒体内容的地址
  * @author: Jerry.Yang
  * @date: 2022-09-22 16:17:05
  * @return {*}
@@ -105,14 +105,14 @@ func QiweiNotifyMessage(AppId string, MsgType string, CropId string, CropSecret 
 
 /**
  * @description: QiweiBotNotifyMessage
- * @param {string} MsgType
- * @param {string} BotUrl
- * @param {string} SendMsg
- * @param {string} ImageData
- * @param {string} Title
- * @param {string} Description
- * @param {string} Url
- * @param {string} PicUrl
+ * @param {string} MsgType 消息类型
+ * @param {string} BotUrl 通知的机器人的地址
+ * @param {string} SendMsg 通知的消息内容
+ * @param {string} ImageData 通知媒体消息的媒体内容
+ * @param {string} Title 标题
+ * @param {string} Description 简介
+ * @param {string} Url url
+ * @param {string} PicUrl 图片链接
  * @param {[]string} MentionedList
  * @param {[]string} MentionedMobileList
  * @author: Jerry.Yang

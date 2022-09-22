@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-22 16:26:49
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-22 16:39:40
+ * @LastEditTime: 2022-09-22 18:09:55
  * @Description: ali upload
  */
 package upload
@@ -11,9 +11,9 @@ import "github.com/yangjerry110/mytool/upload"
 
 type (
 	AliUploadInterface interface {
-		AliUploadOss(OssUrl string, AccessKeyId string, AccessKeySecret string, EndPoint string, Bucket string, FileName string, FileType string, FileData string, DownloadDoamin string) (*AliUploadOssResp, error)
-		AliUploadOssFromLocalFile(OssUrl string, AccessKeyId string, AccessKeySecret string, EndPoint string, Bucket string, FileName string, FileType string, FileData string, DownloadDoamin string, localFilePath string) (*AliUploadOssResp, error)
-		AliUploadOssFromFileUrl(OssUrl string, AccessKeyId string, AccessKeySecret string, EndPoint string, Bucket string, FileName string, FileType string, FileData string, DownloadDoamin string, fileUrl string) (*AliUploadOssResp, error)
+		AliUploadOss(AccessKeyId string, AccessKeySecret string, EndPoint string, Bucket string, FileName string, FileType string, FileData string, DownloadDoamin string) (*AliUploadOssResp, error)
+		AliUploadOssFromLocalFile(AccessKeyId string, AccessKeySecret string, EndPoint string, Bucket string, FileName string, FileType string, FileData string, DownloadDoamin string, localFilePath string) (*AliUploadOssResp, error)
+		AliUploadOssFromFileUrl(AccessKeyId string, AccessKeySecret string, EndPoint string, Bucket string, FileName string, FileType string, FileData string, DownloadDoamin string, fileUrl string) (*AliUploadOssResp, error)
 	}
 
 	AliUpload struct{}
@@ -41,9 +41,8 @@ type (
  * @date: 2022-09-22 16:34:04
  * @return {*}
  */
-func AliUploadOss(OssUrl string, AccessKeyId string, AccessKeySecret string, EndPoint string, Bucket string, FileName string, FileType string, FileData string, DownloadDoamin string) (*AliUploadOssResp, error) {
+func AliUploadOss(AccessKeyId string, AccessKeySecret string, EndPoint string, Bucket string, FileName string, FileType string, FileData string, DownloadDoamin string) (*AliUploadOssResp, error) {
 	aliUploadOssObj := upload.AliOssUpload{
-		OssUrl:          OssUrl,
 		AccessKeyId:     AccessKeyId,
 		AccessKeySecret: AccessKeySecret,
 		EndPoint:        EndPoint,
@@ -64,7 +63,6 @@ func AliUploadOss(OssUrl string, AccessKeyId string, AccessKeySecret string, End
 
 /**
  * @description: AliUploadOssFromLocalFile
- * @param {string} OssUrl
  * @param {string} AccessKeyId
  * @param {string} AccessKeySecret
  * @param {string} EndPoint
@@ -78,10 +76,9 @@ func AliUploadOss(OssUrl string, AccessKeyId string, AccessKeySecret string, End
  * @date: 2022-09-22 16:39:30
  * @return {*}
  */
-func AliUploadOssFromLocalFile(OssUrl string, AccessKeyId string, AccessKeySecret string, EndPoint string, Bucket string, FileName string, FileType string, FileData string, DownloadDoamin string, localFilePath string) (*AliUploadOssResp, error) {
+func AliUploadOssFromLocalFile(AccessKeyId string, AccessKeySecret string, EndPoint string, Bucket string, FileName string, FileType string, FileData string, DownloadDoamin string, localFilePath string) (*AliUploadOssResp, error) {
 	aliUploadOssFormLocalFileObj := upload.AliOssUploadFromLocalFile{
 		AliOssUpload: upload.AliOssUpload{
-			OssUrl:          OssUrl,
 			AccessKeyId:     AccessKeyId,
 			AccessKeySecret: AccessKeySecret,
 			EndPoint:        EndPoint,
@@ -104,7 +101,6 @@ func AliUploadOssFromLocalFile(OssUrl string, AccessKeyId string, AccessKeySecre
 
 /**
  * @description: AliUploadOssFromFileUrl
- * @param {string} OssUrl
  * @param {string} AccessKeyId
  * @param {string} AccessKeySecret
  * @param {string} EndPoint
@@ -118,10 +114,9 @@ func AliUploadOssFromLocalFile(OssUrl string, AccessKeyId string, AccessKeySecre
  * @date: 2022-09-22 16:39:39
  * @return {*}
  */
-func AliUploadOssFromFileUrl(OssUrl string, AccessKeyId string, AccessKeySecret string, EndPoint string, Bucket string, FileName string, FileType string, FileData string, DownloadDoamin string, fileUrl string) (*AliUploadOssResp, error) {
+func AliUploadOssFromFileUrl(AccessKeyId string, AccessKeySecret string, EndPoint string, Bucket string, FileName string, FileType string, FileData string, DownloadDoamin string, fileUrl string) (*AliUploadOssResp, error) {
 	aliUploadOssFormFileUrlObj := upload.AliOssUpLoadFromFileUrl{
 		AliOssUpload: upload.AliOssUpload{
-			OssUrl:          OssUrl,
 			AccessKeyId:     AccessKeyId,
 			AccessKeySecret: AccessKeySecret,
 			EndPoint:        EndPoint,
