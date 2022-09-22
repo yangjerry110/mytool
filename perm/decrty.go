@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-20 19:28:19
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-20 19:37:25
+ * @LastEditTime: 2022-09-22 14:55:24
  * @Description: decrty 解密
  */
 package perm
@@ -72,7 +72,7 @@ func (r *RasDecrty) Decrty(permPath string, inputStr string) (string, error) {
 	 * @协程处理
 	 **/
 	go func() {
-		outputStr, err := r.doRasDecrty(inputStr)
+		outputStr, err := r.doRasDecrty(permPath, inputStr)
 		if err != nil {
 			doRasDecrtyChan <- ""
 		} else {
@@ -95,11 +95,12 @@ func (r *RasDecrty) Decrty(permPath string, inputStr string) (string, error) {
 /**
  * @description: doRasDecrty
  * @param {string} inputStr
+ * @param {string} permPath
  * @author: Jerry.Yang
  * @date: 2022-09-20 19:32:12
  * @return {*}
  */
-func (r *RasDecrty) doRasDecrty(inputStr string) (string, error) {
+func (r *RasDecrty) doRasDecrty(permPath string, inputStr string) (string, error) {
 	/**
 	 * @step
 	 * @进行base64 decode
@@ -113,7 +114,7 @@ func (r *RasDecrty) doRasDecrty(inputStr string) (string, error) {
 	 * @step
 	 * @打开公钥文件
 	 **/
-	file, err := os.Open(fmt.Sprintf("%s/private.perm"))
+	file, err := os.Open(fmt.Sprintf("%s/private.perm", permPath))
 	if err != nil {
 		return inputStr, err
 	}
