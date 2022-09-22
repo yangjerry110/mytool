@@ -2,7 +2,7 @@
  * @Author: yangjie04@qutoutiao.net
  * @Date: 2022-09-21 15:47:47
  * @LastEditors: yangjie04@qutoutiao.net
- * @LastEditTime: 2022-09-21 17:02:00
+ * @LastEditTime: 2022-09-21 17:29:37
  * @Description: client 请求连接
  */
 package http
@@ -28,12 +28,12 @@ type (
 )
 
 /**
- * @description: HttpClient
+ * @description: HttpRequest
  * @author: yangjie04@qutoutiao.net
  * @date: 2022-09-21 16:02:35
  * @return {*}
  */
-func (h *HttpClient) HttpClient() error {
+func (h *HttpClient) HttpRequest() error {
 
 	/**
 	 * @step

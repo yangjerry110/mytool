@@ -1,19 +1,34 @@
 /*
  * @Author: yangjie04@qutoutiao.net
- * @Date: 2022-09-20 10:53:41
+ * @Date: 2022-09-22 14:25:44
  * @LastEditors: yangjie04@qutoutiao.net
- * @LastEditTime: 2022-09-20 11:25:54
- * @Description: createDao
+ * @LastEditTime: 2022-09-22 14:26:59
+ * @Description: pkg
  */
 package pkg
 
 import "github.com/yangjerry110/mytool/create"
 
-type CreateDaoPkgInterface interface {
+type CreatePkgInterface interface {
+	CreateApp(projectName string, appName string, method string)
 	CreateDao(projectName string, daoName string, modelName string, authorName ...string)
 }
 
-type CreateDaoPkg struct{}
+type CreatePkg struct{}
+
+/**
+ * @description: CreateApp
+ * @param {string} projectName
+ * @param {string} appName
+ * @param {string} method
+ * @author: Jerry.Yang
+ * @date: 2022-09-19 17:43:23
+ * @return {*}
+ */
+func CreateApp(projectName string, appName string, method string) {
+	createAppObj := create.CreateApp{}
+	createAppObj.CreateApp(projectName, appName, method)
+}
 
 /**
  * @description: CreateDaoFunc
