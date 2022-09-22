@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-19 17:46:05
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-22 18:11:34
+ * @LastEditTime: 2022-09-22 18:32:48
  * @Description: 
 -->
 # my-tool
@@ -27,14 +27,14 @@ func main() {
 ```
 
 ## 3.conf
->对一些配置文件进行解析，需要提前定义到需要解析的文件和解析对应的结构体
-1.配置文件定义(以yaml文件示例)
+>对一些配置文件进行解析，需要提前定义到需要解析的文件和解析对应的结构体  
+配置文件定义(以yaml文件示例)
 
 ```
 conf_path: "conf_path"
 ```
 
-2.引用实例：
+引用实例：
 
 ```
 package main
@@ -111,27 +111,27 @@ import "github.com/yangjerry110/mytool/pkg/notice"
 func main() {
 
     /**
-    * @param {string} AppId
-    * @param {string} MsgType
-    * @param {string} CropId
-    * @param {string} CropSecret
-    * @param {string} AgentId
-    * @param {string} DepartmentIds
-    * @param {string} TagIds
-    * @param {string} UserIds
-    * @param {int32} Safe
-    * @param {string} SendMsg
-    * @param {string} MediaData
-    * @param {string} MediaType
-    * @param {string} Title
-    * @param {string} Description
-    * @param {string} Url
-    * @param {string} PicUrl
+    * @param {string} AppId appId
+    * @param {string} MsgType 消息类型
+    * @param {string} CropId 公司id
+    * @param {string} CropSecret 公司秘钥
+    * @param {string} AgentId 通知的qiwei应用的id
+    * @param {string} DepartmentIds 通知的组织架构集合
+    * @param {string} TagIds 通知的Tag集合
+    * @param {string} UserIds 通知的人
+    * @param {int32} Safe safe
+    * @param {string} SendMsg 通知的消息
+    * @param {string} MediaData 通知的媒体消息内容
+    * @param {string} MediaType 通知的媒体消息类型
+    * @param {string} Title 标题
+    * @param {string} Description 简介
+    * @param {string} Url 链接
+    * @param {string} PicUrl 图片链接
     * @param {int32} EnableIdTrans
-    * @param {string} Btntxt
-    * @param {string} AppletId
-    * @param {string} AppletPagepath
-    * @param {string} QiweiFilePath
+    * @param {string} Btntxt news消息时候的按钮
+    * @param {string} AppletId AppletId 小程序id
+    * @param {string} AppletPagepath AppletPagepath 小程序链接
+    * @param {string} QiweiFilePath 通知媒体消息的时候，存放媒体内容的地址
      */
     result,err := notice.QiweiNotifyMessage(AppId,MsgType,CropId,CropSecret,AgentId,DepartmentIds,TagIds,userIds,safe,SendMsg,MediaData,MediaType,Title,Description,url,PicUrl,EnableIdTrans,Btntxt,AppletId,AppletPagepath,QiweiFilePath)
 
