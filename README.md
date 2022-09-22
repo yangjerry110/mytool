@@ -2,13 +2,14 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-19 17:46:05
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-22 18:32:48
+ * @LastEditTime: 2022-09-22 18:34:09
  * @Description: 
 -->
 # my-tool
 ## 1.cmd
 ### 脚本文件
-> 需要单独启用一个项目对cmd中的方法进行引用，再进行go build生成可执行的二进制文件
+> 1.需要单独启用一个项目对cmd中的方法进行引用，再进行go build生成可执行的二进制文件    
+> 2.主要用作go generate自动化相关
 
 实例参考 ： https://github.com/yangjerry110/createtool/tree/master 
 
@@ -27,8 +28,8 @@ func main() {
 ```
 
 ## 3.conf
->对一些配置文件进行解析，需要提前定义到需要解析的文件和解析对应的结构体  
-配置文件定义(以yaml文件示例)
+>1.对一些配置文件进行解析，需要提前定义到需要解析的文件和解析对应的结构体  
+>2.配置文件定义(以yaml文件示例)
 
 ```
 conf_path: "conf_path"
@@ -55,9 +56,9 @@ func main() {
 ```
 
 ## 4.http
-> http调用相关的  
-> 需要提前定义好input, output   
-> ps : options 配置需要引导 http.Option下   
+> 1.http调用相关的  
+> 2.需要提前定义好input, output   
+> 3.ps : options 配置需要引导 http.Option下   
 
 ```
 package main 
@@ -98,10 +99,10 @@ func main() {
 
 ## 5.notice
 
-> 通知相关   
-> 以企微通知示例   
-> 支持 text,markdown,image,news,card    
-> bot通知 支持 text,markdown,image,news
+> 1.通知相关   
+> 2.以企微通知示例   
+> 3.支持 text,markdown,image,news,card    
+> 4.bot通知 支持 text,markdown,image,news
 
 ```
 package main 
@@ -140,8 +141,8 @@ func main() {
 
 ## 6.perm 
 
-> 加密解密相关    
-> PS: 使用rsa加解密之前，需要先生成公钥和私钥
+> 1.加密解密相关    
+> 2.PS: 使用rsa加解密之前，需要先生成公钥和私钥
 
 ```
 
@@ -157,8 +158,8 @@ func main() {
 
 ## 7.upload
 
-> 以ali的oss示例    
-> PS： 上传的fileData需要是以base64编码的文件内容
+> 1.以ali的oss示例    
+> 2.PS： 上传的fileData需要是以base64编码的文件内容
 
 ```
 
