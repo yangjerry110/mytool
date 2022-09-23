@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-21 18:50:50
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-22 16:47:54
+ * @LastEditTime: 2022-09-23 16:36:32
  * @Description: qiwei upload
  */
 package upload
@@ -23,7 +23,7 @@ import (
 
 type (
 	QiweiUploadInterface interface {
-		Upload() error
+		Upload() (string, error)
 	}
 
 	QiweiUpload struct{}
@@ -32,7 +32,6 @@ type (
 		AppId         string
 		CropId        string
 		CropSecret    string
-		MediaId       string
 		MediaData     string
 		MediaType     string
 		QiweiFilePath string
@@ -45,14 +44,14 @@ type (
  * @date: 2022-09-21 18:56:23
  * @return {*}
  */
-func (q *QiweiUploadMedia) Upload() error {
+func (q *QiweiUploadMedia) Upload() (string, error) {
 
 	/**
 	 * @step
 	 * @判断appId
 	**/
 	if q.AppId == "" {
-		return errors.New("QiweiUploadMedia Err : appId is empty!")
+		return "", errors.New("QiweiUploadMedia Err : appId is empty!")
 	}
 
 	/**
@@ -60,7 +59,7 @@ func (q *QiweiUploadMedia) Upload() error {
 	 * @判断qiweiFilePath
 	 **/
 	if q.QiweiFilePath == "" {
-		return errors.New("QiweiUploadMedia Err : qiweiFilePath is empty!")
+		return "", errors.New("QiweiUploadMedia Err : qiweiFilePath is empty!")
 	}
 
 	/**
@@ -68,9 +67,9 @@ func (q *QiweiUploadMedia) Upload() error {
 	 * @获取accessToken
 	 **/
 	qiweiCommon := mytoolCommon.QiweiCommon{AppId: q.AppId, CropId: q.CropId, CropSecret: q.CropSecret}
-	err := qiweiCommon.GetQiweiAccessToken()
+	accessToken, err := qiweiCommon.GetQiweiAccessToken()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	/**
@@ -79,7 +78,7 @@ func (q *QiweiUploadMedia) Upload() error {
 	 **/
 	decodMediaData, err := base64.StdEncoding.DecodeString(q.MediaData)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	/**
@@ -113,7 +112,7 @@ func (q *QiweiUploadMedia) Upload() error {
 	 **/
 	formFileWriter, err := writer.CreateFormFile(fileName, filepath.Base(filePath))
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	/**
@@ -128,14 +127,14 @@ func (q *QiweiUploadMedia) Upload() error {
 	 **/
 	err = writer.Close()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	/**
 	 * @step
 	 * @构建请求url
 	 **/
-	url := fmt.Sprintf("https://qyapi.weixin.qq.com/cgi-bin/media/upload?access_token=%s&type=%s", qiweiCommon.AccessToken, q.MediaType)
+	url := fmt.Sprintf("https://qyapi.weixin.qq.com/cgi-bin/media/upload?access_token=%s&type=%s", accessToken, q.MediaType)
 
 	/**
 	 * @step
@@ -183,13 +182,8 @@ func (q *QiweiUploadMedia) Upload() error {
 	 * @判断结果
 	 **/
 	if resp.ErrCode != 0 {
-		return errors.New(resp.ErrMsg)
+		return "", errors.New(resp.ErrMsg)
 	}
 
-	/**
-	 * @step
-	 * @复制mediaId
-	 **/
-	q.MediaId = resp.MediaId
-	return nil
+	return resp.MediaId, nil
 }

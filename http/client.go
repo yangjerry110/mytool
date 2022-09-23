@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-21 15:47:47
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-21 17:29:37
+ * @LastEditTime: 2022-09-23 15:00:00
  * @Description: client 请求连接
  */
 package http
@@ -16,7 +16,9 @@ import (
 )
 
 type (
-	HttpClientInterface interface{}
+	HttpClientInterface interface {
+		HttpRequest() error
+	}
 
 	HttpClient struct {
 		Method  string           // 请求方式

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-22 16:40:39
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-22 16:45:15
+ * @LastEditTime: 2022-09-23 16:41:47
  * @Description: qiwei upload
  */
 package upload
@@ -10,34 +10,45 @@ package upload
 import "github.com/yangjerry110/mytool/upload"
 
 type QiweiUploadInterface interface {
-	QiweiUploadMedia(AppId string, CropId string, CropSecret string, MediaId string, MediaData string, MediaType string, QiweiFilePath string) (string, error)
+	CreateQiweiUploadInterface(qiweiUploadInterface upload.QiweiUploadInterface) *UploadPkg
+	CreateQiweiUploadMediaInstance() upload.QiweiUploadInterface
 }
 
 type QiweiUpload struct{}
 
+type QiweiUploadMedia struct {
+	AppId         string
+	CropId        string
+	CropSecret    string
+	MediaData     string
+	MediaType     string
+	QiweiFilePath string
+}
+
 /**
- * @description: QiweiUploadMedia
- * @param {string} AppId
- * @param {string} CropId
- * @param {string} CropSecret
- * @param {string} MediaId
- * @param {string} MediaData
- * @param {string} MediaType
- * @param {string} QiweiFilePath
+ * @description: CreateQiweiUploadInterface
+ * @param {upload.QiweiUploadInterface} qiweiUploadInterface
  * @author: Jerry.Yang
- * @date: 2022-09-22 16:45:55
+ * @date: 2022-09-23 16:41:36
  * @return {*}
  */
-func QiweiUploadMedia(AppId string, CropId string, CropSecret string, MediaId string, MediaData string, MediaType string, QiweiFilePath string) (string, error) {
-	qiweiUploadMediaObj := upload.QiweiUploadMedia{
-		AppId:         AppId,
-		CropId:        CropId,
-		CropSecret:    CropSecret,
-		MediaId:       MediaId,
-		MediaData:     MediaData,
-		MediaType:     MediaType,
-		QiweiFilePath: QiweiFilePath,
-	}
-	err := qiweiUploadMediaObj.Upload()
-	return qiweiUploadMediaObj.MediaId, err
+func CreateQiweiUploadInterface(qiweiUploadInterface upload.QiweiUploadInterface) *UploadPkg {
+	return &UploadPkg{QiweiUploadInterface: qiweiUploadInterface}
+}
+
+/**
+ * @description: CreateQiweiUploadMediaInstance
+ * @author: Jerry.Yang
+ * @date: 2022-09-23 16:41:46
+ * @return {*}
+ */
+func (q *QiweiUploadMedia) CreateQiweiUploadMediaInstance() upload.QiweiUploadInterface {
+	return CreateQiweiUploadInterface(&upload.QiweiUploadMedia{
+		AppId:         q.AppId,
+		CropId:        q.CropId,
+		CropSecret:    q.CropSecret,
+		MediaData:     q.MediaData,
+		MediaType:     q.MediaType,
+		QiweiFilePath: q.QiweiFilePath,
+	}).AliUploadInterface
 }

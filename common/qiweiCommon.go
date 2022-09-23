@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-21 17:42:36
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-22 16:50:30
+ * @LastEditTime: 2022-09-23 14:25:26
  * @Description: qiwei common
  */
 package common
@@ -17,13 +17,14 @@ import (
 )
 
 type (
-	QiweiCommonInterface interface{}
+	QiweiCommonInterface interface {
+		GetQiweiAccessToken() (string, error)
+	}
 
 	QiweiCommon struct {
-		AppId       string
-		CropId      string
-		CropSecret  string
-		AccessToken string
+		AppId      string
+		CropId     string
+		CropSecret string
 	}
 )
 
@@ -33,7 +34,7 @@ type (
  * @date: 2022-09-22 16:02:25
  * @return {*}
  */
-func (q *QiweiCommon) GetQiweiAccessToken() error {
+func (q *QiweiCommon) GetQiweiAccessToken() (string, error) {
 	/**
 	 * @step
 	 * @初始化go-cache
@@ -52,8 +53,7 @@ func (q *QiweiCommon) GetQiweiAccessToken() error {
 	 **/
 	cacheAccessToken, cacheResult := goCache.Get(key)
 	if cacheResult && cacheAccessToken.(string) == "" {
-		q.AccessToken = cacheAccessToken.(string)
-		return nil
+		return cacheAccessToken.(string), nil
 	}
 
 	/**
@@ -90,7 +90,7 @@ func (q *QiweiCommon) GetQiweiAccessToken() error {
 	 * @判断accessToken和错误
 	 **/
 	if resp.Errcode != 0 {
-		return errors.New(resp.Errmsg)
+		return "", errors.New(resp.Errmsg)
 	}
 
 	/**
@@ -98,6 +98,5 @@ func (q *QiweiCommon) GetQiweiAccessToken() error {
 	 * @设置accessToken缓存
 	 **/
 	goCache.Set(key, resp.AccessToken, time.Duration(resp.ExpiresIn)*time.Second)
-	q.AccessToken = resp.AccessToken
-	return nil
+	return resp.AccessToken, nil
 }

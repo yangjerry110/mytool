@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-22 17:15:12
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-22 17:18:39
+ * @LastEditTime: 2022-09-22 18:44:56
  * @Description: yaml conf
  */
 package conf
@@ -44,6 +44,6 @@ func (y *YamlConf) Parse() error {
 	 * @渲染到结构体
 	 **/
 	decoder := yaml.NewDecoder(bytes.NewReader(yamlData))
-	decoder.Decode(y.Conf)
+	decoder.Decode(&y.Conf)
 	return nil
 }

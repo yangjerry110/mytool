@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-22 11:28:53
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-22 16:49:55
+ * @LastEditTime: 2022-09-23 15:40:06
  * @Description: qiwei bot notice
  */
 package notice
@@ -22,8 +22,8 @@ type (
 	QiweiBotNoticeInterface interface {
 		CheckParams() error
 		NotifyMessage() (bool, error)
-		FormatNotifyParams(qiweiNotice *QiweiNotice) ([]byte, error)
-		DoNotify(accessToken string, qiweiMsg []byte) error
+		FormatNotifyParams(qiweiBotNotice *QiweiBotNotice) ([]byte, error)
+		DoNotify(qiweiMsg []byte) error
 	}
 
 	QiweiBotNotice struct {
@@ -560,4 +560,15 @@ func (n *NotifyBotNewsMessage) CheckParams(qiweiBotNotice *QiweiBotNotice) error
 		return errors.New("NotifyBotNewsMessage Err : PicUrl is empty!")
 	}
 	return nil
+}
+
+/**
+ * @description: FormatNotifyParams
+ * @param {*QiweiBotNotice} qiweiBotNotice
+ * @author: Jerry.Yang
+ * @date: 2022-09-23 15:40:06
+ * @return {*}
+ */
+func (q *QiweiBotNotice) FormatNotifyParams(qiweiBotNotice *QiweiBotNotice) ([]byte, error) {
+	return nil, nil
 }

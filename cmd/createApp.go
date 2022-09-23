@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-19 17:28:57
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-22 15:55:33
+ * @LastEditTime: 2022-09-22 19:29:56
  * @Description: createApp
  */
 package cmd
@@ -15,9 +15,9 @@ import (
 )
 
 type CreateAppInterface interface {
-	CreateApp(projectName string, appName string, method string)
-	createContent(appDir string, projectName string, appName string, fileName string, method string) string
-	checkParams(projectName string, appName string, method string) error
+	CreateApp(projectName string, appName string, method string) error
+	CreateContent(appDir string, projectName string, appName string, fileName string, method string) string
+	CheckParams(projectName string, appName string, method string) error
 }
 
 type (
@@ -53,17 +53,15 @@ type (
  * @date: 2022-09-19 17:31:25
  * @return {*}
  */
-func (c *CreateApp) CreateApp(projectName string, appName string, method string) {
+func (c *CreateApp) CreateApp(projectName string, appName string, method string) error {
 
 	/**
 	 * @step
 	 * @检查参数
 	 **/
-	err := c.checkParams(projectName, appName, method)
+	err := c.CheckParams(projectName, appName, method)
 	if err != nil {
-		fmt.Printf("CreateApp Err : %v", err.Error())
-		fmt.Print("\r\n")
-		return
+		return err
 	}
 
 	/**
@@ -74,7 +72,7 @@ func (c *CreateApp) CreateApp(projectName string, appName string, method string)
 	if err != nil {
 		fmt.Printf("获取目录错误!请重试!")
 		fmt.Print("\r\n")
-		return
+		return err
 	}
 
 	/**
@@ -93,7 +91,7 @@ func (c *CreateApp) CreateApp(projectName string, appName string, method string)
 		if err != nil {
 			fmt.Printf("创建App目录失败!请重试!")
 			fmt.Print("\r\n")
-			return
+			return err
 		}
 	}
 
@@ -108,7 +106,7 @@ func (c *CreateApp) CreateApp(projectName string, appName string, method string)
 	 * @获取fileContent inputVO
 	 **/
 	createAppInputVO := CreateAppInputVO{FileName: "InputVO", DirName: fmt.Sprintf("%s/%s%s.go", needCreateAppDir, appName, "InputVO")}
-	createAppInputVOFileContent := createAppInputVO.createContent(needCreateAppDir, appName, createAppInputVO.FileName)
+	createAppInputVOFileContent := createAppInputVO.CreateContent(needCreateAppDir, appName, createAppInputVO.FileName)
 	err = createBaseObj.CreateFile(createAppInputVO.DirName, createAppInputVO.FileName, createAppInputVOFileContent)
 	if err != nil {
 		fmt.Printf("CreateApp Err : %v", err.Error())
@@ -120,7 +118,7 @@ func (c *CreateApp) CreateApp(projectName string, appName string, method string)
 	 * @获取fileContent OutputVO
 	 **/
 	createAppOutputVO := CreateAppOutputVO{FileName: "OutputVO", DirName: fmt.Sprintf("%s/%s%s.go", needCreateAppDir, appName, "OutputVO")}
-	createAppOutputVOFileContent := createAppOutputVO.createContent(needCreateAppDir, projectName, appName, createAppOutputVO.FileName)
+	createAppOutputVOFileContent := createAppOutputVO.CreateContent(needCreateAppDir, projectName, appName, createAppOutputVO.FileName)
 	err = createBaseObj.CreateFile(createAppInputVO.DirName, createAppOutputVO.FileName, createAppOutputVOFileContent)
 	if err != nil {
 		fmt.Printf("CreateApp Err : %v", err.Error())
@@ -132,7 +130,7 @@ func (c *CreateApp) CreateApp(projectName string, appName string, method string)
 	 * @获取fileContent route
 	 **/
 	createAppRoute := CreateAppRoute{FileName: "Route", DirName: fmt.Sprintf("%s/%s%s.go", needCreateAppDir, appName, "Route")}
-	createAppRouteFileContent := createAppRoute.createContent(needCreateAppDir, projectName, appName, createAppRoute.FileName, method)
+	createAppRouteFileContent := createAppRoute.CreateContent(needCreateAppDir, projectName, appName, createAppRoute.FileName, method)
 	err = createBaseObj.CreateFile(createAppInputVO.DirName, createAppRoute.FileName, createAppRouteFileContent)
 	if err != nil {
 		fmt.Printf("CreateApp Err : %v", err.Error())
@@ -144,14 +142,14 @@ func (c *CreateApp) CreateApp(projectName string, appName string, method string)
 	 * @获取fileContent service
 	 **/
 	createAppService := CreateAppService{FileName: "Service", DirName: fmt.Sprintf("%s/%s%s.go", needCreateAppDir, appName, "Service")}
-	CreateAppServiceFileContent := createAppService.createContent(needCreateAppDir, projectName, appName, createAppService.FileName, method)
+	CreateAppServiceFileContent := createAppService.CreateContent(needCreateAppDir, projectName, appName, createAppService.FileName, method)
 	err = createBaseObj.CreateFile(createAppInputVO.DirName, createAppService.FileName, CreateAppServiceFileContent)
 	if err != nil {
 		fmt.Printf("CreateApp Err : %v", err.Error())
 		fmt.Print("\r\n")
 	}
 
-	return
+	return nil
 }
 
 /**
@@ -163,7 +161,7 @@ func (c *CreateApp) CreateApp(projectName string, appName string, method string)
  * @date: 2022-09-07 14:52:41
  * @return {*}
  */
-func (c *CreateAppInputVO) createContent(appDir string, appName string, fileName string) string {
+func (c *CreateAppInputVO) CreateContent(appDir string, appName string, fileName string) string {
 
 	/**
 	 * @step
@@ -201,7 +199,7 @@ func (c *CreateAppInputVO) createContent(appDir string, appName string, fileName
  * @date: 2022-09-07 16:04:00
  * @return {*}
  */
-func (c *CreateAppOutputVO) createContent(appDir string, projectName string, appName string, fileName string) string {
+func (c *CreateAppOutputVO) CreateContent(appDir string, projectName string, appName string, fileName string) string {
 	fileContent := fmt.Sprintf("package %s", appName)
 	fileContent += "\r\n"
 	fileContent += "\r\n"
@@ -282,7 +280,7 @@ func (c *CreateAppOutputVO) createContent(appDir string, projectName string, app
  * @date: 2022-09-07 16:42:13
  * @return {*}
  */
-func (c *CreateAppRoute) createContent(appDir string, projectName string, appName string, fileName string, method string) string {
+func (c *CreateAppRoute) CreateContent(appDir string, projectName string, appName string, fileName string, method string) string {
 	fileContent := fmt.Sprintf("package %s", appName)
 	fileContent += "\r\n"
 	fileContent += "\r\n"
@@ -368,7 +366,7 @@ func (c *CreateAppRoute) createContent(appDir string, projectName string, appNam
  * @date: 2022-09-07 17:16:40
  * @return {*}
  */
-func (c *CreateAppService) createContent(appDir string, projectName string, appName string, fileName string, method string) string {
+func (c *CreateAppService) CreateContent(appDir string, projectName string, appName string, fileName string, method string) string {
 	fileContent := fmt.Sprintf("package %s", appName)
 	fileContent += "\r\n"
 	fileContent += "\r\n"
@@ -417,7 +415,7 @@ func (c *CreateAppService) createContent(appDir string, projectName string, appN
  * @date: 2022-09-19 17:33:25
  * @return {*}
  */
-func (c *CreateApp) checkParams(projectName string, appName string, method string) error {
+func (c *CreateApp) CheckParams(projectName string, appName string, method string) error {
 
 	/**
 	 * @step
@@ -435,4 +433,19 @@ func (c *CreateApp) checkParams(projectName string, appName string, method strin
 		return errors.New("请求方式缺失!")
 	}
 	return nil
+}
+
+/**
+ * @description: CreateContent
+ * @param {string} appDir
+ * @param {string} projectName
+ * @param {string} appName
+ * @param {string} fileName
+ * @param {string} method
+ * @author: Jerry.Yang
+ * @date: 2022-09-22 19:28:16
+ * @return {*}
+ */
+func (c *CreateApp) CreateContent(appDir string, projectName string, appName string, fileName string, method string) string {
+	return ""
 }

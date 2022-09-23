@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-22 16:05:20
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-22 16:09:06
+ * @LastEditTime: 2022-09-23 15:02:22
  * @Description: http
  */
 package http
@@ -13,30 +13,36 @@ import (
 	"github.com/yangjerry110/mytool/http"
 )
 
-type HttpClientInterface interface {
-	HttpRequest(method string, url string, body io.Reader, output interface{}, options ...http.HttpOptionFunc) error
+type HttpClientPkgInterface interface {
+	CreateHttpClientInterface(httpClientInterface http.HttpClientInterface) *HttpPkg
+	CreateHttpClientInstance() http.HttpClientInterface
 }
 
-type HttpClient struct{}
+type HttpClientPkg struct {
+	Method  string
+	Url     string
+	Body    io.Reader
+	Output  interface{}
+	Options []http.HttpOptionFunc
+}
 
 /**
- * @description: HttpRequest
- * @param {string} method
- * @param {string} url
- * @param {io.Reader} body
- * @param {interface{}} output
- * @param {...http.HttpOptionFunc} option
+ * @description: CreateHttpClientInterface
+ * @param {http.HttpClientInterface} httpClientInterface
  * @author: Jerry.Yang
- * @date: 2022-09-22 16:08:21
+ * @date: 2022-09-23 15:02:55
  * @return {*}
  */
-func HttpRequest(method string, url string, body io.Reader, output interface{}, options ...http.HttpOptionFunc) error {
-	httpClient := http.HttpClient{
-		Method:  method,
-		Url:     url,
-		Body:    body,
-		Options: options,
-		Output:  &output,
-	}
-	return httpClient.HttpRequest()
+func CreateHttpClientInterface(httpClientInterface http.HttpClientInterface) *HttpPkg {
+	return &HttpPkg{HttpClientInterface: httpClientInterface}
+}
+
+/**
+ * @description: CreateHttpClientInstance
+ * @author: Jerry.Yang
+ * @date: 2022-09-23 15:03:03
+ * @return {*}
+ */
+func (h *HttpClientPkg) CreateHttpClientInstance() http.HttpClientInterface {
+	return CreateHttpClientInterface(&http.HttpClient{Method: h.Method, Url: h.Url, Body: h.Body, Output: &h.Output, Options: h.Options}).HttpClientInterface
 }

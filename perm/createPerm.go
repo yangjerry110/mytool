@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-20 11:17:29
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-21 10:30:43
+ * @LastEditTime: 2022-09-23 16:01:47
  * @Description: createPerm
  */
 package perm
@@ -20,7 +20,7 @@ type (
 		CreatePerm(byteSize int32, permPath string) (bool, error)
 	}
 
-	CreateRasPerm struct{}
+	CreateRsaPerm struct{}
 )
 
 /**
@@ -31,7 +31,7 @@ type (
  * @date: 2022-09-20 11:24:42
  * @return {*}
  */
-func (c *CreateRasPerm) CreatePerm(byteSize int32, permPath string) (bool, error) {
+func (c *CreateRsaPerm) CreatePerm(byteSize int32, permPath string) (bool, error) {
 
 	/**
 	 * @step

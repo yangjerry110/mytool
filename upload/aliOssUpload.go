@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-22 14:05:52
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-22 16:37:25
+ * @LastEditTime: 2022-09-23 16:27:57
  * @Description: ali oss
  */
 package upload
@@ -23,10 +23,11 @@ import (
 )
 
 type (
-	AliOssUploadInterface interface{}
+	AliUploadInterface interface {
+		Upload() (string, error)
+	}
 
 	AliOssUpload struct {
-		OssUrl          string
 		AccessKeyId     string
 		AccessKeySecret string
 		EndPoint        string
@@ -54,7 +55,7 @@ type (
  * @date: 2022-09-22 14:08:04
  * @return {*}
  */
-func (a *AliOssUpload) Upload() error {
+func (a *AliOssUpload) Upload() (string, error) {
 
 	/**
 	 * @step
@@ -62,7 +63,7 @@ func (a *AliOssUpload) Upload() error {
 	 **/
 	err := a.CheckParams()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	/**
@@ -71,7 +72,7 @@ func (a *AliOssUpload) Upload() error {
 	 **/
 	client, err := a.CreateClient()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	/**
@@ -100,7 +101,7 @@ func (a *AliOssUpload) Upload() error {
 	 **/
 	decodFileData, err := base64.StdEncoding.DecodeString(a.FileData)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	/**
@@ -109,7 +110,7 @@ func (a *AliOssUpload) Upload() error {
 	 **/
 	err = bucket.PutObject(objectName, bytes.NewReader(decodFileData), options...)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	/**
@@ -117,8 +118,7 @@ func (a *AliOssUpload) Upload() error {
 	 * @获取实际访问的oss地址
 	 **/
 	ossUrl := fmt.Sprintf("%s/%s", a.DownloadDoamin, objectName)
-	a.OssUrl = ossUrl
-	return nil
+	return ossUrl, nil
 }
 
 /**
@@ -127,7 +127,7 @@ func (a *AliOssUpload) Upload() error {
  * @date: 2022-09-22 14:34:56
  * @return {*}
  */
-func (a AliOssUploadFromLocalFile) Upload() error {
+func (a AliOssUploadFromLocalFile) Upload() (string, error) {
 
 	/**
 	 * @step
@@ -135,7 +135,7 @@ func (a AliOssUploadFromLocalFile) Upload() error {
 	 **/
 	err := a.CheckParams()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	/**
@@ -144,7 +144,7 @@ func (a AliOssUploadFromLocalFile) Upload() error {
 	 **/
 	client, err := a.CreateClient()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	/**
@@ -173,7 +173,7 @@ func (a AliOssUploadFromLocalFile) Upload() error {
 	 **/
 	decodFileData, err := a.GetFileData()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	/**
@@ -182,7 +182,7 @@ func (a AliOssUploadFromLocalFile) Upload() error {
 	 **/
 	err = bucket.PutObject(objectName, bytes.NewReader(decodFileData), options...)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	/**
@@ -190,8 +190,7 @@ func (a AliOssUploadFromLocalFile) Upload() error {
 	 * @获取实际访问的oss地址
 	 **/
 	ossUrl := fmt.Sprintf("%s/%s", a.DownloadDoamin, objectName)
-	a.OssUrl = ossUrl
-	return nil
+	return ossUrl, nil
 }
 
 /**
@@ -200,7 +199,7 @@ func (a AliOssUploadFromLocalFile) Upload() error {
  * @date: 2022-09-22 14:38:03
  * @return {*}
  */
-func (a *AliOssUpLoadFromFileUrl) Upload() error {
+func (a *AliOssUpLoadFromFileUrl) Upload() (string, error) {
 
 	/**
 	 * @step
@@ -208,7 +207,7 @@ func (a *AliOssUpLoadFromFileUrl) Upload() error {
 	 **/
 	err := a.CheckParams()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	/**
@@ -217,7 +216,7 @@ func (a *AliOssUpLoadFromFileUrl) Upload() error {
 	 **/
 	client, err := a.CreateClient()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	/**
@@ -246,7 +245,7 @@ func (a *AliOssUpLoadFromFileUrl) Upload() error {
 	 **/
 	decodFileData, err := a.GetFileData()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	/**
@@ -255,7 +254,7 @@ func (a *AliOssUpLoadFromFileUrl) Upload() error {
 	 **/
 	err = bucket.PutObject(objectName, bytes.NewReader(decodFileData), options...)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	/**
@@ -263,8 +262,7 @@ func (a *AliOssUpLoadFromFileUrl) Upload() error {
 	 * @获取实际访问的oss地址
 	 **/
 	ossUrl := fmt.Sprintf("%s/%s", a.DownloadDoamin, objectName)
-	a.OssUrl = ossUrl
-	return nil
+	return ossUrl, nil
 }
 
 /**

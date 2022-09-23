@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-21 15:30:12
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-22 16:49:21
+ * @LastEditTime: 2022-09-23 15:27:46
  * @Description: 企微通知
  */
 package notice
@@ -125,7 +125,7 @@ func (q *QiweiNotice) NotifyMessage() (bool, error) {
 	 * @获取accessToken
 	 **/
 	qiweiCommon := mytoolCommon.QiweiCommon{AppId: q.AppId, CropId: q.CropId, CropSecret: q.CropSecret}
-	err = qiweiCommon.GetQiweiAccessToken()
+	accessToken, err := qiweiCommon.GetQiweiAccessToken()
 	if err != nil {
 		return false, err
 	}
@@ -200,7 +200,7 @@ func (q *QiweiNotice) NotifyMessage() (bool, error) {
 	 * @step
 	 * @发送企微消息
 	 **/
-	sendMsgResult, err := q.DoNotify(qiweiCommon.AccessToken, notifyQiweiReq)
+	sendMsgResult, err := q.DoNotify(accessToken, notifyQiweiReq)
 	if err != nil {
 		return sendMsgResult, err
 	}
@@ -752,4 +752,15 @@ func (n *NotifyNewsMessage) CheckParams(qiweiNotice *QiweiNotice) error {
 		return errors.New("QiweiNotice NotifyNewsMessage Err : NewUrl is empty!")
 	}
 	return nil
+}
+
+/**
+ * @description: FormatNofifyParams
+ * @param {*QiweiNotice} qiweiNotice
+ * @author: Jerry.Yang
+ * @date: 2022-09-23 15:25:00
+ * @return {*}
+ */
+func (q *QiweiNotice) FormatNotifyParams(qiweiNotice *QiweiNotice) ([]byte, error) {
+	return nil, nil
 }

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-20 19:28:19
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-22 16:21:47
+ * @LastEditTime: 2022-09-23 16:10:11
  * @Description: decrty 解密
  */
 package perm
@@ -21,7 +21,7 @@ import (
 type (
 	DecrtyInterface interface {
 		Decrty(permPath string, inputStr string) (string, error)
-		DoRsaDecrty(inputStr string) (string, error)
+		DoRsaDecrty(permPath string, inputStr string) (string, error)
 	}
 
 	RsaDecrty struct{}
