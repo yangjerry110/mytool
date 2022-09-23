@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-19 17:46:05
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-22 18:34:09
+ * @LastEditTime: 2022-09-23 17:44:33
  * @Description: 
 -->
 # my-tool
@@ -48,8 +48,13 @@ func main() {
         ConfPath string `yaml:"conf_path"`
     }
 
+    yamlConf := conf.YamlConfPkg{
+        YamlFilePath : "",
+        Config: &MyConf,
+    }
+
     // 解析yaml的配置到MyConf结构体
-    conf.YamlParse(yamlFilePath,&MyConf)
+    yamlConf.ParseYamlConf()
     myConfPath := MyConf.ConfPath
 
 }
@@ -134,7 +139,9 @@ func main() {
     * @param {string} AppletPagepath AppletPagepath 小程序链接
     * @param {string} QiweiFilePath 通知媒体消息的时候，存放媒体内容的地址
      */
-    result,err := notice.QiweiNotifyMessage(AppId,MsgType,CropId,CropSecret,AgentId,DepartmentIds,TagIds,userIds,safe,SendMsg,MediaData,MediaType,Title,Description,url,PicUrl,EnableIdTrans,Btntxt,AppletId,AppletPagepath,QiweiFilePath)
+    qiweiNotice := notice.QiweiNoticePkg{}
+
+    result,err := qiweiNotice.QiweiNotice()
 
 }
 ```
@@ -151,7 +158,7 @@ package main
 import "github.com/yangjerry110/mytool/pkg/perm"
 
 func main() {
-    encrtyStr,err := perm.RsaEncrty(permPath,inputStr)
+    encrtyStr,err := perm.RsaDecrty(permPath,inputStr)
 }
 
 ```
@@ -169,7 +176,9 @@ import "github.com/yangjerry110/mytool/pkg/upload"
 
 func main() {
 
-    aliUploadOssResp,err := upload.AliUploadOss(AccessKeyId , AccessKeySecret , EndPoint , Bucket , FileName , FileType , FileData , DownloadDoamin )
+    aliUploadOss := upload.AliUploadOss{}
+
+    ossUrl,err := aliUploadOss.AliUploadOss()
 
 }
 
