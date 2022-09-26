@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-22 17:15:12
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-22 18:44:56
+ * @LastEditTime: 2022-09-26 15:16:39
  * @Description: yaml conf
  */
 package conf
@@ -13,10 +13,6 @@ import (
 
 	"gopkg.in/yaml.v2"
 )
-
-type YamlConfInterface interface {
-	Parse() error
-}
 
 type YamlConf struct {
 	YamlFilePath string
@@ -29,7 +25,7 @@ type YamlConf struct {
  * @date: 2022-09-22 17:19:26
  * @return {*}
  */
-func (y *YamlConf) Parse() error {
+func (y *YamlConf) GetConf() error {
 	/**
 	 * @step
 	 * @获取yaml文件的数据

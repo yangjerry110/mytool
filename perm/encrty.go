@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-20 11:30:16
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-23 16:01:59
+ * @LastEditTime: 2022-09-26 16:28:37
  * @Description: encrty 加密
  */
 package perm
@@ -18,15 +18,6 @@ import (
 	"os"
 )
 
-type (
-	EncrtyInterface interface {
-		Encrty(permPath string, inputStr string) (string, error)
-		DoRsaEncrty(permPath string, inputStr string) (string, error)
-	}
-
-	RsaEncrty struct{}
-)
-
 /**
  * @description: Encrty
  * @param {string} permPath
@@ -35,7 +26,7 @@ type (
  * @date: 2022-09-20 11:40:30
  * @return {*}
  */
-func (r *RsaEncrty) Encrty(permPath string, inputStr string) (string, error) {
+func (r *PermRsa) Encrty(permPath string, inputStr string) (string, error) {
 
 	/**
 	 * @step
@@ -100,7 +91,7 @@ func (r *RsaEncrty) Encrty(permPath string, inputStr string) (string, error) {
  * @date: 2022-09-20 11:40:21
  * @return {*}
  */
-func (r *RsaEncrty) DoRsaEncrty(permPath string, inputStr string) (string, error) {
+func (r *PermRsa) DoRsaEncrty(permPath string, inputStr string) (string, error) {
 	/**
 	 * @step
 	 * @打开公钥文件

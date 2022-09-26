@@ -2,40 +2,23 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-22 17:19:49
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-23 14:56:11
+ * @LastEditTime: 2022-09-26 18:39:57
  * @Description: yaml conf
  */
 package conf
 
 import "github.com/yangjerry110/mytool/conf"
 
-type YamlConfPkgInterface interface {
-	CreateYamlConfInterface(yamlConfInterface conf.YamlConfInterface) *ConfPkg
-	CreateConfYamlConfInstance() conf.YamlConfInterface
-}
-
-type YamlConfPkg struct {
-	YamlFilePath string
-	Config       interface{}
-}
+type YamlConf struct{}
 
 /**
- * @description: CreateYamlConfInterface
- * @param {conf.YamlConfInterface} yamlConfInterface
+ * @description: GetYamlConf
+ * @param {string} yamlConfPath
+ * @param {interface{}} config
  * @author: Jerry.Yang
- * @date: 2022-09-23 14:51:14
+ * @date: 2022-09-23 17:54:56
  * @return {*}
  */
-func CreateYamlConfInterface(yamlConfInterface conf.YamlConfInterface) *ConfPkg {
-	return &ConfPkg{YamlConfInterface: yamlConfInterface}
-}
-
-/**
- * @description: CreateConfYamlConfInstance
- * @author: Jerry.Yang
- * @date: 2022-09-23 14:51:22
- * @return {*}
- */
-func (y *YamlConfPkg) CreateYamlConfInstance() conf.YamlConfInterface {
-	return CreateYamlConfInterface(&conf.YamlConf{YamlFilePath: y.YamlFilePath, Conf: &y.Config}).YamlConfInterface
+func GetYamlConf(yamlConfPath string, config interface{}) error {
+	return CreateConfInterface(&conf.YamlConf{YamlFilePath: yamlConfPath, Conf: &config}).ConfInterface.GetConf()
 }

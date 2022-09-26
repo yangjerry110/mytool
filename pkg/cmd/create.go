@@ -2,46 +2,34 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-22 15:53:38
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-23 15:20:01
+ * @LastEditTime: 2022-09-26 18:35:21
  * @Description: create
  */
-package cmd
+package cmdPkg
 
 import "github.com/yangjerry110/mytool/cmd"
 
-type CreateInterPkgface interface {
-	CreateApp(projectName string, appName string, method string) error
-	CreateDao(projectName string, daoName string, modelName string, authorName ...string) error
+type CreatePkgInterface interface {
+	CreateInterface(cmdInterface cmd.CmdInterface) cmd.CmdInterface
+	CreateAppContent(projectName string, appName string, method string) (string, error)
+	CreateAppInputVoContent(projectName string, appName string, method string, dirName string, fileName string) (string, error)
+	CreateAppOutputVoContent(projectName string, appName string, method string, dirName string, fileName string) (string, error)
+	CreateAppRouteContent(projectName string, appName string, method string, dirName string, fileName string) (string, error)
+	CreateAppServiceContent(projectName string, appName string, method string, dirName string, fileName string) (string, error)
+	CreateDao(projectName string, daoName string, modelName string, authorName ...string) (string, error)
 }
 
 type CreatePkg struct {
-	CreateDaoInterface cmd.CreateDaoInterface
-	CreateAppInterface cmd.CreateAppInterface
+	cmdInterface cmd.CmdInterface
 }
 
 /**
- * @description: CreateApp
- * @param {string} projectName
- * @param {string} appName
- * @param {string} method
+ * @description: CreateInteface
+ * @param {cmd.CmdInterface} cmdInterface
  * @author: Jerry.Yang
- * @date: 2022-09-19 17:43:23
+ * @date: 2022-09-23 18:58:47
  * @return {*}
  */
-func CreateApp(projectName string, appName string, method string) error {
-	return CreateCmdCreateAppInstance().CreateApp(projectName, appName, method)
-}
-
-/**
- * @description: CreateDaoFunc
- * @param {string} projectName
- * @param {string} daoName
- * @param {string} modelName
- * @param {...string} authorName
- * @author: Jerry.Yang
- * @date: 2022-09-19 14:36:42
- * @return {*}
- */
-func CreateDao(projectName string, daoName string, modelName string, authorName ...string) error {
-	return CreateCmdCreateDaoInstance().CreatedDao(projectName, daoName, modelName, authorName...)
+func CreateCmdInterface(cmdInterface cmd.CmdInterface) *CreatePkg {
+	return &CreatePkg{cmdInterface: cmdInterface}
 }

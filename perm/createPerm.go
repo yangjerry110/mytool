@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-20 11:17:29
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-23 16:01:47
+ * @LastEditTime: 2022-09-26 16:28:03
  * @Description: createPerm
  */
 package perm
@@ -15,14 +15,6 @@ import (
 	"os"
 )
 
-type (
-	CreatePermInterface interface {
-		CreatePerm(byteSize int32, permPath string) (bool, error)
-	}
-
-	CreateRsaPerm struct{}
-)
-
 /**
  * @description: CreatePermFunc
  * @param {int32} byteSize
@@ -31,7 +23,7 @@ type (
  * @date: 2022-09-20 11:24:42
  * @return {*}
  */
-func (c *CreateRsaPerm) CreatePerm(byteSize int32, permPath string) (bool, error) {
+func (c *PermRsa) CreatePerm(byteSize int32, permPath string) (bool, error) {
 
 	/**
 	 * @step

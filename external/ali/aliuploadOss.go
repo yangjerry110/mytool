@@ -2,10 +2,10 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-22 14:05:52
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-23 16:27:57
+ * @LastEditTime: 2022-09-26 17:27:46
  * @Description: ali oss
  */
-package upload
+package ali
 
 import (
 	"bufio"
@@ -20,33 +20,6 @@ import (
 
 	aliyunOss "github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/google/uuid"
-)
-
-type (
-	AliUploadInterface interface {
-		Upload() (string, error)
-	}
-
-	AliOssUpload struct {
-		AccessKeyId     string
-		AccessKeySecret string
-		EndPoint        string
-		Bucket          string
-		FileName        string
-		FileType        string
-		FileData        string
-		DownloadDoamin  string
-	}
-
-	AliOssUploadFromLocalFile struct {
-		AliOssUpload
-		LocalFilePath string
-	}
-
-	AliOssUpLoadFromFileUrl struct {
-		AliOssUpload
-		FileUrl string
-	}
 )
 
 /**

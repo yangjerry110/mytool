@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-19 14:37:33
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-23 10:59:37
+ * @LastEditTime: 2022-09-26 15:06:21
  * @Description: createDao
  */
 package cmd
@@ -15,60 +15,73 @@ import (
 	"time"
 )
 
-type CreateDaoInterface interface {
-	CreatedDao(projectName string, daoName string, modelName string, authorName ...string) error
-	CreateContent(daoName string, modelName string, projectName string, authorName string) (string, error)
-	CreateDaoInfo(daoName string, modelName string, authorName string) string
-	CreateDaoList(daoName string, modelName string, authorName string) string
-	CreateDaoSave(daoName string, modelName string, authorName string) string
-	CreateDaoDeleted(daoName string, modelName string, authorName string) string
-	CheckParam(projectName string, daoName string, modelName string) error
-}
+type (
+	CreateDao struct {
+		ProjectName string
+		DaoName     string
+		ModelName   string
+		AuthorName  []string
+	}
 
-type CreateDao struct{}
+	CreateDaoInfo struct {
+		ProjectName string
+		DaoName     string
+		ModelName   string
+		AuthorName  string
+	}
+
+	CreateDaoList struct {
+		ProjectName string
+		DaoName     string
+		ModelName   string
+		AuthorName  string
+	}
+
+	CreateDaoSave struct {
+		ProjectName string
+		DaoName     string
+		ModelName   string
+		AuthorName  string
+	}
+
+	CreateDaoDeleted struct {
+		ProjectName string
+		DaoName     string
+		ModelName   string
+		AuthorName  string
+	}
+)
 
 /**
  * @description: CreatedDao
  * @param {string} projectName
- * @param {string} daoName
- * @param {string} modelName
- * @param {...string} authorName
+ * @param {string} c.DaoName
+ * @param {string} c.ModelName
+ * @param {...string} c.AuthorName
  * @author: Jerry.Yang
  * @date: 2022-09-19 16:50:28
  * @return {*}
  */
-func (c *CreateDao) CreatedDao(projectName string, daoName string, modelName string, authorName ...string) error {
-
-	/**
-	 * @step
-	 * @定义参数
-	 **/
-	thisAuthorName := ""
-	if len(authorName) == 0 {
-		thisAuthorName = "Jerry.Yang"
-	} else {
-		thisAuthorName = authorName[0]
-	}
-
+func (c *CreateDao) CreateContent() (string, error) {
 	/**
 	 * @step
 	 * @检查参数
 	 **/
-	err := c.CheckParam(projectName, daoName, modelName)
+	err := c.CheckParams()
 	if err != nil {
 		fmt.Printf("CreatedDaoErr : %v", err.Error())
-		return err
+		return "", err
 	}
 
 	/**
 	 * @step
 	 * @获取fileContent
 	 **/
-	fileContent, err := c.CreateContent(daoName, modelName, projectName, thisAuthorName)
+	fileContent, err := c.GetContent()
 	if err != nil {
 		fmt.Printf("CreatedDaoErr : %v", err.Error())
 		fmt.Print("\r\n")
-		return err
+		return "", err
 	}
 
 	/**
@@ -79,19 +92,19 @@ func (c *CreateDao) CreatedDao(projectName string, daoName string, modelName str
 	if err != nil {
 		fmt.Printf("CreatedDaoErr : 获取目录错误!请重试! ErrMsg : %v", err.Error())
 		fmt.Print("\r\n")
-		return err
+		return "", err
 	}
 
 	/**
 	 * @step
 	 * @创建文件
 	 **/
-	createBaseObj := CreateBase{}
-	err = createBaseObj.CreateFile(dir, daoName, fileContent)
+	createBase := CreateBase{DirName: dir, FileName: c.DaoName, FileContent: fileContent}
+	_, err = createBase.CreateContent()
 	if err != nil {
 		fmt.Printf("CreatedDaoErr : %v", err.Error())
 		fmt.Print("\r\n")
-		return err
+		return "", err
 	}
 
 	/**
@@ -100,19 +113,27 @@ func (c *CreateDao) CreatedDao(projectName string, daoName string, modelName str
 	 **/
 	fmt.Printf("CreateDao Success!")
 	fmt.Print("\r\n")
-	return nil
+	return "", nil
 }
 
 /**
- * @description: CreateContent
- * @param {string} daoName
- * @param {string} modelName
- * @param {string} authorName
+ * @description: GetContent
+ * @param {string} c.DaoName
+ * @param {string} c.ModelName
+ * @param {string} c.AuthorName
  * @author: Jerry.Yang
  * @date: 2022-09-14 16:29:08
  * @return {*}
  */
-func (c *CreateDao) CreateContent(daoName string, modelName string, projectName string, authorName string) (string, error) {
+func (c *CreateDao) GetContent() (string, error) {
+
+	thisAuthorName := ""
+	if len(c.AuthorName) == 0 {
+		thisAuthorName = "Jerry.Yang"
+	} else {
+		thisAuthorName = c.AuthorName[0]
+	}
+
 	fileContent := fmt.Sprintf("package dao")
 	fileContent += "\r\n"
 
@@ -121,8 +142,8 @@ func (c *CreateDao) CreateContent(daoName string, modelName string, projectName 
 	 * @import
 	 **/
 	fileContent += "import ( \r\n"
-	fileContent += fmt.Sprintf("\"%s/internal\"\r\n", projectName)
-	fileContent += fmt.Sprintf("\"%s/model\"\r\n", projectName)
+	fileContent += fmt.Sprintf("\"%s/internal\"\r\n", c.ProjectName)
+	fileContent += fmt.Sprintf("\"%s/c.ModelName\"\r\n", c.ProjectName)
 	fileContent += ")\r\n"
 	fileContent += "\r\n"
 
@@ -130,11 +151,11 @@ func (c *CreateDao) CreateContent(daoName string, modelName string, projectName 
 	 * @step
 	 * @interface
 	 **/
-	fileContent += fmt.Sprintf("type %sInterface interface {\r\n", strings.Title(daoName))
-	fileContent += fmt.Sprintf("GetInfo(%s *model.%s) (*model.%s, error)\r\n", modelName, strings.Title(modelName), strings.Title(modelName))
-	fileContent += fmt.Sprintf("GetList(%s *model.%s) ([]*model.%s, error) \r\n", modelName, strings.Title(modelName), strings.Title(modelName))
-	fileContent += fmt.Sprintf("Save(%sModel *model.%s) (bool, error)\r\n", modelName, strings.Title(modelName))
-	fileContent += fmt.Sprintf("Delete(%s *model.%s) (bool, error)\r\n", modelName, strings.Title(modelName))
+	fileContent += fmt.Sprintf("type %sInterface interface {\r\n", strings.Title(c.DaoName))
+	fileContent += fmt.Sprintf("GetInfo(%s *c.ModelName.%s) (*c.ModelName.%s, error)\r\n", c.ModelName, strings.Title(c.ModelName), strings.Title(c.ModelName))
+	fileContent += fmt.Sprintf("GetList(%s *c.ModelName.%s) ([]*c.ModelName.%s, error) \r\n", c.ModelName, strings.Title(c.ModelName), strings.Title(c.ModelName))
+	fileContent += fmt.Sprintf("Save(%sc.ModelName *c.ModelName.%s) (bool, error)\r\n", c.ModelName, strings.Title(c.ModelName))
+	fileContent += fmt.Sprintf("Delete(%s *c.ModelName.%s) (bool, error)\r\n", c.ModelName, strings.Title(c.ModelName))
 	fileContent += "}\r\n"
 	fileContent += "\r\n"
 
@@ -142,14 +163,18 @@ func (c *CreateDao) CreateContent(daoName string, modelName string, projectName 
 	 * @step
 	 * @struct
 	 **/
-	fileContent += fmt.Sprintf("type %s struct {}\r\n", strings.Title(daoName))
+	fileContent += fmt.Sprintf("type %s struct {}\r\n", strings.Title(c.DaoName))
 	fileContent += "\r\n"
 
 	/**
 	 * @step
 	 * @getInfoById
 	 **/
-	infoContent := c.CreateDaoInfo(daoName, modelName, authorName)
+	createDaoInfo := CreateDaoInfo{DaoName: c.DaoName, ModelName: c.ModelName, AuthorName: thisAuthorName}
+	infoContent, err := createDaoInfo.CreateContent()
+	if err != nil {
+		return "", err
+	}
 	fileContent += infoContent
 	fileContent += "\r\n"
 
@@ -157,7 +182,11 @@ func (c *CreateDao) CreateContent(daoName string, modelName string, projectName 
 	 * @step
 	 * @getList
 	 **/
-	listContent := c.CreateDaoList(daoName, modelName, authorName)
+	createDaoList := CreateDaoList{DaoName: c.DaoName, ModelName: c.ModelName, AuthorName: thisAuthorName}
+	listContent, err := createDaoList.CreateContent()
+	if err != nil {
+		return "", err
+	}
 	fileContent += listContent
 	fileContent += "\r\n"
 
@@ -165,7 +194,11 @@ func (c *CreateDao) CreateContent(daoName string, modelName string, projectName 
 	 * @step
 	 * @save
 	 **/
-	saveContent := c.CreateDaoSave(daoName, modelName, authorName)
+	createDaoSave := CreateDaoSave{DaoName: c.DaoName, ModelName: c.ModelName, AuthorName: thisAuthorName}
+	saveContent, err := createDaoSave.CreateContent()
+	if err != nil {
+		return "", err
+	}
 	fileContent += saveContent
 	fileContent += "\r\n"
 
@@ -173,73 +206,76 @@ func (c *CreateDao) CreateContent(daoName string, modelName string, projectName 
 	 * @step
 	 * @delete
 	 **/
-	deleteContent := c.CreateDaoDeleted(daoName, modelName, authorName)
+	createDaoDeleted := CreateDaoDeleted{DaoName: c.DaoName, ModelName: c.ModelName, AuthorName: thisAuthorName}
+	deleteContent, err := createDaoDeleted.CreateContent()
+	if err != nil {
+		return "", nil
+	}
 	fileContent += deleteContent
 	fileContent += "\r\n"
-
 	return fileContent, nil
 }
 
 /**
- * @description: CreateDaoInfo
- * @param {string} daoName
- * @param {string} modelName
- * @param {string} authorName
+ * @description: CreateContent
+ * @param {string} c.DaoName
+ * @param {string} c.ModelName
+ * @param {string} c.AuthorName
  * @author: Jerry.Yang
  * @date: 2022-09-14 16:35:31
  * @return {*}
  */
-func (c *CreateDao) CreateDaoInfo(daoName string, modelName string, authorName string) string {
-	fileContent := fmt.Sprintf("/** \r\n * @description: GetInfo \r\n * @param {*model.%s} %s \r\n * @author: %s \r\n * @date: %s \r\n * @return {*} \r\n */ \r\n", strings.Title(modelName), modelName, authorName, time.Now().Format("2006-01-02 15:04:05"))
-	fileContent += fmt.Sprintf("func (%s *%s) GetInfo(%s *model.%s) (*model.%s, error) {\r\n", daoName[0:1], strings.Title(daoName), modelName, strings.Title(modelName), strings.Title(modelName))
-	fileContent += fmt.Sprintf("result := model.%s{}\r\n", strings.Title(modelName))
-	fileContent += fmt.Sprintf("if err := internal.DbClient().Where(%s).First(&result).Error; err != nil { \r\n", modelName)
+func (c *CreateDaoInfo) CreateContent() (string, error) {
+	fileContent := fmt.Sprintf("/** \r\n * @description: GetInfo \r\n * @param {*c.ModelName.%s} %s \r\n * @author: %s \r\n * @date: %s \r\n * @return {*} \r\n */ \r\n", strings.Title(c.ModelName), c.ModelName, c.AuthorName, time.Now().Format("2006-01-02 15:04:05"))
+	fileContent += fmt.Sprintf("func (%s *%s) GetInfo(%s *c.ModelName.%s) (*c.ModelName.%s, error) {\r\n", c.DaoName[0:1], strings.Title(c.DaoName), c.ModelName, strings.Title(c.ModelName), strings.Title(c.ModelName))
+	fileContent += fmt.Sprintf("result := c.ModelName.%s{}\r\n", strings.Title(c.ModelName))
+	fileContent += fmt.Sprintf("if err := internal.DbClient().Where(%s).First(&result).Error; err != nil { \r\n", c.ModelName)
 	fileContent += "internal.LoggorError(err)\r\n"
 	fileContent += "return nil, err\r\n"
 	fileContent += "}\r\n"
 	fileContent += "return &result, nil\r\n"
 	fileContent += "}\r\n"
 	fileContent += "\r\n"
-	return fileContent
+	return fileContent, nil
 }
 
 /**
  * @description: CreateDaoList
- * @param {string} daoName
- * @param {string} modelName
- * @param {string} authorName
+ * @param {string} c.DaoName
+ * @param {string} c.ModelName
+ * @param {string} c.AuthorName
  * @author: Jerry.Yang
  * @date: 2022-09-15 14:37:55
  * @return {*}
  */
-func (c *CreateDao) CreateDaoList(daoName string, modelName string, authorName string) string {
-	fileContent := fmt.Sprintf("/** \r\n * @description: GetList \r\n * @param {*model.%s} %s \r\n * @author: %s \r\n * @date: %s \r\n * @return {*} \r\n */ \r\n", strings.Title(modelName), modelName, authorName, time.Now().Format("2006-01-02 15:04:05"))
-	fileContent += fmt.Sprintf("func (%s *%s) GetList(%s *model.%s) ([]*model.%s, error) {\r\n", daoName[0:1], strings.Title(daoName), modelName, strings.Title(modelName), strings.Title(modelName))
-	fileContent += fmt.Sprintf("result := make([]*model.%s, 0)\r\n", strings.Title(modelName))
-	fileContent += fmt.Sprintf("if err := internal.DbClient().Where(%s).Find(&result).Error; err != nil {\r\n", modelName)
+func (c *CreateDaoList) CreateContent() (string, error) {
+	fileContent := fmt.Sprintf("/** \r\n * @description: GetList \r\n * @param {*c.ModelName.%s} %s \r\n * @author: %s \r\n * @date: %s \r\n * @return {*} \r\n */ \r\n", strings.Title(c.ModelName), c.ModelName, c.AuthorName, time.Now().Format("2006-01-02 15:04:05"))
+	fileContent += fmt.Sprintf("func (%s *%s) GetList(%s *c.ModelName.%s) ([]*c.ModelName.%s, error) {\r\n", c.DaoName[0:1], strings.Title(c.DaoName), c.ModelName, strings.Title(c.ModelName), strings.Title(c.ModelName))
+	fileContent += fmt.Sprintf("result := make([]*c.ModelName.%s, 0)\r\n", strings.Title(c.ModelName))
+	fileContent += fmt.Sprintf("if err := internal.DbClient().Where(%s).Find(&result).Error; err != nil {\r\n", c.ModelName)
 	fileContent += "internal.LoggorError(err)\r\n"
 	fileContent += "return nil, err\r\n"
 	fileContent += "}\r\n"
 	fileContent += "return result, nil\r\n"
 	fileContent += "}\r\n"
 	fileContent += "\r\n"
-	return fileContent
+	return fileContent, nil
 }
 
 /**
  * @description: CreateDaoSave
- * @param {string} daoName
- * @param {string} modelName
- * @param {string} authorName
+ * @param {string} c.DaoName
+ * @param {string} c.ModelName
+ * @param {string} c.AuthorName
  * @author: Jerry.Yang
  * @date: 2022-09-15 14:38:46
  * @return {*}
  */
-func (c *CreateDao) CreateDaoSave(daoName string, modelName string, authorName string) string {
-	fileContent := fmt.Sprintf("/** \r\n * @description: Save \r\n * @param {*model.%s} %s \r\n * @author: %s \r\n * @date: %s \r\n * @return {*} \r\n */ \r\n", modelName, strings.Title(modelName), authorName, time.Now().Format("2006-01-02 15:04:05"))
-	fileContent += fmt.Sprintf("func (%s *%s) Save(%s *model.%s) (bool, error) {\r\n", daoName[0:1], strings.Title(daoName), modelName, strings.Title(modelName))
+func (c *CreateDaoSave) CreateContent() (string, error) {
+	fileContent := fmt.Sprintf("/** \r\n * @description: Save \r\n * @param {*c.ModelName.%s} %s \r\n * @author: %s \r\n * @date: %s \r\n * @return {*} \r\n */ \r\n", c.ModelName, strings.Title(c.ModelName), c.AuthorName, time.Now().Format("2006-01-02 15:04:05"))
+	fileContent += fmt.Sprintf("func (%s *%s) Save(%s *c.ModelName.%s) (bool, error) {\r\n", c.DaoName[0:1], strings.Title(c.DaoName), c.ModelName, strings.Title(c.ModelName))
 	fileContent += "result := false\r\n"
-	fileContent += fmt.Sprintf("if err := internal.DbClient().Save(%s).Error; err != nil {\r\n", modelName)
+	fileContent += fmt.Sprintf("if err := internal.DbClient().Save(%s).Error; err != nil {\r\n", c.ModelName)
 	fileContent += "internal.LoggorError(err)\r\n"
 	fileContent += "return result, err\r\n"
 	fileContent += "}\r\n"
@@ -247,23 +283,23 @@ func (c *CreateDao) CreateDaoSave(daoName string, modelName string, authorName s
 	fileContent += "return result, nil\r\n"
 	fileContent += "}\r\n"
 	fileContent += "\r\n"
-	return fileContent
+	return fileContent, nil
 }
 
 /**
  * @description: CreateDaoDeleted
- * @param {string} daoName
- * @param {string} modelName
- * @param {string} authorName
+ * @param {string} c.DaoName
+ * @param {string} c.ModelName
+ * @param {string} c.AuthorName
  * @author: Jerry.Yang
  * @date: 2022-09-15 14:42:04
  * @return {*}
  */
-func (c *CreateDao) CreateDaoDeleted(daoName string, modelName string, authorName string) string {
-	fileContent := fmt.Sprintf("/** \r\n * @description: Delete \r\n * @param {*model.%s} %s \r\n * @author: %s \r\n * @date: %s \r\n * @return {*} \r\n */ \r\n", strings.Title(modelName), modelName, authorName, time.Now().Format("2006-01-02 15:04:05"))
-	fileContent += fmt.Sprintf("func (%s *%s) Delete(%s *model.%s) (bool, error) {\r\n", daoName[0:1], strings.Title(daoName), modelName, strings.Title(modelName))
+func (c *CreateDaoDeleted) CreateContent() (string, error) {
+	fileContent := fmt.Sprintf("/** \r\n * @description: Delete \r\n * @param {*c.ModelName.%s} %s \r\n * @author: %s \r\n * @date: %s \r\n * @return {*} \r\n */ \r\n", strings.Title(c.ModelName), c.ModelName, c.AuthorName, time.Now().Format("2006-01-02 15:04:05"))
+	fileContent += fmt.Sprintf("func (%s *%s) Delete(%s *c.ModelName.%s) (bool, error) {\r\n", c.DaoName[0:1], strings.Title(c.DaoName), c.ModelName, strings.Title(c.ModelName))
 	fileContent += fmt.Sprintf("result := false\r\n")
-	fileContent += fmt.Sprintf("if err := internal.DbClient().Model(&model.%s{}).Where(%s).Update(\"is_deleted\", model.IS_DELETED).Error; err != nil {\r\n", strings.Title(modelName), modelName)
+	fileContent += fmt.Sprintf("if err := internal.DbClient().c.ModelName(&c.ModelName.%s{}).Where(%s).Update(\"is_deleted\", c.ModelName.IS_DELETED).Error; err != nil {\r\n", strings.Title(c.ModelName), c.ModelName)
 	fileContent += "internal.LoggorError(err)\r\n"
 	fileContent += "return result, err\r\n"
 	fileContent += "}\r\n"
@@ -271,29 +307,29 @@ func (c *CreateDao) CreateDaoDeleted(daoName string, modelName string, authorNam
 	fileContent += "return result, nil\r\n"
 	fileContent += "}\r\n"
 	fileContent += "\r\n"
-	return fileContent
+	return fileContent, nil
 }
 
 /**
  * @description: checkParam
  * @param {string} projectName
- * @param {string} daoName
- * @param {string} modelName
+ * @param {string} c.DaoName
+ * @param {string} c.ModelName
  * @author: Jerry.Yang
  * @date: 2022-09-19 16:51:39
  * @return {*}
  */
-func (c *CreateDao) CheckParam(projectName string, daoName string, modelName string) error {
-	if projectName == "" {
+func (c *CreateDao) CheckParams() error {
+	if c.ProjectName == "" {
 		return errors.New("projectName 为空!")
 	}
 
-	if daoName == "" {
-		return errors.New("daoName 为空!")
+	if c.DaoName == "" {
+		return errors.New("c.DaoName 为空!")
 	}
 
-	if modelName == "" {
-		return errors.New("modelName 为空!")
+	if c.ModelName == "" {
+		return errors.New("c.ModelName 为空!")
 	}
 	return nil
 }

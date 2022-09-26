@@ -2,38 +2,24 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-22 16:02:35
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-23 14:42:52
+ * @LastEditTime: 2022-09-26 18:39:03
  * @Description: common
  */
 package common
 
 import "github.com/yangjerry110/mytool/common"
 
-type QiweiCommonPkgInterface interface {
-	CreateQiweiInterface(qiweiCommonInterface common.QiweiCommonInterface) *CommonPkg
-	CreateCommonQiweiInstance(appId string, cropId string, cropSecret string) common.QiweiCommonInterface
-}
+type QiweiCommon struct{}
 
 /**
- * @description: CreateQiweiInterface
- * @param {common.QiweiCommonInterface} qiweiCommonInterface
- * @author: Jerry.Yang
- * @date: 2022-09-23 14:37:30
- * @return {*}
- */
-func CreateQiweiCommonInterface(qiweiCommonInterface common.QiweiCommonInterface) *CommonPkg {
-	return &CommonPkg{QiweiCommonInterface: qiweiCommonInterface}
-}
-
-/**
- * @description: CreateQiweiInstance
+ * @description: GetQiweiAccessToken
  * @param {string} appId
  * @param {string} cropId
  * @param {string} cropSecret
  * @author: Jerry.Yang
- * @date: 2022-09-23 14:38:13
+ * @date: 2022-09-23 14:29:43
  * @return {*}
  */
-func CreateCommonQiweiCommonInstance(appId string, cropId string, cropSecret string) common.QiweiCommonInterface {
-	return CreateQiweiCommonInterface(&common.QiweiCommon{AppId: appId, CropId: cropId, CropSecret: cropSecret}).QiweiCommonInterface
+func GetQiweiAccessToken(appId string, cropId string, cropSecret string) (string, error) {
+	return CreateCommonInterface(&common.QiweiCommon{AppId: appId, CropId: cropId, CropSecret: cropSecret}).CommonInterface.GetAccessToken()
 }

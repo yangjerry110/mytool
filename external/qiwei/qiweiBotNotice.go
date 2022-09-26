@@ -2,10 +2,10 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-22 11:28:53
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-23 15:40:06
+ * @LastEditTime: 2022-09-26 18:20:55
  * @Description: qiwei bot notice
  */
-package notice
+package qiwei
 
 import (
 	"bytes"
@@ -18,59 +18,13 @@ import (
 	mytoolHttp "github.com/yangjerry110/mytool/http"
 )
 
-type (
-	QiweiBotNoticeInterface interface {
-		CheckParams() error
-		NotifyMessage() (bool, error)
-		FormatNotifyParams(qiweiBotNotice *QiweiBotNotice) ([]byte, error)
-		DoNotify(qiweiMsg []byte) error
-	}
-
-	QiweiBotNotice struct {
-		MsgType             string
-		BotUrl              string
-		SendMsg             string
-		ImageData           string
-		Title               string
-		Description         string
-		Url                 string
-		PicUrl              string
-		MentionedList       []string
-		MentionedMobileList []string
-	}
-
-	/**
-	 * @step
-	 * @定义botTextMessage
-	 **/
-	NotifyBotTextMessage struct{}
-
-	/**
-	 * @step
-	 * @定义botMarkdownMessage
-	 **/
-	NotifyBotMarkdownMessage struct{}
-
-	/**
-	 * @step
-	 * @定义botImageMessage
-	 **/
-	NotifyBotImageMessage struct{}
-
-	/**
-	 * @step
-	 * @定义botNewsMessage
-	 **/
-	NotifyBotNewsMessage struct{}
-)
-
 /**
  * @description: NotifyMessage
  * @author: Jerry.Yang
  * @date: 2022-09-22 11:34:14
  * @return {*}
  */
-func (q *QiweiBotNotice) NotifyMessage() (bool, error) {
+func (q *QiweiNotice) NotifyMessageBot() (bool, error) {
 
 	/**
 	 * @step
@@ -95,23 +49,23 @@ func (q *QiweiBotNotice) NotifyMessage() (bool, error) {
 	go func() {
 		switch q.MsgType {
 		case "text":
-			notifyBotTextMessage := NotifyBotTextMessage{}
-			notifyQiweiReq, err := notifyBotTextMessage.FormatNotifyBotParams(q)
+			notifyBotTextMessage := NotifyBotTextMessage{QiweiNotice: *q}
+			notifyQiweiReq, err := notifyBotTextMessage.FormatNotifyBotParams()
 			notifyQiweiReqChan <- notifyQiweiReq
 			notifyQiweiReqErrChan <- err
 		case "markdown":
-			notifyBotMarkdownMessage := NotifyBotMarkdownMessage{}
-			notifyQiweiReq, err := notifyBotMarkdownMessage.FormatNotifyBotParams(q)
+			notifyBotMarkdownMessage := NotifyBotMarkdownMessage{QiweiNotice: *q}
+			notifyQiweiReq, err := notifyBotMarkdownMessage.FormatNotifyBotParams()
 			notifyQiweiReqChan <- notifyQiweiReq
 			notifyQiweiReqErrChan <- err
 		case "image":
-			notifyBotImageMessage := NotifyBotImageMessage{}
-			notifyQiweiReq, _ := notifyBotImageMessage.FormatNotifyBotParams(q)
+			notifyBotImageMessage := NotifyBotImageMessage{QiweiNotice: *q}
+			notifyQiweiReq, _ := notifyBotImageMessage.FormatNotifyBotParams()
 			notifyQiweiReqChan <- notifyQiweiReq
 			notifyQiweiReqErrChan <- err
 		case "news":
-			notifyBotNewsMessage := NotifyBotNewsMessage{}
-			notifyQiweiReq, err := notifyBotNewsMessage.FormatNotifyBotParams(q)
+			notifyBotNewsMessage := NotifyBotNewsMessage{QiweiNotice: *q}
+			notifyQiweiReq, err := notifyBotNewsMessage.FormatNotifyBotParams()
 			notifyQiweiReqChan <- notifyQiweiReq
 			notifyQiweiReqErrChan <- err
 		default:
@@ -148,11 +102,11 @@ func (q *QiweiBotNotice) NotifyMessage() (bool, error) {
 	 * @step
 	 * @发送企微消息
 	 **/
-	err = q.DoNotify(notifyQiweiReq)
+	notifyResult, err := q.DoNotify("", notifyQiweiReq)
 	if err != nil {
-		return false, err
+		return notifyResult, err
 	}
-	return true, nil
+	return notifyResult, nil
 }
 
 /**
@@ -162,13 +116,13 @@ func (q *QiweiBotNotice) NotifyMessage() (bool, error) {
  * @date: 2022-09-22 11:50:18
  * @return {*}
  */
-func (n *NotifyBotTextMessage) FormatNotifyBotParams(qiweiBotNotice *QiweiBotNotice) ([]byte, error) {
+func (n *NotifyBotTextMessage) FormatNotifyBotParams() ([]byte, error) {
 
 	/**
 	 * @step
 	 * @检查参数
 	 **/
-	err := n.CheckParams(qiweiBotNotice)
+	err := n.CheckParams()
 	if err != nil {
 		return nil, err
 	}
@@ -199,9 +153,9 @@ func (n *NotifyBotTextMessage) FormatNotifyBotParams(qiweiBotNotice *QiweiBotNot
 	jsonParams, err := json.Marshal(ParamsStruct{
 		Msgtype: "text",
 		Text: ParamsTextStruct{
-			Content:             qiweiBotNotice.SendMsg,
-			MentionedList:       qiweiBotNotice.MentionedList,
-			MentionedMobileList: qiweiBotNotice.MentionedMobileList,
+			Content:             n.QiweiNotice.SendMsg,
+			MentionedList:       n.QiweiNotice.MentionedList,
+			MentionedMobileList: n.QiweiNotice.MentionedMobileList,
 		},
 	})
 
@@ -222,13 +176,13 @@ func (n *NotifyBotTextMessage) FormatNotifyBotParams(qiweiBotNotice *QiweiBotNot
  * @date: 2022-09-22 11:50:39
  * @return {*}
  */
-func (n *NotifyBotMarkdownMessage) FormatNotifyBotParams(qiweiBotNotice *QiweiBotNotice) ([]byte, error) {
+func (n *NotifyBotMarkdownMessage) FormatNotifyBotParams() ([]byte, error) {
 
 	/**
 	 * @step
 	 * @检查参数
 	 **/
-	err := n.CheckParams(qiweiBotNotice)
+	err := n.CheckParams()
 	if err != nil {
 		return nil, err
 	}
@@ -259,9 +213,9 @@ func (n *NotifyBotMarkdownMessage) FormatNotifyBotParams(qiweiBotNotice *QiweiBo
 	jsonParams, err := json.Marshal(ParamsStruct{
 		Msgtype: "markdown",
 		Markdown: ParamsMarkdownStruct{
-			Content:             qiweiBotNotice.SendMsg,
-			MentionedList:       qiweiBotNotice.MentionedList,
-			MentionedMobileList: qiweiBotNotice.MentionedMobileList,
+			Content:             n.QiweiNotice.SendMsg,
+			MentionedList:       n.QiweiNotice.MentionedList,
+			MentionedMobileList: n.QiweiNotice.MentionedMobileList,
 		},
 	})
 
@@ -282,13 +236,13 @@ func (n *NotifyBotMarkdownMessage) FormatNotifyBotParams(qiweiBotNotice *QiweiBo
  * @date: 2022-09-22 11:50:52
  * @return {*}
  */
-func (n *NotifyBotImageMessage) FormatNotifyBotParams(qiweiBotNotice *QiweiBotNotice) ([]byte, error) {
+func (n *NotifyBotImageMessage) FormatNotifyBotParams() ([]byte, error) {
 
 	/**
 	 * @step
 	 * @检查参数
 	 **/
-	err := n.CheckParams(qiweiBotNotice)
+	err := n.CheckParams()
 	if err != nil {
 		return nil, err
 	}
@@ -297,7 +251,7 @@ func (n *NotifyBotImageMessage) FormatNotifyBotParams(qiweiBotNotice *QiweiBotNo
 	 * @step
 	 * @先对mediaData解码
 	 **/
-	decodeMediaData, err := base64.StdEncoding.DecodeString(qiweiBotNotice.ImageData)
+	decodeMediaData, err := base64.StdEncoding.DecodeString(n.QiweiNotice.MediaData)
 	if err != nil {
 		return nil, err
 	}
@@ -335,7 +289,7 @@ func (n *NotifyBotImageMessage) FormatNotifyBotParams(qiweiBotNotice *QiweiBotNo
 	jsonParams, err := json.Marshal(ParamsStruct{
 		Msgtype: "image",
 		Image: ParamsImageStruct{
-			Base64: qiweiBotNotice.ImageData,
+			Base64: n.QiweiNotice.MediaData,
 			Md5:    imageDataMd5Str,
 		},
 	})
@@ -357,13 +311,13 @@ func (n *NotifyBotImageMessage) FormatNotifyBotParams(qiweiBotNotice *QiweiBotNo
  * @date: 2022-09-22 11:51:05
  * @return {*}
  */
-func (n *NotifyBotNewsMessage) FormatNotifyBotParams(qiweiBotNotice *QiweiBotNotice) ([]byte, error) {
+func (n *NotifyBotNewsMessage) FormatNotifyBotParams() ([]byte, error) {
 
 	/**
 	 * @step
 	 * @检查参数
 	 **/
-	err := n.CheckParams(qiweiBotNotice)
+	err := n.CheckParams()
 	if err != nil {
 		return nil, err
 	}
@@ -398,10 +352,10 @@ func (n *NotifyBotNewsMessage) FormatNotifyBotParams(qiweiBotNotice *QiweiBotNot
 	 **/
 	paramsArticles := make([]ParamsArticlesStruct, 0)
 	paramsArticles = append(paramsArticles, ParamsArticlesStruct{
-		Title:       qiweiBotNotice.Title,
-		Description: qiweiBotNotice.Description,
-		Url:         qiweiBotNotice.Url,
-		PicUrl:      qiweiBotNotice.PicUrl,
+		Title:       n.QiweiNotice.Title,
+		Description: n.QiweiNotice.Description,
+		Url:         n.QiweiNotice.Url,
+		PicUrl:      n.QiweiNotice.PicUrl,
 	})
 
 	/**
@@ -424,13 +378,13 @@ func (n *NotifyBotNewsMessage) FormatNotifyBotParams(qiweiBotNotice *QiweiBotNot
 }
 
 /**
- * @description: DoNotify
+ * @description: DoNotifyBot
  * @param {[]byte} QiweiBotNoticeReq
  * @author: Jerry.Yang
  * @date: 2022-09-22 11:57:00
  * @return {*}
  */
-func (q *QiweiBotNotice) DoNotify(QiweiBotNoticeReq []byte) error {
+func (q *QiweiNotice) DoNotifyBot(accessToken string, QiweiBotNoticeReq []byte) (bool, error) {
 
 	/**
 	 * @step
@@ -469,16 +423,16 @@ func (q *QiweiBotNotice) DoNotify(QiweiBotNoticeReq []byte) error {
 		Options: httpOptions,
 		Output:  resp,
 	}
-	httpClient.HttpRequest()
+	httpClient.Request()
 
 	/**
 	 * @step
 	 * @判断结果
 	 **/
 	if resp.ErrCode != 0 {
-		return errors.New(resp.ErrMsg)
+		return false, errors.New(resp.ErrMsg)
 	}
-	return nil
+	return true, nil
 }
 
 /**
@@ -487,7 +441,7 @@ func (q *QiweiBotNotice) DoNotify(QiweiBotNoticeReq []byte) error {
  * @date: 2022-09-22 11:37:09
  * @return {*}
  */
-func (q *QiweiBotNotice) CheckParams() error {
+func (q *QiweiNotice) CheckParamsBot() error {
 	if q.MsgType == "" {
 		return errors.New("QiweiBotNotice Err : msgType is empty!")
 	}
@@ -501,8 +455,8 @@ func (q *QiweiBotNotice) CheckParams() error {
  * @date: 2022-09-22 11:40:19
  * @return {*}
  */
-func (n *NotifyBotTextMessage) CheckParams(qiweiBotNotice *QiweiBotNotice) error {
-	if qiweiBotNotice.SendMsg == "" {
+func (n *NotifyBotTextMessage) CheckParams() error {
+	if n.QiweiNotice.SendMsg == "" {
 		return errors.New("NotifyBotTextMessage Err : sendMsg is empty!")
 	}
 	return nil
@@ -515,8 +469,8 @@ func (n *NotifyBotTextMessage) CheckParams(qiweiBotNotice *QiweiBotNotice) error
  * @date: 2022-09-22 11:42:12
  * @return {*}
  */
-func (n *NotifyBotMarkdownMessage) CheckParams(qiweiBotNotice *QiweiBotNotice) error {
-	if qiweiBotNotice.SendMsg == "" {
+func (n *NotifyBotMarkdownMessage) CheckParams() error {
+	if n.QiweiNotice.SendMsg == "" {
 		return errors.New("NotifyBotMarkdownMessage Err : sendMsg is empty!")
 	}
 	return nil
@@ -529,9 +483,9 @@ func (n *NotifyBotMarkdownMessage) CheckParams(qiweiBotNotice *QiweiBotNotice) e
  * @date: 2022-09-22 11:44:35
  * @return {*}
  */
-func (n *NotifyBotImageMessage) CheckParams(qiweiBotNotice *QiweiBotNotice) error {
-	if qiweiBotNotice.ImageData == "" {
-		return errors.New("NotifyBotImageMessage Err : ImageData is empty!")
+func (n *NotifyBotImageMessage) CheckParams() error {
+	if n.QiweiNotice.MediaData == "" {
+		return errors.New("NotifyBotImageMessage Err : MediaData is empty!")
 	}
 	return nil
 }
@@ -543,32 +497,21 @@ func (n *NotifyBotImageMessage) CheckParams(qiweiBotNotice *QiweiBotNotice) erro
  * @date: 2022-09-22 11:48:06
  * @return {*}
  */
-func (n *NotifyBotNewsMessage) CheckParams(qiweiBotNotice *QiweiBotNotice) error {
-	if qiweiBotNotice.Title == "" {
+func (n *NotifyBotNewsMessage) CheckParams() error {
+	if n.QiweiNotice.Title == "" {
 		return errors.New("NotifyBotNewsMessage Err : Title is empty!")
 	}
 
-	if qiweiBotNotice.Description == "" {
+	if n.QiweiNotice.Description == "" {
 		return errors.New("NotifyBotNewsMessage Err : Description is empty!")
 	}
 
-	if qiweiBotNotice.Url == "" {
+	if n.QiweiNotice.Url == "" {
 		return errors.New("NotifyBotNewsMessage Err : Url is empty!")
 	}
 
-	if qiweiBotNotice.PicUrl == "" {
+	if n.QiweiNotice.PicUrl == "" {
 		return errors.New("NotifyBotNewsMessage Err : PicUrl is empty!")
 	}
 	return nil
-}
-
-/**
- * @description: FormatNotifyParams
- * @param {*QiweiBotNotice} qiweiBotNotice
- * @author: Jerry.Yang
- * @date: 2022-09-23 15:40:06
- * @return {*}
- */
-func (q *QiweiBotNotice) FormatNotifyParams(qiweiBotNotice *QiweiBotNotice) ([]byte, error) {
-	return nil, nil
 }

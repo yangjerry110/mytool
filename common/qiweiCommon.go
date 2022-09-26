@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-21 17:42:36
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-23 14:25:26
+ * @LastEditTime: 2022-09-26 16:29:52
  * @Description: qiwei common
  */
 package common
@@ -16,25 +16,13 @@ import (
 	"github.com/yangjerry110/mytool/http"
 )
 
-type (
-	QiweiCommonInterface interface {
-		GetQiweiAccessToken() (string, error)
-	}
-
-	QiweiCommon struct {
-		AppId      string
-		CropId     string
-		CropSecret string
-	}
-)
-
 /**
  * @description: GetQiweiAccessToken
  * @author: Jerry.Yang
  * @date: 2022-09-22 16:02:25
  * @return {*}
  */
-func (q *QiweiCommon) GetQiweiAccessToken() (string, error) {
+func (q *QiweiCommon) GetAccessToken() (string, error) {
 	/**
 	 * @step
 	 * @初始化go-cache
@@ -83,7 +71,7 @@ func (q *QiweiCommon) GetQiweiAccessToken() (string, error) {
 		Url:    url,
 		Output: resp,
 	}
-	httpClient.HttpRequest()
+	httpClient.Request()
 
 	/**
 	 * @step

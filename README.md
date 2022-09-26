@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-19 17:46:05
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-23 17:44:33
+ * @LastEditTime: 2022-09-23 17:55:28
  * @Description: 
 -->
 # my-tool
@@ -48,14 +48,11 @@ func main() {
         ConfPath string `yaml:"conf_path"`
     }
 
-    yamlConf := conf.YamlConfPkg{
-        YamlFilePath : "",
-        Config: &MyConf,
-    }
 
     // 解析yaml的配置到MyConf结构体
-    yamlConf.ParseYamlConf()
-    myConfPath := MyConf.ConfPath
+    myConf := &MyConf{}
+    yamlConf.ParseYamlConf(yamlConfPath,&myConf)
+    myConfPath := myConf.ConfPath
 
 }
 ```

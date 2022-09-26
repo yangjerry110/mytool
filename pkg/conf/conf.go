@@ -2,29 +2,29 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-23 14:44:20
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-23 15:30:50
+ * @LastEditTime: 2022-09-26 18:39:31
  * @Description: conf
  */
 package conf
 
 import "github.com/yangjerry110/mytool/conf"
 
-type ConfPkgInterface interface {
-	ParseYamlConf(yamlFilePath string, config interface{}) error
+type ConfInterface interface {
+	CreateConfInterface(confInterface conf.ConfInterface) conf.ConfInterface
+	GetYamlConf(yamlConfPath string, config interface{}) error
 }
 
-type ConfPkg struct {
-	YamlConfInterface conf.YamlConfInterface
+type Conf struct {
+	ConfInterface conf.ConfInterface
 }
 
 /**
- * @description: ParseYamlConf
- * @param {string} yamlFilePath
- * @param {interface{}} config
+ * @description: CreateConfInterface
+ * @param {conf.ConfInterface} confInterface
  * @author: Jerry.Yang
- * @date: 2022-09-23 14:50:45
+ * @date: 2022-09-26 18:39:40
  * @return {*}
  */
-func (y *YamlConfPkg) ParseYamlConf() error {
-	return y.CreateYamlConfInstance().Parse()
+func CreateConfInterface(confInterface conf.ConfInterface) *Conf {
+	return &Conf{ConfInterface: confInterface}
 }

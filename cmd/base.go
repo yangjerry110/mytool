@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-19 16:57:50
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-22 15:55:50
+ * @LastEditTime: 2022-09-23 23:49:09
  * @Description: base
  */
 package cmd
@@ -15,11 +15,11 @@ import (
 	"os/exec"
 )
 
-type CreateBaseInterface interface {
-	CreateFile(dirName string, fileName string, fileContent string) error
+type CreateBase struct {
+	DirName     string
+	FileName    string
+	FileContent string
 }
-
-type CreateBase struct{}
 
 /**
  * @description: CreateFile
@@ -30,13 +30,13 @@ type CreateBase struct{}
  * @date: 2022-09-19 17:22:46
  * @return {*}
  */
-func (c *CreateBase) CreateFile(dirName string, fileName string, fileContent string) error {
+func (c *CreateBase) CreateContent() (string, error) {
 
 	/**
 	 * @step
 	 * @定义文件名称
 	 **/
-	inputFile := fmt.Sprintf("%s/%s.go", dirName, fileName)
+	inputFile := fmt.Sprintf("%s/%s.go", c.DirName, c.FileName)
 
 	/**
 	 * @step
@@ -44,10 +44,10 @@ func (c *CreateBase) CreateFile(dirName string, fileName string, fileContent str
 	 **/
 	_, err := os.Stat(inputFile)
 	if err == nil {
-		return errors.New(fmt.Sprintf("文件存在! filename = %s", inputFile))
+		return "", errors.New(fmt.Sprintf("文件存在! filename = %s", inputFile))
 	} else {
 		if os.IsExist(err) {
-			return errors.New(fmt.Sprintf("文件存在! filename = %s", inputFile))
+			return "", errors.New(fmt.Sprintf("文件存在! filename = %s", inputFile))
 		}
 	}
 
@@ -63,7 +63,7 @@ func (c *CreateBase) CreateFile(dirName string, fileName string, fileContent str
 	 **/
 	osFile, err = os.Create(inputFile)
 	if err != nil {
-		return errors.New(fmt.Sprintf("创建文件错误! filename = %s", inputFile))
+		return "", errors.New(fmt.Sprintf("创建文件错误! filename = %s", inputFile))
 	}
 	defer osFile.Close()
 
@@ -71,9 +71,9 @@ func (c *CreateBase) CreateFile(dirName string, fileName string, fileContent str
 	 * @step
 	 * @写入内容
 	 **/
-	_, err = io.WriteString(osFile, fileContent)
+	_, err = io.WriteString(osFile, c.FileContent)
 	if err != nil {
-		return errors.New(fmt.Sprintf("写入文件错误! filename = %s", inputFile))
+		return "", errors.New(fmt.Sprintf("写入文件错误! filename = %s", inputFile))
 	}
 
 	fmt.Printf("%s 创建成功!", inputFile)
@@ -89,5 +89,9 @@ func (c *CreateBase) CreateFile(dirName string, fileName string, fileContent str
 		fmt.Printf("格式化错误! Err : %v", err.Error())
 		fmt.Print("\r\n")
 	}
+	return "", nil
+}
+
+func (c *CreateBase) CheckParams() error {
 	return nil
 }

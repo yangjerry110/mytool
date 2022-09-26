@@ -2,10 +2,10 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-21 18:50:50
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-23 16:36:32
+ * @LastEditTime: 2022-09-26 18:22:22
  * @Description: qiwei upload
  */
-package upload
+package qiwei
 
 import (
 	"bytes"
@@ -21,45 +21,21 @@ import (
 	mytoolHttp "github.com/yangjerry110/mytool/http"
 )
 
-type (
-	QiweiUploadInterface interface {
-		Upload() (string, error)
-	}
-
-	QiweiUpload struct{}
-
-	QiweiUploadMedia struct {
-		AppId         string
-		CropId        string
-		CropSecret    string
-		MediaData     string
-		MediaType     string
-		QiweiFilePath string
-	}
-)
-
 /**
  * @description: UploadMedia
  * @author: Jerry.Yang
  * @date: 2022-09-21 18:56:23
  * @return {*}
  */
-func (q *QiweiUploadMedia) Upload() (string, error) {
+func (q *QiweiNotice) Upload() (string, error) {
 
 	/**
 	 * @step
-	 * @判断appId
-	**/
-	if q.AppId == "" {
-		return "", errors.New("QiweiUploadMedia Err : appId is empty!")
-	}
-
-	/**
-	 * @step
-	 * @判断qiweiFilePath
+	 * @检查参数
 	 **/
-	if q.QiweiFilePath == "" {
-		return "", errors.New("QiweiUploadMedia Err : qiweiFilePath is empty!")
+	err := q.CheckParams()
+	if err != nil {
+		return "", err
 	}
 
 	/**
@@ -67,7 +43,7 @@ func (q *QiweiUploadMedia) Upload() (string, error) {
 	 * @获取accessToken
 	 **/
 	qiweiCommon := mytoolCommon.QiweiCommon{AppId: q.AppId, CropId: q.CropId, CropSecret: q.CropSecret}
-	accessToken, err := qiweiCommon.GetQiweiAccessToken()
+	accessToken, err := qiweiCommon.GetAccessToken()
 	if err != nil {
 		return "", err
 	}
@@ -175,7 +151,7 @@ func (q *QiweiUploadMedia) Upload() (string, error) {
 		Options: httpOptions,
 		Output:  resp,
 	}
-	httpClient.HttpRequest()
+	httpClient.Request()
 
 	/**
 	 * @step
@@ -186,4 +162,29 @@ func (q *QiweiUploadMedia) Upload() (string, error) {
 	}
 
 	return resp.MediaId, nil
+}
+
+/**
+ * @description: CheckParams
+ * @author: Jerry.Yang
+ * @date: 2022-09-26 17:42:45
+ * @return {*}
+ */
+func (q *QiweiNotice) CheckParamsUpload() error {
+	/**
+	 * @step
+	 * @判断appId
+	**/
+	if q.AppId == "" {
+		return errors.New("QiweiUploadMedia Err : appId is empty!")
+	}
+
+	/**
+	 * @step
+	 * @判断qiweiFilePath
+	 **/
+	if q.QiweiFilePath == "" {
+		return errors.New("QiweiUploadMedia Err : qiweiFilePath is empty!")
+	}
+	return nil
 }

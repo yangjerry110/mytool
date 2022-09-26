@@ -2,83 +2,47 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-22 16:20:52
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-23 16:16:16
+ * @LastEditTime: 2022-09-26 18:42:24
  * @Description: ras
  */
 package perm
 
 import "github.com/yangjerry110/mytool/perm"
 
-type RasPermInterface interface {
-	CreateCreatePermInterface(createPermInterface perm.CreatePermInterface) *PermPkg
-	CreateRasCreatePermInstance() perm.CreatePermInterface
-	CreateDecrtyPermInterface(decrtyPermInterface perm.DecrtyInterface) *PermPkg
-	CreateRasDecrtyPermInstance() perm.DecrtyInterface
-	CreateEncrtyPermInterface(encrtyPermInterface perm.EncrtyInterface) *PermPkg
-	CreateRasEncrtyInstance() perm.EncrtyInterface
-}
-
 type RasPerm struct{}
 
 /**
- * @description: CreateCreatePermInterface
- * @param {perm.CreatePermInterface} createPermInterface
+ * @description: CreateRsaPerm
+ * @param {int32} byteSize
+ * @param {string} permPath
  * @author: Jerry.Yang
- * @date: 2022-09-23 16:16:01
+ * @date: 2022-09-26 16:40:11
  * @return {*}
  */
-func CreateCreatePermInterface(createPermInterface perm.CreatePermInterface) *PermPkg {
-	return &PermPkg{CreatePermInterface: createPermInterface}
+func CreateRsaPerm(byteSize int32, permPath string) (bool, error) {
+	return CreatePermInterface(&perm.PermRsa{}).PermInterface.CreatePerm(byteSize, permPath)
 }
 
 /**
- * @description: CreateRasCreatePermInstance
+ * @description: DecrtyRsa
+ * @param {string} permPath
+ * @param {string} inputStr
  * @author: Jerry.Yang
- * @date: 2022-09-23 16:16:08
+ * @date: 2022-09-26 16:41:07
  * @return {*}
  */
-func CreateRasCreatePermInstance() perm.CreatePermInterface {
-	return CreateCreatePermInterface(&perm.CreateRsaPerm{}).CreatePermInterface
+func DecrtyRsa(permPath string, inputStr string) (string, error) {
+	return CreatePermInterface(&perm.PermRsa{}).PermInterface.Decrty(permPath, inputStr)
 }
 
 /**
- * @description: CreateDecrtyPermInterface
- * @param {perm.DecrtyInterface} decrtyPermInterface
+ * @description: EncrtyRsa
+ * @param {string} permPath
+ * @param {string} inputStr
  * @author: Jerry.Yang
- * @date: 2022-09-23 16:16:15
+ * @date: 2022-09-26 16:41:56
  * @return {*}
  */
-func CreateDecrtyPermInterface(decrtyPermInterface perm.DecrtyInterface) *PermPkg {
-	return &PermPkg{DecrtyPermInterface: decrtyPermInterface}
-}
-
-/**
- * @description: CreateRasDecrtyPermInstance
- * @author: Jerry.Yang
- * @date: 2022-09-23 16:16:25
- * @return {*}
- */
-func CreateRasDecrtyPermInstance() perm.DecrtyInterface {
-	return CreateDecrtyPermInterface(&perm.RsaDecrty{}).DecrtyPermInterface
-}
-
-/**
- * @description: CreateEncrtyPermInterface
- * @param {perm.EncrtyInterface} encrtyPermInterface
- * @author: Jerry.Yang
- * @date: 2022-09-23 16:16:32
- * @return {*}
- */
-func CreateEncrtyPermInterface(encrtyPermInterface perm.EncrtyInterface) *PermPkg {
-	return &PermPkg{EncrtyPermInterface: encrtyPermInterface}
-}
-
-/**
- * @description: CreateRasEncrtyInstance
- * @author: Jerry.Yang
- * @date: 2022-09-23 16:16:40
- * @return {*}
- */
-func CreateRasEncrtyInstance() perm.EncrtyInterface {
-	return CreateEncrtyPermInterface(&perm.RsaEncrty{}).EncrtyPermInterface
+func EncrtyRsa(permPath string, inputStr string) (string, error) {
+	return CreatePermInterface(&perm.PermRsa{}).PermInterface.Encrty(permPath, inputStr)
 }

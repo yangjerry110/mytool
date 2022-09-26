@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-20 19:28:19
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-23 16:10:11
+ * @LastEditTime: 2022-09-26 16:28:20
  * @Description: decrty 解密
  */
 package perm
@@ -18,15 +18,6 @@ import (
 	"os"
 )
 
-type (
-	DecrtyInterface interface {
-		Decrty(permPath string, inputStr string) (string, error)
-		DoRsaDecrty(permPath string, inputStr string) (string, error)
-	}
-
-	RsaDecrty struct{}
-)
-
 /**
  * @description: Decrty
  * @param {string} permPath
@@ -35,7 +26,7 @@ type (
  * @date: 2022-09-20 19:32:21
  * @return {*}
  */
-func (r *RsaDecrty) Decrty(permPath string, inputStr string) (string, error) {
+func (r *PermRsa) Decrty(permPath string, inputStr string) (string, error) {
 
 	/**
 	 * @step
@@ -100,7 +91,7 @@ func (r *RsaDecrty) Decrty(permPath string, inputStr string) (string, error) {
  * @date: 2022-09-20 19:32:12
  * @return {*}
  */
-func (r *RsaDecrty) DoRsaDecrty(permPath string, inputStr string) (string, error) {
+func (r *PermRsa) DoRsaDecrty(permPath string, inputStr string) (string, error) {
 	/**
 	 * @step
 	 * @进行base64 decode

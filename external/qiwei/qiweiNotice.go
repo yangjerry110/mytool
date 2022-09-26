@@ -2,10 +2,10 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-21 15:30:12
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-23 15:27:46
+ * @LastEditTime: 2022-09-26 18:24:00
  * @Description: 企微通知
  */
-package notice
+package qiwei
 
 import (
 	"bytes"
@@ -15,85 +15,6 @@ import (
 
 	mytoolCommon "github.com/yangjerry110/mytool/common"
 	mytoolHttp "github.com/yangjerry110/mytool/http"
-	mytoolUpload "github.com/yangjerry110/mytool/upload"
-)
-
-type (
-	QiweiNoticeInterface interface {
-		CheckParams() error
-		NotifyMessage() (bool, error)
-		FormatNotifyParams(qiweiNotice *QiweiNotice) ([]byte, error)
-		DoNotify(accessToken string, qiweiMsg []byte) (bool, error)
-	}
-
-	QiweiNotice struct {
-		AppId          string
-		MsgType        string
-		CropId         string
-		CropSecret     string
-		AgentId        string
-		DepartmentIds  string
-		TagIds         string
-		UserIds        string
-		Safe           int32
-		SendMsg        string
-		MediaData      string
-		MediaType      string
-		Title          string
-		Description    string
-		Url            string
-		PicUrl         string
-		EnableIdTrans  int32
-		Btntxt         string
-		AppletId       string
-		AppletPagepath string
-		QiweiFilePath  string
-	}
-
-	/**
-	 * @step
-	 * @定义基础的请求结构
-	 **/
-	NotifyMessage struct {
-		Touser                 string `json:"touser"`
-		Toparty                string `json:"toparty"`
-		Totag                  string `json:"totag"`
-		Msgtype                string `json:"msgtype"`
-		Agentid                string `json:"agentid"`
-		EnableIdTrans          int32  `json:"enable_id_trans"`
-		EnableDuplicateCheck   int32  `json:"enable_duplicate_check"`
-		DuplicateCheckInterval int32  `json:"duplicate_check_interval"`
-	}
-
-	/**
-	 * @step
-	 * @定义textMessage的结构
-	 **/
-	NotifyTextMessage struct{}
-
-	/**
-	 * @step
-	 * @定义markdownMessage的结构
-	 **/
-	NotifyMarkdownMessage struct{}
-
-	/**
-	 * @step
-	 * @定义imageMessage的结构
-	 **/
-	NotifyImageMessage struct{}
-
-	/**
-	 * @step
-	 * @定义cardMessage的结构
-	 **/
-	NotifyCardMessage struct{}
-
-	/**
-	 * @step
-	 * @定义newsMessage的结构
-	 **/
-	NotifyNewsMessage struct{}
 )
 
 /**
@@ -125,7 +46,7 @@ func (q *QiweiNotice) NotifyMessage() (bool, error) {
 	 * @获取accessToken
 	 **/
 	qiweiCommon := mytoolCommon.QiweiCommon{AppId: q.AppId, CropId: q.CropId, CropSecret: q.CropSecret}
-	accessToken, err := qiweiCommon.GetQiweiAccessToken()
+	accessToken, err := qiweiCommon.GetAccessToken()
 	if err != nil {
 		return false, err
 	}
@@ -142,28 +63,28 @@ func (q *QiweiNotice) NotifyMessage() (bool, error) {
 		 **/
 		switch q.MsgType {
 		case "text":
-			notifyTextMessage := NotifyTextMessage{}
-			notifyQiweiReq, err := notifyTextMessage.FormatNotifyParams(q)
+			notifyTextMessage := NotifyTextMessage{QiweiNotice: *q}
+			notifyQiweiReq, err := notifyTextMessage.FormatNotifyParams()
 			notifyQiweiReqChan <- notifyQiweiReq
 			notifyQiweiReqErrChan <- err
 		case "markdown":
-			notifyMarkdownMessage := NotifyMarkdownMessage{}
-			notifyQiweiReq, err := notifyMarkdownMessage.FormatNofifyParams(q)
+			notifyMarkdownMessage := NotifyMarkdownMessage{QiweiNotice: *q}
+			notifyQiweiReq, err := notifyMarkdownMessage.FormatNofifyParams()
 			notifyQiweiReqChan <- notifyQiweiReq
 			notifyQiweiReqErrChan <- err
 		case "image":
-			notifyImageMessage := NotifyImageMessage{}
-			notifyQiweiReq, err := notifyImageMessage.FormatNofifyParams(q)
+			notifyImageMessage := NotifyImageMessage{QiweiNotice: *q}
+			notifyQiweiReq, err := notifyImageMessage.FormatNofifyParams()
 			notifyQiweiReqChan <- notifyQiweiReq
 			notifyQiweiReqErrChan <- err
 		case "card":
-			notifyCardMessage := NotifyCardMessage{}
-			notifyQiweiReq, err := notifyCardMessage.FormatNofifyParams(q)
+			notifyCardMessage := NotifyCardMessage{QiweiNotice: *q}
+			notifyQiweiReq, err := notifyCardMessage.FormatNofifyParams()
 			notifyQiweiReqChan <- notifyQiweiReq
 			notifyQiweiReqErrChan <- err
 		case "news":
-			notifyNewsMessage := NotifyNewsMessage{}
-			notifyQiweiReq, err := notifyNewsMessage.FormatNofifyParams(q)
+			notifyNewsMessage := NotifyNewsMessage{QiweiNotice: *q}
+			notifyQiweiReq, err := notifyNewsMessage.FormatNofifyParams()
 			notifyQiweiReqChan <- notifyQiweiReq
 			notifyQiweiReqErrChan <- err
 		default:
@@ -214,13 +135,13 @@ func (q *QiweiNotice) NotifyMessage() (bool, error) {
  * @date: 2022-09-21 18:14:49
  * @return {*}
  */
-func (n *NotifyTextMessage) FormatNotifyParams(qiweiNotice *QiweiNotice) ([]byte, error) {
+func (n *NotifyTextMessage) FormatNotifyParams() ([]byte, error) {
 
 	/**
 	 * @step
 	 * @判断参数
 	 **/
-	err := n.CheckParams(qiweiNotice)
+	err := n.CheckParams()
 	if err != nil {
 		return nil, err
 	}
@@ -245,14 +166,14 @@ func (n *NotifyTextMessage) FormatNotifyParams(qiweiNotice *QiweiNotice) ([]byte
 	 **/
 	jsonParams, err := json.Marshal(StructParams{
 		NotifyMessage: NotifyMessage{
-			Touser:  qiweiNotice.UserIds,
-			Toparty: qiweiNotice.DepartmentIds,
-			Totag:   qiweiNotice.TagIds,
+			Touser:  n.QiweiNotice.UserIds,
+			Toparty: n.QiweiNotice.DepartmentIds,
+			Totag:   n.QiweiNotice.TagIds,
 			Msgtype: "text",
-			Agentid: qiweiNotice.AgentId,
+			Agentid: n.QiweiNotice.AgentId,
 		},
-		Safe: qiweiNotice.Safe,
-		Text: StructTextParams{qiweiNotice.SendMsg},
+		Safe: n.QiweiNotice.Safe,
+		Text: StructTextParams{n.QiweiNotice.SendMsg},
 	})
 
 	/**
@@ -272,13 +193,13 @@ func (n *NotifyTextMessage) FormatNotifyParams(qiweiNotice *QiweiNotice) ([]byte
  * @date: 2022-09-21 18:16:36
  * @return {*}
  */
-func (n *NotifyMarkdownMessage) FormatNofifyParams(qiweiNotice *QiweiNotice) ([]byte, error) {
+func (n *NotifyMarkdownMessage) FormatNofifyParams() ([]byte, error) {
 
 	/**
 	 * @step
 	 * @判断参数
 	 **/
-	err := n.CheckParams(qiweiNotice)
+	err := n.CheckParams()
 	if err != nil {
 		return nil, err
 	}
@@ -303,14 +224,14 @@ func (n *NotifyMarkdownMessage) FormatNofifyParams(qiweiNotice *QiweiNotice) ([]
 	 **/
 	jsonParams, err := json.Marshal(StructParams{
 		NotifyMessage: NotifyMessage{
-			Touser:  qiweiNotice.UserIds,
-			Toparty: qiweiNotice.DepartmentIds,
-			Totag:   qiweiNotice.TagIds,
+			Touser:  n.QiweiNotice.UserIds,
+			Toparty: n.QiweiNotice.DepartmentIds,
+			Totag:   n.QiweiNotice.TagIds,
 			Msgtype: "markdown",
-			Agentid: qiweiNotice.AgentId,
+			Agentid: n.QiweiNotice.AgentId,
 		},
-		Safe:     qiweiNotice.Safe,
-		Markdown: StructTextParams{qiweiNotice.SendMsg},
+		Safe:     n.QiweiNotice.Safe,
+		Markdown: StructTextParams{n.QiweiNotice.SendMsg},
 	})
 
 	/**
@@ -330,13 +251,13 @@ func (n *NotifyMarkdownMessage) FormatNofifyParams(qiweiNotice *QiweiNotice) ([]
  * @date: 2022-09-21 18:19:21
  * @return {*}
  */
-func (n *NotifyImageMessage) FormatNofifyParams(qiweiNotice *QiweiNotice) ([]byte, error) {
+func (n *NotifyImageMessage) FormatNofifyParams() ([]byte, error) {
 
 	/**
 	 * @step
 	 * @判断参数
 	 **/
-	err := n.CheckParams(qiweiNotice)
+	err := n.CheckParams()
 	if err != nil {
 		return nil, err
 	}
@@ -345,15 +266,7 @@ func (n *NotifyImageMessage) FormatNofifyParams(qiweiNotice *QiweiNotice) ([]byt
 	 * @step
 	 * @获取mediaId
 	 **/
-	qiweiUploadMedia := mytoolUpload.QiweiUploadMedia{
-		AppId:         qiweiNotice.AppId,
-		CropId:        qiweiNotice.CropId,
-		CropSecret:    qiweiNotice.CropSecret,
-		MediaData:     qiweiNotice.MediaData,
-		MediaType:     qiweiNotice.MediaType,
-		QiweiFilePath: qiweiNotice.QiweiFilePath,
-	}
-	err = qiweiUploadMedia.Upload()
+	mediaId, err := n.QiweiNotice.Upload()
 	if err != nil {
 		return nil, err
 	}
@@ -378,14 +291,14 @@ func (n *NotifyImageMessage) FormatNofifyParams(qiweiNotice *QiweiNotice) ([]byt
 	 **/
 	jsonParams, err := json.Marshal(StructParams{
 		NotifyMessage: NotifyMessage{
-			Touser:  qiweiNotice.UserIds,
-			Toparty: qiweiNotice.DepartmentIds,
-			Totag:   qiweiNotice.TagIds,
+			Touser:  n.QiweiNotice.UserIds,
+			Toparty: n.QiweiNotice.DepartmentIds,
+			Totag:   n.QiweiNotice.TagIds,
 			Msgtype: "image",
-			Agentid: qiweiNotice.AgentId,
+			Agentid: n.QiweiNotice.AgentId,
 		},
-		Safe:  qiweiNotice.Safe,
-		Image: StructMediaParams{MediaId: qiweiUploadMedia.MediaId},
+		Safe:  n.QiweiNotice.Safe,
+		Image: StructMediaParams{MediaId: mediaId},
 	})
 
 	/**
@@ -405,13 +318,13 @@ func (n *NotifyImageMessage) FormatNofifyParams(qiweiNotice *QiweiNotice) ([]byt
  * @date: 2022-09-21 18:21:55
  * @return {*}
  */
-func (n *NotifyCardMessage) FormatNofifyParams(qiweiNotice *QiweiNotice) ([]byte, error) {
+func (n *NotifyCardMessage) FormatNofifyParams() ([]byte, error) {
 
 	/**
 	 * @step
 	 * @判断参数
 	 **/
-	err := n.CheckParams(qiweiNotice)
+	err := n.CheckParams()
 	if err != nil {
 		return nil, err
 	}
@@ -442,19 +355,19 @@ func (n *NotifyCardMessage) FormatNofifyParams(qiweiNotice *QiweiNotice) ([]byte
 	 **/
 	jsonParams, err := json.Marshal(StructParams{
 		NotifyMessage: NotifyMessage{
-			Touser:  qiweiNotice.UserIds,
-			Toparty: qiweiNotice.DepartmentIds,
-			Totag:   qiweiNotice.TagIds,
+			Touser:  n.QiweiNotice.UserIds,
+			Toparty: n.QiweiNotice.DepartmentIds,
+			Totag:   n.QiweiNotice.TagIds,
 			Msgtype: "testcard",
-			Agentid: qiweiNotice.AgentId,
+			Agentid: n.QiweiNotice.AgentId,
 		},
 		Textcard: StructCardParams{
-			Title:       qiweiNotice.Title,
-			Description: qiweiNotice.Description,
-			Url:         qiweiNotice.Url,
-			Btntxt:      qiweiNotice.Btntxt,
+			Title:       n.QiweiNotice.Title,
+			Description: n.QiweiNotice.Description,
+			Url:         n.QiweiNotice.Url,
+			Btntxt:      n.QiweiNotice.Btntxt,
 		},
-		EnableIdTrans: qiweiNotice.EnableIdTrans,
+		EnableIdTrans: n.QiweiNotice.EnableIdTrans,
 	})
 
 	/**
@@ -474,13 +387,13 @@ func (n *NotifyCardMessage) FormatNofifyParams(qiweiNotice *QiweiNotice) ([]byte
  * @date: 2022-09-21 18:22:46
  * @return {*}
  */
-func (n *NotifyNewsMessage) FormatNofifyParams(qiweiNotice *QiweiNotice) ([]byte, error) {
+func (n *NotifyNewsMessage) FormatNofifyParams() ([]byte, error) {
 
 	/**
 	 * @step
 	 * @判断参数
 	 **/
-	err := n.CheckParams(qiweiNotice)
+	err := n.CheckParams(&n.QiweiNotice)
 	if err != nil {
 		return nil, err
 	}
@@ -520,12 +433,12 @@ func (n *NotifyNewsMessage) FormatNofifyParams(qiweiNotice *QiweiNotice) ([]byte
 	 * @make structNewParams
 	 **/
 	newsParams := []StructNewParams{{
-		Title:          qiweiNotice.Title,
-		Description:    qiweiNotice.Description,
-		NewUrl:         qiweiNotice.Url,
-		PicUrl:         qiweiNotice.PicUrl,
-		AppletId:       qiweiNotice.AppletId,
-		AppletPagepath: qiweiNotice.AppletPagepath,
+		Title:          n.QiweiNotice.Title,
+		Description:    n.QiweiNotice.Description,
+		NewUrl:         n.QiweiNotice.Url,
+		PicUrl:         n.QiweiNotice.PicUrl,
+		AppletId:       n.QiweiNotice.AppletId,
+		AppletPagepath: n.QiweiNotice.AppletPagepath,
 	}}
 
 	/**
@@ -534,14 +447,14 @@ func (n *NotifyNewsMessage) FormatNofifyParams(qiweiNotice *QiweiNotice) ([]byte
 	 **/
 	jsonParams, err := json.Marshal(StructParams{
 		NotifyMessage: NotifyMessage{
-			Touser:  qiweiNotice.UserIds,
-			Toparty: qiweiNotice.DepartmentIds,
-			Totag:   qiweiNotice.TagIds,
+			Touser:  n.QiweiNotice.UserIds,
+			Toparty: n.QiweiNotice.DepartmentIds,
+			Totag:   n.QiweiNotice.TagIds,
 			Msgtype: "news",
-			Agentid: qiweiNotice.AgentId,
+			Agentid: n.QiweiNotice.AgentId,
 		},
 		News:          StructArticlesParams{Articles: newsParams},
-		EnableIdTrans: qiweiNotice.EnableIdTrans,
+		EnableIdTrans: n.QiweiNotice.EnableIdTrans,
 	})
 
 	/**
@@ -607,7 +520,7 @@ func (q *QiweiNotice) DoNotify(accessToken string, qiweiMsg []byte) (bool, error
 		Options: httpOptions,
 		Output:  resp,
 	}
-	httpClient.HttpRequest()
+	httpClient.Request()
 
 	/**
 	 * @step
@@ -659,8 +572,8 @@ func (q *QiweiNotice) CheckParams() error {
  * @date: 2022-09-21 19:16:13
  * @return {*}
  */
-func (n *NotifyTextMessage) CheckParams(qiweiNotice *QiweiNotice) error {
-	if qiweiNotice.SendMsg == "" {
+func (n *NotifyTextMessage) CheckParams() error {
+	if n.QiweiNotice.SendMsg == "" {
 		return errors.New("QiweiNotice NotifyTextMessage Err : sendMsg is empty!")
 	}
 	return nil
@@ -673,8 +586,8 @@ func (n *NotifyTextMessage) CheckParams(qiweiNotice *QiweiNotice) error {
  * @date: 2022-09-21 19:16:59
  * @return {*}
  */
-func (n *NotifyMarkdownMessage) CheckParams(qiweiNotice *QiweiNotice) error {
-	if qiweiNotice.SendMsg == "" {
+func (n *NotifyMarkdownMessage) CheckParams() error {
+	if n.QiweiNotice.SendMsg == "" {
 		return errors.New("QiweiNotice NotifyTextMessage Err : sendMsg is empty!")
 	}
 	return nil
@@ -687,16 +600,16 @@ func (n *NotifyMarkdownMessage) CheckParams(qiweiNotice *QiweiNotice) error {
  * @date: 2022-09-22 10:43:17
  * @return {*}
  */
-func (n *NotifyImageMessage) CheckParams(qiweiNotice *QiweiNotice) error {
-	if qiweiNotice.MediaData == "" {
+func (n *NotifyImageMessage) CheckParams() error {
+	if n.QiweiNotice.MediaData == "" {
 		return errors.New("QiweiNotice NotifyImageMessage Err : MediaData is empty!")
 	}
 
-	if qiweiNotice.MediaType == "" {
+	if n.QiweiNotice.MediaType == "" {
 		return errors.New("QiweiNotice NotifyImageMessage Err : MediaType is empty!")
 	}
 
-	if qiweiNotice.QiweiFilePath == "" {
+	if n.QiweiNotice.QiweiFilePath == "" {
 		return errors.New("QiweiNotice NotifyImageMessage Err : QiweiFilePath is empty!")
 	}
 	return nil
@@ -709,20 +622,20 @@ func (n *NotifyImageMessage) CheckParams(qiweiNotice *QiweiNotice) error {
  * @date: 2022-09-22 10:45:18
  * @return {*}
  */
-func (n *NotifyCardMessage) CheckParams(qiweiNotice *QiweiNotice) error {
-	if qiweiNotice.Title == "" {
+func (n *NotifyCardMessage) CheckParams() error {
+	if n.QiweiNotice.Title == "" {
 		return errors.New("QiweiNotice NotifyCardMessage Err : Title is empty!")
 	}
 
-	if qiweiNotice.Description == "" {
+	if n.QiweiNotice.Description == "" {
 		return errors.New("QiweiNotice NotifyCardMessage Err : Description is empty!")
 	}
 
-	if qiweiNotice.Url == "" {
+	if n.QiweiNotice.Url == "" {
 		return errors.New("QiweiNotice NotifyCardMessage Err : Url is empty!")
 	}
 
-	if qiweiNotice.Btntxt == "" {
+	if n.QiweiNotice.Btntxt == "" {
 		return errors.New("QiweiNotice NotifyCardMessage Err : Btntxt is empty!")
 	}
 	return nil
@@ -761,6 +674,6 @@ func (n *NotifyNewsMessage) CheckParams(qiweiNotice *QiweiNotice) error {
  * @date: 2022-09-23 15:25:00
  * @return {*}
  */
-func (q *QiweiNotice) FormatNotifyParams(qiweiNotice *QiweiNotice) ([]byte, error) {
+func (q *QiweiNotice) FormatNotifyParams() ([]byte, error) {
 	return nil, nil
 }

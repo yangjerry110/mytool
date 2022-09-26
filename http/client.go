@@ -2,31 +2,16 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-21 15:47:47
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-23 15:00:00
+ * @LastEditTime: 2022-09-26 16:32:49
  * @Description: client 请求连接
  */
 package http
 
 import (
 	"encoding/json"
-	"io"
 	"io/ioutil"
 	"net/http"
 	"time"
-)
-
-type (
-	HttpClientInterface interface {
-		HttpRequest() error
-	}
-
-	HttpClient struct {
-		Method  string           // 请求方式
-		Url     string           // 请求url
-		Body    io.Reader        // 请求体
-		Options []HttpOptionFunc // 参数(超时时间等等)
-		Output  interface{}      // 返回数据
-	}
 )
 
 /**
@@ -35,7 +20,7 @@ type (
  * @date: 2022-09-21 16:02:35
  * @return {*}
  */
-func (h *HttpClient) HttpRequest() error {
+func (h *HttpClient) Request() error {
 
 	/**
 	 * @step
