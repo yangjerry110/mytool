@@ -2,38 +2,18 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-21 16:08:24
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-21 16:57:41
+ * @LastEditTime: 2022-09-27 15:12:03
  * @Description: options
  */
 package http
-
-type (
-	HttpOptionsInterface interface{}
-
-	HttpOptions struct{}
-
-	/**
-	 * @step
-	 * @定义optionVal
-	 **/
-	HttpOption struct {
-		Value interface{}
-	}
-
-	/**
-	 * @step
-	 * @定义options
-	 **/
-	HttpOptionFunc func(map[string]HttpOption) error
-)
 
 /**
  * @定义常量
  * @author Jerry.Yang
  * @date 2022-09-21 15:57:57
  **/
-const OPTION_OUT_TIME = "outTime"
-const OPTION_HEADERS = "headers"
+var OPTION_OUT_TIME = "outTime"
+var OPTION_HEADERS = "headers"
 
 /**
  * @description: SetHeaders
