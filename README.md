@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-19 17:46:05
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-23 17:55:28
+ * @LastEditTime: 2022-10-09 17:36:17
  * @Description: 
 -->
 # my-tool
@@ -51,7 +51,7 @@ func main() {
 
     // 解析yaml的配置到MyConf结构体
     myConf := &MyConf{}
-    yamlConf.ParseYamlConf(yamlConfPath,&myConf)
+    yamlConf.GetYamlConf(yamlConfPath,myConf)
     myConfPath := myConf.ConfPath
 
 }
@@ -99,9 +99,9 @@ func main() {
 
 ```
 
-## 5.notice
+## 5.extenrnal
 
-> 1.通知相关   
+> 1.qiwei相关   
 > 2.以企微通知示例   
 > 3.支持 text,markdown,image,news,card    
 > 4.bot通知 支持 text,markdown,image,news
@@ -109,7 +109,7 @@ func main() {
 ```
 package main 
 
-import "github.com/yangjerry110/mytool/pkg/notice"
+import "github.com/yangjerry110/mytool/pkg/extenrnal"
 
 func main() {
 
@@ -136,7 +136,7 @@ func main() {
     * @param {string} AppletPagepath AppletPagepath 小程序链接
     * @param {string} QiweiFilePath 通知媒体消息的时候，存放媒体内容的地址
      */
-    qiweiNotice := notice.QiweiNoticePkg{}
+    qiweiNotice := extenrnal.qiwei.QiweiNoticePkg{}
 
     result,err := qiweiNotice.QiweiNotice()
 
@@ -160,25 +160,32 @@ func main() {
 
 ```
 
-## 7.upload
-
-> 1.以ali的oss示例    
-> 2.PS： 上传的fileData需要是以base64编码的文件内容
+## 7.logger
+> 1.默认采用的logrus    
+> 2.采用的是插拔式，可以设置option，默认是json格式的输出式的日志
 
 ```
-
 package main 
 
-import "github.com/yangjerry110/mytool/pkg/upload"
+import "github.com/yangjerry110/mytool/pkg/logger"
 
 func main() {
 
-    aliUploadOss := upload.AliUploadOss{}
+    // 默认是logrus
+    // 可以自己设置logger引擎
+    logger.setLogger()
 
-    ossUrl,err := aliUploadOss.AliUploadOss()
+    // 可以自己设置option
+    // 但是调用对应的log方法的时候，level会被重置掉
+    logger.SetOptions([]toolLogger.LoggerOptionFunc{
+		logger.SetIsReportcaller(true),
+		logger.SetLevel(logger.Level(toolLogger.DebugLevel)),
+	}).WithField("testFields", "testFieldVal").Info("this is test withField")
+
+    // show this
+    // {"file":"/Users/admin/go/src/my-tool/logger/logrusLog.go:60","func":"github.com/yangjerry110/mytool/logger.(*LogrusLog).WriteLog","level":"info","msg":"this is test withField","time":"2022-10-09T17:32:59+08:00"}
 
 }
-
 ```
 
 

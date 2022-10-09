@@ -2,13 +2,14 @@ package logger
 
 import (
 	"errors"
+	"fmt"
 	"io"
 
 	"github.com/sirupsen/logrus"
 )
 
 type LogrusOption struct {
-	*LoggerOption
+	LoggerOption
 }
 
 /**
@@ -33,7 +34,7 @@ func (l *LogrusOption) SetLevel(logLevel Level) LoggerOptionFunc {
  * @date: 2022-09-29 17:11:26
  * @return {*}
  */
-func (l *LogrusOption) SetWithFields(fields logrus.Fields) LoggerOptionFunc {
+func (l *LogrusOption) SetWithFields(fields map[string]interface{}) LoggerOptionFunc {
 	return func(LoggerOptionFunc map[string]LoggerOptionVal) error {
 		LoggerOptionFunc[OPTION_WITH_FIELDS] = LoggerOptionVal{fields}
 		return nil
@@ -170,7 +171,7 @@ func (l *LogrusOption) GetLevel() (Level, error) {
  * @date: 2022-09-29 17:15:21
  * @return {*}
  */
-func (l *LogrusOption) GetWithFields() (logrus.Fields, error) {
+func (l *LogrusOption) GetWithFields() (map[string]interface{}, error) {
 	/**
 	 * @step
 	 * @获取所有的options
@@ -185,7 +186,7 @@ func (l *LogrusOption) GetWithFields() (logrus.Fields, error) {
 	if !logrusWithFieldsIsExist {
 		return nil, errors.New("GetLogrusWithFields Err : with fields is not set")
 	}
-	return setLogrusWithFields.Value.(logrus.Fields), nil
+	return setLogrusWithFields.Value.(map[string]interface{}), nil
 }
 
 /**
@@ -201,6 +202,9 @@ func (l *LogrusOption) GetLogrusLevel() (logrus.Level, error) {
 	 * @获取所有的options
 	 **/
 	options := l.Options
+
+	fmt.Printf("options : %v", options)
+	fmt.Printf("\r\n")
 
 	/**
 	 * @step
@@ -334,7 +338,7 @@ func (l *LogrusOption) GetDisableTime() (bool, error) {
 	 **/
 	disableTimeInterface, disableTimeIsExist := options[OPTION_FORMATTER_DISABLETIME]
 	if !disableTimeIsExist {
-		return false, errors.New("GetIsReportcaller Err : disableTime is not set")
+		return false, errors.New("GetDisableTime Err : disableTime is not set")
 	}
 	return disableTimeInterface.Value.(bool), nil
 }
@@ -389,16 +393,6 @@ func (l *LogrusOption) SetOptions(optionFuncs []LoggerOptionFunc) LoggerOptionIn
 			}
 		}
 	}
-
-	thisSetOptions := l.LoggerOption.Options
-	if thisSetOptions == nil {
-		thisSetOptions = make(map[string]LoggerOptionVal)
-	}
-
-	for key, keyVal := range setOptions {
-		thisSetOptions[key] = keyVal
-	}
-
-	l.LoggerOption = l.LoggerOption.SetOptions(thisSetOptions)
+	l.Options = setOptions
 	return l
 }

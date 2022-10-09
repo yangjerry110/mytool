@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-27 18:26:53
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-30 09:44:52
+ * @LastEditTime: 2022-10-09 17:31:14
  * @Description: logger
  */
 package logger
@@ -14,9 +14,11 @@ import (
 type LoggerPkgInterface interface {
 	CreatePkgInterface(loggerPkgInterface LoggerPkgInterface) *LoggerPkg
 	CreateInterface(loggerInterface logger.LoggerInterface) *LoggerPkg
-	CreateOptionInterface(loggerOptionInterface logger.LoggerOptionInterface) *LoggerPkg
+	CreateOptionInterface(loggerInterface logger.LoggerOptionInterface) *LoggerPkg
+	CreateOptionPkgInterface(loggerOptionsPkgInterface LoggerOptionPkgInterface) *LoggerPkg
 	SetOptions(options []logger.LoggerOptionFunc) LoggerPkgInterface
 	SetDefaultOptions() LoggerPkgInterface
+	SetLoggerOptions() LoggerPkgInterface
 	Log(args ...interface{}) error                               // 记录对应级别的日志
 	Logf(format string, args ...interface{}) error               // 记录对应级别的日志
 	Info(args ...interface{}) error                              // 记录 InfoLevel 级别的日志
@@ -39,11 +41,13 @@ type LoggerPkgInterface interface {
 }
 
 type LoggerPkg struct {
-	OptionFunc            logger.LoggerOptionFunc
-	Options               map[string]logger.LoggerOptionVal
-	LoggerPkgInterface    LoggerPkgInterface
-	LoggerInterface       logger.LoggerInterface
-	LoggerOptionInterface logger.LoggerOptionInterface
+	DefaultOptionFuns        []logger.LoggerOptionFunc
+	OptionFuns               []logger.LoggerOptionFunc
+	Options                  map[string]logger.LoggerOptionVal
+	LoggerPkgInterface       LoggerPkgInterface
+	LoggerInterface          logger.LoggerInterface
+	LoggerOptionInterface    logger.LoggerOptionInterface
+	LoggerOptionPkgInterface LoggerOptionPkgInterface
 }
 
 // Level type
@@ -55,7 +59,7 @@ type Level uint32
  * @date: 2022-09-29 19:12:05
  * @return {*}
  */
-var loggerNew = CreateLogger(&LogrusLogPkg{})
+var defaultLogger = CreateLogger(&LogrusLogPkg{})
 
 /**
  * @description: CreatePkgInterface
@@ -91,6 +95,17 @@ func CreateOptionInterface(loggerOptionInterface logger.LoggerOptionInterface) *
 }
 
 /**
+ * @description: CreateOptionPkgInterface
+ * @param {LoggerOptionPkgInterface} loggerOptionPkgInterface
+ * @author: Jerry.Yang
+ * @date: 2022-09-30 14:43:31
+ * @return {*}
+ */
+func CreateOptionPkgInterface(loggerOptionPkgInterface LoggerOptionPkgInterface) *LoggerPkg {
+	return &LoggerPkg{LoggerOptionPkgInterface: loggerOptionPkgInterface}
+}
+
+/**
  * @description: CreateLogger
  * @param {LoggerPkgInterface} loggerPkgInterface
  * @author: Jerry.Yang
@@ -109,8 +124,19 @@ func CreateLogger(loggerPkgInterface LoggerPkgInterface) LoggerPkgInterface {
  * @return {*}
  */
 func SetLogger(LoggerPkgInterface LoggerPkgInterface) LoggerPkgInterface {
-	loggerNew = CreateLogger(LoggerPkgInterface)
+	defaultLogger = CreateLogger(LoggerPkgInterface)
 	return LoggerPkgInterface
+}
+
+/**
+ * @description: SetOptions
+ * @param {[]logger.LoggerOptionFunc} options
+ * @author: Jerry.Yang
+ * @date: 2022-10-09 16:49:02
+ * @return {*}
+ */
+func SetOptions(options []logger.LoggerOptionFunc) LoggerPkgInterface {
+	return defaultLogger.SetOptions(options)
 }
 
 /**
@@ -121,7 +147,7 @@ func SetLogger(LoggerPkgInterface LoggerPkgInterface) LoggerPkgInterface {
  * @return {*}
  */
 func Log(args ...interface{}) {
-	loggerNew.Log(args...)
+	defaultLogger.Log(args...)
 }
 
 /**
@@ -133,7 +159,7 @@ func Log(args ...interface{}) {
  * @return {*}
  */
 func Logf(format string, args ...interface{}) {
-	loggerNew.Logf(format, args...)
+	defaultLogger.Logf(format, args...)
 }
 
 /**
@@ -144,7 +170,7 @@ func Logf(format string, args ...interface{}) {
  * @return {*}
  */
 func Trace(args ...interface{}) {
-	loggerNew.Trace(args...)
+	defaultLogger.Trace(args...)
 }
 
 /**
@@ -156,7 +182,7 @@ func Trace(args ...interface{}) {
  * @return {*}
  */
 func Tracef(format string, args ...interface{}) {
-	loggerNew.Tracef(format, args...)
+	defaultLogger.Tracef(format, args...)
 }
 
 /**
@@ -167,7 +193,7 @@ func Tracef(format string, args ...interface{}) {
  * @return {*}
  */
 func Debug(args ...interface{}) {
-	loggerNew.Debug(args...)
+	defaultLogger.Debug(args...)
 }
 
 /**
@@ -179,7 +205,7 @@ func Debug(args ...interface{}) {
  * @return {*}
  */
 func Debugf(format string, args ...interface{}) {
-	loggerNew.Debugf(format, args...)
+	defaultLogger.Debugf(format, args...)
 }
 
 /**
@@ -190,7 +216,7 @@ func Debugf(format string, args ...interface{}) {
  * @return {*}
  */
 func Info(args ...interface{}) {
-	loggerNew.Info(args...)
+	defaultLogger.Info(args...)
 }
 
 /**
@@ -202,7 +228,7 @@ func Info(args ...interface{}) {
  * @return {*}
  */
 func Infof(format string, args ...interface{}) {
-	loggerNew.Infof(format, args...)
+	defaultLogger.Infof(format, args...)
 }
 
 /**
@@ -213,7 +239,7 @@ func Infof(format string, args ...interface{}) {
  * @return {*}
  */
 func Warn(args ...interface{}) {
-	loggerNew.Warn(args...)
+	defaultLogger.Warn(args...)
 }
 
 /**
@@ -225,7 +251,7 @@ func Warn(args ...interface{}) {
  * @return {*}
  */
 func Warnf(format string, args ...interface{}) {
-	loggerNew.Warnf(format, args...)
+	defaultLogger.Warnf(format, args...)
 }
 
 /**
@@ -236,7 +262,7 @@ func Warnf(format string, args ...interface{}) {
  * @return {*}
  */
 func Error(args ...interface{}) {
-	loggerNew.Error(args...)
+	defaultLogger.Error(args...)
 }
 
 /**
@@ -248,7 +274,7 @@ func Error(args ...interface{}) {
  * @return {*}
  */
 func Errorf(format string, args ...interface{}) {
-	loggerNew.Errorf(format, args...)
+	defaultLogger.Errorf(format, args...)
 }
 
 /**
@@ -259,7 +285,7 @@ func Errorf(format string, args ...interface{}) {
  * @return {*}
  */
 func Fatal(args ...interface{}) {
-	loggerNew.Fatal(args...)
+	defaultLogger.Fatal(args...)
 }
 
 /**
@@ -271,7 +297,7 @@ func Fatal(args ...interface{}) {
  * @return {*}
  */
 func Fatalf(format string, args ...interface{}) {
-	loggerNew.Fatalf(format, args...)
+	defaultLogger.Fatalf(format, args...)
 }
 
 /**
@@ -282,7 +308,7 @@ func Fatalf(format string, args ...interface{}) {
  * @return {*}
  */
 func Panic(args ...interface{}) {
-	loggerNew.Panic(args...)
+	defaultLogger.Panic(args...)
 }
 
 /**
@@ -294,7 +320,7 @@ func Panic(args ...interface{}) {
  * @return {*}
  */
 func Panicf(format string, args ...interface{}) {
-	loggerNew.Panicf(format, args...)
+	defaultLogger.Panicf(format, args...)
 }
 
 /**
@@ -306,7 +332,7 @@ func Panicf(format string, args ...interface{}) {
  * @return {*}
  */
 func WithField(key string, value interface{}) LoggerPkgInterface {
-	return loggerNew.WithField(key, value)
+	return defaultLogger.WithField(key, value)
 }
 
 /**
@@ -317,7 +343,7 @@ func WithField(key string, value interface{}) LoggerPkgInterface {
  * @return {*}
  */
 func WithFields(fields map[string]interface{}) LoggerPkgInterface {
-	return loggerNew.WithFields(fields)
+	return defaultLogger.WithFields(fields)
 }
 
 /**
@@ -328,5 +354,5 @@ func WithFields(fields map[string]interface{}) LoggerPkgInterface {
  * @return {*}
  */
 func WithError(err error) LoggerPkgInterface {
-	return loggerNew.WithError(err)
+	return defaultLogger.WithError(err)
 }

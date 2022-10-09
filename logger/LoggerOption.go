@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-27 15:05:10
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-29 17:27:04
+ * @LastEditTime: 2022-09-30 10:18:33
  * @Description: logrus log option
  */
 package logger
@@ -16,7 +16,7 @@ import (
 type LoggerOptionInterface interface {
 	SetOptions(options []LoggerOptionFunc) LoggerOptionInterface
 	SetLevel(logLevel Level) LoggerOptionFunc
-	SetWithFields(fields logrus.Fields) LoggerOptionFunc
+	SetWithFields(fields map[string]interface{}) LoggerOptionFunc
 	SetIsReportcaller(isOpen bool) LoggerOptionFunc
 	SetOutput(output io.Writer) LoggerOptionFunc
 	SetFormatter(formatter string) LoggerOptionFunc

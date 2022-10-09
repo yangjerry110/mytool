@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-23 18:28:08
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-29 17:26:25
+ * @LastEditTime: 2022-10-09 16:35:50
  * @Description: logrus
  */
 package logger
@@ -107,7 +107,7 @@ func (l *LogrusLog) CreateDefaultLog() LoggerInterface {
 	 * @step
 	 * @check FormatterDisableHtmlEscap
 	 **/
-	if l.Options.Options[OPTION_OUTPUT].Value == nil {
+	if l.Options.Options[OPTION_FORMATTER_DISABLEHTMLESCAP].Value == nil {
 		logrusOptionFuncs = append(logrusOptionFuncs, l.Options.SetFormatterDisableHtmlEscap(true))
 	}
 
@@ -174,6 +174,7 @@ func (l *LogrusLog) SetLogger() LoggerInterface {
 			}); ok {
 				l.WithFields["err.stack"] = strings.Join(err.Stack(), ";")
 			}
+			logrusNew.SetReportCaller(l.IsReportCaller)
 		}
 		logrusNew.WithFields(l.WithFields)
 	}
@@ -212,7 +213,7 @@ func (l *LogrusLog) SetLevel() LoggerInterface {
  * @date: 2022-09-29 17:16:41
  * @return {*}
  */
-func (l *LogrusLog) setWithFields() LoggerInterface {
+func (l *LogrusLog) SetWithFields() LoggerInterface {
 
 	/**
 	 * @step
@@ -257,7 +258,13 @@ func (l *LogrusLog) SetFormatter() LoggerInterface {
 		if err != nil {
 			l.LoggerErr = err
 		}
-		l.Formatter = &logrus.JSONFormatter{DisableHTMLEscape: disableHtmlScape}
+
+		/**
+		 * @step
+		 * @时间
+		 **/
+		disableTime, _ := l.Options.GetDisableTime()
+		l.Formatter = &logrus.JSONFormatter{DisableHTMLEscape: disableHtmlScape, DisableTimestamp: disableTime}
 	}
 
 	/**
@@ -284,9 +291,29 @@ func (l *LogrusLog) SetOutput() LoggerInterface {
 	 **/
 	setOutput, err := l.Options.GetOutput()
 	if err != nil {
-		l.LoggerErr = err
+		return l
 	}
 	l.Output = setOutput
+	return l
+}
+
+/**
+ * @description: SetIsReportcaller
+ * @author: Jerry.Yang
+ * @date: 2022-10-09 16:18:20
+ * @return {*}
+ */
+func (l *LogrusLog) SetIsReportcaller() LoggerInterface {
+
+	/**
+	 * @step
+	 * @获取设置
+	 **/
+	setIsReportcaller, err := l.Options.GetIsReportcaller()
+	if err != nil {
+		return l
+	}
+	l.IsReportCaller = setIsReportcaller
 	return l
 }
 
