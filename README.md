@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-19 17:46:05
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-09 17:36:17
+ * @LastEditTime: 2022-10-09 17:40:39
  * @Description: 
 -->
 # my-tool
@@ -167,7 +167,10 @@ func main() {
 ```
 package main 
 
-import "github.com/yangjerry110/mytool/pkg/logger"
+import （
+    "github.com/yangjerry110/mytool/pkg/logger"
+    toolLogger "github.com/yangjerry110/mytool/logger"
+）
 
 func main() {
 
