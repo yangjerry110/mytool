@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-23 18:28:08
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-09 16:35:50
+ * @LastEditTime: 2022-10-09 17:57:11
  * @Description: logrus
  */
 package logger
@@ -165,6 +165,14 @@ func (l *LogrusLog) SetLogger() LoggerInterface {
 
 	/**
 	 * @step
+	 * @设置SetReportCaller
+	 **/
+	if l.IsReportCaller {
+		logrusNew.SetReportCaller(l.IsReportCaller)
+	}
+
+	/**
+	 * @step
 	 * @添加wirthFields
 	 **/
 	if l.WithFields != nil {
@@ -174,7 +182,6 @@ func (l *LogrusLog) SetLogger() LoggerInterface {
 			}); ok {
 				l.WithFields["err.stack"] = strings.Join(err.Stack(), ";")
 			}
-			logrusNew.SetReportCaller(l.IsReportCaller)
 		}
 		logrusNew.WithFields(l.WithFields)
 	}
@@ -221,7 +228,7 @@ func (l *LogrusLog) SetWithFields() LoggerInterface {
 	 **/
 	withFields, err := l.Options.GetWithFields()
 	if err != nil {
-		l.LoggerErr = err
+		return l
 	}
 	l.WithFields = withFields
 	return l
@@ -291,7 +298,7 @@ func (l *LogrusLog) SetOutput() LoggerInterface {
 	 **/
 	setOutput, err := l.Options.GetOutput()
 	if err != nil {
-		return l
+		l.LoggerErr = err
 	}
 	l.Output = setOutput
 	return l

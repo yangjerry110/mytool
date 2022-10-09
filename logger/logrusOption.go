@@ -2,7 +2,6 @@ package logger
 
 import (
 	"errors"
-	"fmt"
 	"io"
 
 	"github.com/sirupsen/logrus"
@@ -202,9 +201,6 @@ func (l *LogrusOption) GetLogrusLevel() (logrus.Level, error) {
 	 * @获取所有的options
 	 **/
 	options := l.Options
-
-	fmt.Printf("options : %v", options)
-	fmt.Printf("\r\n")
 
 	/**
 	 * @step
