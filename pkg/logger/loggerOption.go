@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-30 09:59:28
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-09 16:44:47
+ * @LastEditTime: 2022-10-09 18:44:49
  * @Description: logger option
  */
 package logger
@@ -21,6 +21,7 @@ type LoggerOptionPkgInterface interface {
 	SetFormatter(formatter string) logger.LoggerOptionFunc
 	SetFormatterDisableTime(isOpen bool) logger.LoggerOptionFunc
 	SetFormatterDisableHtmlEscap(isOpen bool) logger.LoggerOptionFunc
+	SetCallerDept(dept int) logger.LoggerOptionFunc
 }
 
 type LoggerOptionPkg struct {
@@ -138,4 +139,15 @@ func SetFormatterDisableTime(isOpen bool) logger.LoggerOptionFunc {
  */
 func SetFormatterDisableHtmlEscap(isOpen bool) logger.LoggerOptionFunc {
 	return defaultLoggOption.SetFormatterDisableHtmlEscap(isOpen)
+}
+
+/**
+ * @description: SetCallDept
+ * @param {int} dept
+ * @author: Jerry.Yang
+ * @date: 2022-10-09 18:44:54
+ * @return {*}
+ */
+func SetCallerDept(dept int) logger.LoggerOptionFunc {
+	return defaultLoggOption.SetCallerDept(dept)
 }

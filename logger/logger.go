@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-23 18:35:15
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-09 16:19:24
+ * @LastEditTime: 2022-10-09 18:40:48
  * @Description: logger
  */
 package logger
@@ -12,10 +12,12 @@ type LoggerInterface interface {
 	CheckParams() LoggerInterface
 	SetLogger() LoggerInterface
 	SetLevel() LoggerInterface
+	SetCaller() LoggerInterface
 	SetWithFields() LoggerInterface
 	SetFormatter() LoggerInterface
 	SetOutput() LoggerInterface
 	SetIsReportcaller() LoggerInterface
+	SetCallDept() LoggerInterface
 }
 
 type Logger struct{}

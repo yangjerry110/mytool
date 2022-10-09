@@ -2,15 +2,17 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-23 18:28:08
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-09 17:57:11
+ * @LastEditTime: 2022-10-09 19:06:27
  * @Description: logrus
  */
 package logger
 
 import (
 	"errors"
+	"fmt"
 	"io"
 	"os"
+	"runtime"
 	"strings"
 
 	"github.com/sirupsen/logrus"
@@ -24,6 +26,7 @@ import (
  */
 type LogrusLog struct {
 	Logger         *logrus.Entry    // entry
+	CallDept       int              // 记录调用者的层级
 	WithFields     logrus.Fields    // fields
 	LogLevel       logrus.Level     // 日志级别
 	IsReportCaller bool             // 是否在日志中添加方法名和文件
@@ -56,6 +59,22 @@ func (l *LogrusLog) WriteLog(args ...interface{}) error {
 	if !levelIsTrue {
 		l.Logger.Log(l.LogLevel, "WriteLog Err : WriteLog Err : logLevel is invalid")
 		return errors.New("WriteLog Err : logLevel is invalid")
+	}
+
+	/**
+	 * @step
+	 * @添加wirthFields
+	 **/
+	if l.WithFields != nil {
+		if l.IsReportCaller {
+			if err, ok := l.WithFields[LOGRUS_ERROR_KEY].(interface {
+				Stack() []string
+			}); ok {
+				l.WithFields["err.stack"] = strings.Join(err.Stack(), ";")
+			}
+		}
+		l.Logger.WithFields(l.WithFields).Log(l.LogLevel, args...)
+		return nil
 	}
 	l.Logger.Log(l.LogLevel, args...)
 	return nil
@@ -168,22 +187,13 @@ func (l *LogrusLog) SetLogger() LoggerInterface {
 	 * @设置SetReportCaller
 	 **/
 	if l.IsReportCaller {
-		logrusNew.SetReportCaller(l.IsReportCaller)
-	}
+		//logrusNew.SetReportCaller(l.IsReportCaller)
 
-	/**
-	 * @step
-	 * @添加wirthFields
-	 **/
-	if l.WithFields != nil {
-		if l.IsReportCaller {
-			if err, ok := l.WithFields[LOGRUS_ERROR_KEY].(interface {
-				Stack() []string
-			}); ok {
-				l.WithFields["err.stack"] = strings.Join(err.Stack(), ";")
-			}
-		}
-		logrusNew.WithFields(l.WithFields)
+		/**
+		 * @step
+		 * @记录调用者的信息
+		 **/
+		l.SetCaller()
 	}
 
 	/**
@@ -231,6 +241,53 @@ func (l *LogrusLog) SetWithFields() LoggerInterface {
 		return l
 	}
 	l.WithFields = withFields
+	return l
+}
+
+/**
+ * @description: SetCallDept
+ * @author: Jerry.Yang
+ * @date: 2022-10-09 18:40:24
+ * @return {*}
+ */
+func (l *LogrusLog) SetCallDept() LoggerInterface {
+	/**
+	 * @step
+	 * @获取
+	 **/
+	setval, err := l.Options.GetCallerDept()
+	if err != nil {
+		return l
+	}
+	l.CallDept = setval
+	return l
+}
+
+/**
+ * @description: SetCaller
+ * @author: Jerry.Yang
+ * @date: 2022-10-09 18:31:02
+ * @return {*}
+ */
+func (l *LogrusLog) SetCaller() LoggerInterface {
+	_, f, n, ok := runtime.Caller(l.CallDept)
+	if !ok {
+		return l
+	}
+
+	/**
+	 * @step
+	 * @判断withFields是否为空
+	 **/
+	if l.WithFields == nil {
+		l.WithFields = make(logrus.Fields)
+	}
+
+	/**
+	 * @step
+	 * @拼接调用信息
+	 **/
+	l.WithFields["file"] = fmt.Sprintf("%s:%d", f, n)
 	return l
 }
 

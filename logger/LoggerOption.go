@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-27 15:05:10
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-30 10:18:33
+ * @LastEditTime: 2022-10-09 18:41:02
  * @Description: logrus log option
  */
 package logger
@@ -22,6 +22,7 @@ type LoggerOptionInterface interface {
 	SetFormatter(formatter string) LoggerOptionFunc
 	SetFormatterDisableTime(isOpen bool) LoggerOptionFunc
 	SetFormatterDisableHtmlEscap(isOpen bool) LoggerOptionFunc
+	SetCallDept(dept int) LoggerOptionFunc
 }
 
 /**
@@ -67,6 +68,7 @@ var OPTION_OUTPUT = "logrus_output"
 var OPTION_FORMATTER_TYPE = "formatter_type"
 var OPTION_FORMATTER_DISABLETIME = "formatter_disabletime"
 var OPTION_FORMATTER_DISABLEHTMLESCAP = "formatter_disablehtmlescap"
+var OPTION_CALLER_DEPT = "log_caller_dept"
 
 /**
  * @description: logrus 所有的日志级别

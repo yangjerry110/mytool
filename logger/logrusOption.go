@@ -125,6 +125,20 @@ func (l *LogrusOption) SetFormatterDisableHtmlEscap(isOpen bool) LoggerOptionFun
 }
 
 /**
+ * @description: SetCallDept
+ * @param {int32} dept
+ * @author: Jerry.Yang
+ * @date: 2022-10-09 18:36:41
+ * @return {*}
+ */
+func (l *LoggerOption) SetCallDept(dept int) LoggerOptionFunc {
+	return func(LoggerOptionFunc map[string]LoggerOptionVal) error {
+		LoggerOptionFunc[OPTION_CALLER_DEPT] = LoggerOptionVal{dept}
+		return nil
+	}
+}
+
+/**
  * @description: GetLevel
  * @author: Jerry.Yang
  * @date: 2022-09-27 15:43:48
@@ -361,6 +375,30 @@ func (l *LogrusOption) GetDisableHtmlEscape() (bool, error) {
 		return false, errors.New("GetDisableHtmlEscape Err : disableHTMLEscape is not set")
 	}
 	return disableHTMLEscapeInterface.Value.(bool), nil
+}
+
+/**
+ * @description: GetCallerDept
+ * @author: Jerry.Yang
+ * @date: 2022-10-09 18:39:24
+ * @return {*}
+ */
+func (l *LogrusOption) GetCallerDept() (int, error) {
+	/**
+	 * @step
+	 * @获取所有的options
+	 **/
+	options := l.Options
+
+	/**
+	 * @step
+	 * @获取设置的IsReportcaller
+	 **/
+	setVal, setValExist := options[OPTION_CALLER_DEPT]
+	if !setValExist {
+		return 0, errors.New("GetCallerDept Err : callerDept is not set")
+	}
+	return setVal.Value.(int), nil
 }
 
 /**

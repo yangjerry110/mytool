@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-30 10:05:38
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-09 15:54:18
+ * @LastEditTime: 2022-10-09 18:45:33
  * @Description: logrus
  */
 package logger
@@ -90,4 +90,15 @@ func (l *LogrusOptionsPkg) SetFormatterDisableHtmlEscap(isOpen bool) logger.Logg
  */
 func (l *LogrusOptionsPkg) SetFormatterDisableTime(isOpen bool) logger.LoggerOptionFunc {
 	return CreateLoggerOptionInterface(&logger.LogrusOption{}).LoggerOptionInterface.SetFormatterDisableTime(isOpen)
+}
+
+/**
+ * @description: SetCallDept
+ * @param {int} dept
+ * @author: Jerry.Yang
+ * @date: 2022-10-09 18:44:17
+ * @return {*}
+ */
+func (l *LogrusOptionsPkg) SetCallerDept(dept int) logger.LoggerOptionFunc {
+	return CreateLoggerOptionInterface(&logger.LogrusOption{}).LoggerOptionInterface.SetCallDept(dept)
 }

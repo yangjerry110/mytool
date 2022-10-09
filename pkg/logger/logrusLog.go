@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-27 18:32:50
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-09 17:55:54
+ * @LastEditTime: 2022-10-09 19:05:40
  * @Description: logrus
  */
 package logger
@@ -70,7 +70,7 @@ func (l *LogrusLogPkg) CreateOptionPkgInterface(LoggerOptionPkgInterface LoggerO
  * @return {*}
  */
 func (l *LogrusLogPkg) Log(args ...interface{}) error {
-	return l.SetDefaultOptions().SetLoggerOptions().CreateInterface(&logger.LogrusLog{Options: &logger.LogrusOption{LoggerOption: logger.LoggerOption{Options: l.Options}}}).LoggerInterface.SetLevel().SetWithFields().SetIsReportcaller().SetFormatter().SetOutput().SetLogger().WriteLog(args...)
+	return l.SetDefaultOptions().SetLoggerOptions().CreateInterface(&logger.LogrusLog{Options: &logger.LogrusOption{LoggerOption: logger.LoggerOption{Options: l.Options}}}).LoggerInterface.SetLevel().SetCallDept().SetWithFields().SetIsReportcaller().SetFormatter().SetOutput().SetLogger().WriteLog(args...)
 }
 
 /**
@@ -82,7 +82,7 @@ func (l *LogrusLogPkg) Log(args ...interface{}) error {
  * @return {*}
  */
 func (l *LogrusLogPkg) Logf(format string, args ...interface{}) error {
-	return l.SetDefaultOptions().SetOptions(l.OptionFuns).SetLoggerOptions().CreateInterface(&logger.LogrusLog{Options: &logger.LogrusOption{LoggerOption: logger.LoggerOption{Options: l.Options}}}).LoggerInterface.SetLevel().SetWithFields().SetIsReportcaller().SetFormatter().SetOutput().SetLogger().WriteLog(fmt.Sprintf(format, args...))
+	return l.SetDefaultOptions().SetOptions(l.OptionFuns).SetLoggerOptions().CreateInterface(&logger.LogrusLog{Options: &logger.LogrusOption{LoggerOption: logger.LoggerOption{Options: l.Options}}}).LoggerInterface.SetLevel().SetCallDept().SetWithFields().SetIsReportcaller().SetFormatter().SetOutput().SetLogger().WriteLog(fmt.Sprintf(format, args...))
 }
 
 /**
@@ -319,6 +319,7 @@ func (l *LogrusLogPkg) SetDefaultOptions() LoggerPkgInterface {
 		CreateLoggerOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetIsReportcaller(true),
 		CreateLoggerOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetOutput(os.Stdout),
 		CreateLoggerOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetFormatterDisableHtmlEscap(true),
+		CreateLoggerOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetCallerDept(4),
 	}
 
 	/**
