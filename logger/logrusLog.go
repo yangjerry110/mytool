@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-23 18:28:08
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-09 19:06:27
+ * @LastEditTime: 2022-10-09 19:39:02
  * @Description: logrus
  */
 package logger
@@ -241,6 +241,21 @@ func (l *LogrusLog) SetWithFields() LoggerInterface {
 		return l
 	}
 	l.WithFields = withFields
+
+	/**
+	 * @step
+	 * @获取dept
+	 **/
+	dept, err := l.Options.GetCallerDept()
+	if err != nil {
+		return l
+	}
+
+	/**
+	 * @step
+	 * @减dept
+	 **/
+	l.CallDept = dept - 1
 	return l
 }
 

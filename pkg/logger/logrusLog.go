@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-27 18:32:50
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-09 19:05:40
+ * @LastEditTime: 2022-10-09 19:35:33
  * @Description: logrus
  */
 package logger
@@ -319,7 +319,7 @@ func (l *LogrusLogPkg) SetDefaultOptions() LoggerPkgInterface {
 		CreateLoggerOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetIsReportcaller(true),
 		CreateLoggerOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetOutput(os.Stdout),
 		CreateLoggerOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetFormatterDisableHtmlEscap(true),
-		CreateLoggerOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetCallerDept(4),
+		CreateLoggerOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetCallerDept(5),
 	}
 
 	/**

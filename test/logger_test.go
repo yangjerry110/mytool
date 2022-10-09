@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-27 15:59:26
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-09 19:00:53
+ * @LastEditTime: 2022-10-09 19:19:53
  * @Description:
  */
 package test
@@ -19,5 +19,5 @@ func TestLogger(t *testing.T) {
 	// 	logger.SetLevel(logger.Level(toolLogger.DebugLevel)),
 	// }).WithField("testFields", "testFieldVal").Info("this is test withField")
 
-	logger.WithField("test", "testVal").Infof("this is test infof")
+	logger.WithField("test", "testVal").WithField("test1", "testval").Infof("this is test infof")
 }
