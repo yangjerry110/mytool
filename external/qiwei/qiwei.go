@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-26 17:01:20
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-26 18:31:29
+ * @LastEditTime: 2022-10-25 19:26:41
  * @Description: qiwei
  */
 package qiwei
@@ -51,6 +51,7 @@ type QiweiNotice struct {
 	AppletPagepath      string
 	QiweiFilePath       string
 	BotUrl              string
+	RedisConfPath       string
 	MentionedList       []string
 	MentionedMobileList []string
 }

@@ -2,51 +2,51 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-21 17:23:18
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-29 10:41:27
+ * @LastEditTime: 2022-10-26 18:03:33
  * @Description: notice test
  */
 package test
 
 import (
+	"encoding/base64"
+	"fmt"
 	"testing"
+
+	"github.com/yangjerry110/mytool/external/ali"
 )
 
 func TestQiweiNotice(t *testing.T) {
-	// qiweiNotice := notice.QiweiNotice{
-	// 	// AppId:      "kuhe",
-	// 	// CropId:     "ww2cb3d75879c33965",
-	// 	// CropSecret: "gnbzD0ZypFfLVdJG6Rwd1Rpw03xJlcZ3zTgbqPWRbyY",
-	// 	// UserIds:    "Jerry.Yang",
-	// 	// MsgType:    "markdown",
-	// 	// AgentId:    "1000077",
-	// 	// SendMsg:    "3333",
-	// }
 
-	/**
-	 * @step
-	 * @获取accessToken的url
-	 **/
-	// url := fmt.Sprintf("https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=%s&corpsecret=%s", "", "")
+	aliUploadLocaFile := ali.AliOssUploadFromLocalFile{
+		LocalFilePath: "/Users/admin/Desktop/1.png",
+	}
 
-	// /**
-	//  * @step
-	//  * @定义出参
-	//  **/
-	// type GetAccessTokenOutput struct {
-	// 	Errcode     int32  `json:"errcode"`
-	// 	Errmsg      string `json:"errmsg"`
-	// 	AccessToken string `json:"access_token"`
-	// 	ExpiresIn   int    `json:"expires_in"`
-	// }
+	fileContent, _ := aliUploadLocaFile.GetFileData()
+	fileContentBase64 := base64.StdEncoding.EncodeToString(fileContent)
 
-	// /**
-	//  * @step
-	//  * @获取accessToken
-	//  **/
-	// resp := &GetAccessTokenOutput{}
-	// http.HttpRequest("GET", url, bytes.NewBuffer([]byte{}), resp)
+	a := ali.AliDingdingNotice{
+		RedisConfPath:    "/Users/admin/go/src/my-tool/test/conf/redis.yaml",
+		DingdingFilePath: "",
+		AppId:            "test",
+		AppKey:           "dinggxetcehjiqxpgedx",
+		AgentId:          "1946178798",
+		AppSecret:        "UjvQWwvO0nxQzYqECsx6LkqKN9QvOI-tJOBuvsA755BTt40Tchro8vjGLJfzSFvO",
+		MsgType:          "news",
+		Title:            "test markdown ",
+		FileType:         "image",
+		MediaType:        "png",
+		MediaData:        fileContentBase64,
+		MessageUrl:       "https://www.baidu.com",
+		SingleTitle:      "查看详情",
+		SingleUrl:        "https://www.baidu.com",
+		Msg:              "# 这是支持markdown的文本   \n   ## 标题2    \n   * 列表1   \n  ![alt 啊](https://img.alicdn.com/tps/TB1XLjqNVXXXXc4XVXXXXXXXXXX-170-64.png)",
+		UserIds:          "manager4791",
+	}
+	accessToken, err := a.NotifyMessage()
 
-	// fmt.Printf("resp : %v", resp)
-	// fmt.Print("\r\n")
+	fmt.Printf("accessToken : %v", accessToken)
+	fmt.Print("\r\n")
 
+	fmt.Printf("err : %v", err)
+	fmt.Print("\r\n")
 }

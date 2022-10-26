@@ -1,9 +1,9 @@
 /*
  * @Author: Jerry.Yang
- * @Date: 2022-09-21 17:42:36
+ * @Date: 2022-10-10 15:41:46
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-26 11:08:35
- * @Description: qiwei common
+ * @LastEditTime: 2022-10-26 16:09:52
+ * @Description: ali
  */
 package common
 
@@ -17,24 +17,24 @@ import (
 )
 
 /**
- * @description: GetQiweiAccessToken
+ * @description: GetAccessToken
  * @author: Jerry.Yang
- * @date: 2022-09-22 16:02:25
+ * @date: 2022-10-10 15:46:33
  * @return {*}
  */
-func (q *QiweiCommon) GetAccessToken() (string, error) {
+func (a *AliCommon) GetAccessToken() (string, error) {
 
 	/**
 	 * @step
 	 * @定义key
 	 **/
-	key := fmt.Sprintf("%s_qiwei_access_token", q.AppId)
+	key := fmt.Sprintf("%s_dingding_access_token", a.AppId)
 
 	/**
 	 * @step
 	 * @获取缓存里面的accessToken
 	 **/
-	cacheAccessTokenInterface, err := cache.Client(q.RedisConfPath).Get(key).Result()
+	cacheAccessTokenInterface, err := cache.Client(a.RedisConfPath).Get(key).Result()
 	cacheAccessTokenStr := cacheAccessTokenInterface.(string)
 	if err == nil && cacheAccessTokenStr != "" {
 		return cacheAccessTokenStr, nil
@@ -44,7 +44,7 @@ func (q *QiweiCommon) GetAccessToken() (string, error) {
 	 * @step
 	 * @获取accessToken的url
 	 **/
-	url := fmt.Sprintf("https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=%s&corpsecret=%s", q.CropId, q.CropSecret)
+	url := fmt.Sprintf("https://oapi.dingtalk.com/gettoken?appkey=%s&appsecret=%s", a.AppKey, a.AppSecret)
 
 	/**
 	 * @step
@@ -81,7 +81,7 @@ func (q *QiweiCommon) GetAccessToken() (string, error) {
 	 * @step
 	 * @设置accessToken缓存
 	 **/
-	err = cache.Client(q.RedisConfPath).Set(key, resp.AccessToken, 7100*time.Second).GetErr()
+	err = cache.Client(a.RedisConfPath).Set(key, resp.AccessToken, 7100*time.Second).GetErr()
 	if err != nil {
 		return "", err
 	}

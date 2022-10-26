@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-26 17:05:18
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-26 18:44:21
+ * @LastEditTime: 2022-10-26 17:54:35
  * @Description: ali
  */
 package ali
@@ -57,3 +57,128 @@ type AliOssUpLoadFromFileUrl struct {
 	AliOssUpload
 	FileUrl string
 }
+
+type AliDingdingNoticeInterface interface {
+	CheckParams() error
+	NotifyMessage() (bool, error)
+}
+
+type AliUploadMedia struct {
+	FileType         string
+	MediaType        string
+	MediaData        string
+	AccessToken      string
+	DingdingFilePath string
+}
+
+type AliUploadLink struct {
+	Link          string
+	PcSlide       bool
+	AgentId       string
+	CropId        string
+	ContainerType string
+	RedirectType  string
+}
+
+/**
+ * @description: AliDingdingNotice
+ * @author: Jerry.Yang
+ * @date: 2022-10-10 16:24:19
+ * @return {*}
+ */
+type AliDingdingNotice struct {
+	AppId            string
+	CropId           string
+	AppKey           string
+	AppSecret        string
+	AgentId          string
+	AccessToken      string
+	MsgType          string
+	UserIds          string
+	DeptIds          string
+	Title            string
+	ToAllUser        bool
+	Msg              string
+	MediaType        string
+	MediaData        string
+	Duration         string
+	MessageUrl       string
+	PicUrl           string
+	SingleTitle      string
+	SingleUrl        string
+	BtnOrientation   string
+	RedisConfPath    string
+	DingdingFilePath string
+	FileType         string
+	PcSlide          bool
+	ContainerType    string
+	RedirectType     string
+	BtnJsonList      []AliDingdingNoticeBtnJson
+}
+
+/**
+ * @description: AliDingdingNoticeBtnJson
+ * @author: Jerry.Yang
+ * @date: 2022-10-11 16:19:49
+ * @return {*}
+ */
+type AliDingdingNoticeBtnJson struct {
+	Title     string
+	ActionUrl string
+}
+
+/**
+ * @description: NotifyTextMessage
+ * @author: Jerry.Yang
+ * @date: 2022-10-10 16:24:33
+ * @return {*}
+ */
+type NotifyTextMessage struct{ *AliDingdingNotice }
+
+/**
+ * @description:NotifyMarkdownMessage
+ * @author: Jerry.Yang
+ * @date: 2022-10-10 16:57:18
+ * @return {*}
+ */
+type NotifyMarkdownMessage struct{ *AliDingdingNotice }
+
+/**
+ * @description: NotifyMediaMessage
+ * @author: Jerry.Yang
+ * @date: 2022-10-10 17:06:28
+ * @return {*}
+ */
+type NotifyMediaMessage struct{ *AliDingdingNotice }
+
+/**
+ * @description: NotifyVoiceMessage
+ * @author: Jerry.Yang
+ * @date: 2022-10-11 16:05:47
+ * @return {*}
+ */
+type NotifyVoiceMessage struct{ *AliDingdingNotice }
+
+/**
+ * @description: NotifyFileMessage
+ * @author: Jerry.Yang
+ * @date: 2022-10-11 16:09:17
+ * @return {*}
+ */
+type NotifyFileMessage struct{ *AliDingdingNotice }
+
+/**
+ * @description: NotifyLinkMessage
+ * @author: Jerry.Yang
+ * @date: 2022-10-11 16:11:29
+ * @return {*}
+ */
+type NotifyLinkMessage struct{ *AliDingdingNotice }
+
+/**
+ * @description: NotifyNewsMessage
+ * @author: Jerry.Yang
+ * @date: 2022-10-11 16:18:01
+ * @return {*}
+ */
+type NotifyNewsMessage struct{ *AliDingdingNotice }

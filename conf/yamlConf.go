@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-22 17:15:12
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-26 15:16:39
+ * @LastEditTime: 2022-10-25 19:00:57
  * @Description: yaml conf
  */
 package conf
@@ -13,11 +13,6 @@ import (
 
 	"gopkg.in/yaml.v2"
 )
-
-type YamlConf struct {
-	YamlFilePath string
-	Conf         interface{}
-}
 
 /**
  * @description: Parse()
@@ -40,6 +35,9 @@ func (y *YamlConf) GetConf() error {
 	 * @渲染到结构体
 	 **/
 	decoder := yaml.NewDecoder(bytes.NewReader(yamlData))
-	decoder.Decode(&y.Conf)
+	err = decoder.Decode(y.Conf)
+	if err != nil {
+		return err
+	}
 	return nil
 }

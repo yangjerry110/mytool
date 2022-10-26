@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-21 15:30:12
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-26 18:24:00
+ * @LastEditTime: 2022-10-25 19:26:50
  * @Description: 企微通知
  */
 package qiwei
@@ -45,7 +45,7 @@ func (q *QiweiNotice) NotifyMessage() (bool, error) {
 	 * @step
 	 * @获取accessToken
 	 **/
-	qiweiCommon := mytoolCommon.QiweiCommon{AppId: q.AppId, CropId: q.CropId, CropSecret: q.CropSecret}
+	qiweiCommon := mytoolCommon.QiweiCommon{AppId: q.AppId, CropId: q.CropId, CropSecret: q.CropSecret, RedisConfPath: q.RedisConfPath}
 	accessToken, err := qiweiCommon.GetAccessToken()
 	if err != nil {
 		return false, err
@@ -561,6 +561,10 @@ func (q *QiweiNotice) CheckParams() error {
 
 	if q.AgentId == "" {
 		return errors.New("QiweiNotice Err : AgentId is empty!")
+	}
+
+	if q.RedisConfPath == "" {
+		return errors.New("QiweiNotice Err : RedisConfPath is empty!")
 	}
 	return nil
 }

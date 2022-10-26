@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-22 14:05:52
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-26 17:27:46
+ * @LastEditTime: 2022-10-26 17:36:20
  * @Description: ali oss
  */
 package ali
@@ -14,12 +14,16 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"mime/multipart"
 	"net/http"
+	"net/url"
 	"os"
+	"path/filepath"
 	"time"
 
 	aliyunOss "github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/google/uuid"
+	mytoolHttp "github.com/yangjerry110/mytool/http"
 )
 
 /**
@@ -239,6 +243,164 @@ func (a *AliOssUpLoadFromFileUrl) Upload() (string, error) {
 }
 
 /**
+ * @description: AliUploadMedia upload
+ * @author: Jerry.Yang
+ * @date: 2022-10-10 17:10:40
+ * @return {*}
+ */
+func (a *AliUploadMedia) Upload() (string, error) {
+
+	/**
+	 * @step
+	 * @解密数据
+	 **/
+	decodMediaData, err := base64.StdEncoding.DecodeString(a.MediaData)
+	if err != nil {
+		return "", err
+	}
+
+	/**
+	 * @step
+	 * @构建body参数
+	 **/
+	body := &bytes.Buffer{}
+
+	/**
+	 * @step
+	 * @实例化multipart
+	 **/
+	writer := multipart.NewWriter(body)
+
+	/**
+	 * @step
+	 * @创建name
+	 **/
+	fileName := fmt.Sprintf("%d_%s", time.Now().Unix(), uuid.New().String())
+
+	/**
+	 * @step
+	 * @创建path
+	 **/
+	filePath := fmt.Sprintf("%s.%s", a.DingdingFilePath+fileName, a.MediaType)
+
+	/**
+	 * @step
+	 * @创建multipart 文件字段
+	 * @创建一个文件的write对象
+	 **/
+	formFileWriter, err := writer.CreateFormFile("media", filepath.Base(filePath))
+	if err != nil {
+		return "", err
+	}
+
+	/**
+	 * @step
+	 * @写入传入的文件数据
+	 **/
+	formFileWriter.Write(decodMediaData)
+
+	/**
+	 * @step
+	 * @close
+	 **/
+	err = writer.Close()
+	if err != nil {
+		return "", err
+	}
+
+	/**
+	 * @step
+	 * @构建请求url
+	 **/
+	url := fmt.Sprintf("https://oapi.dingtalk.com/media/upload?access_token=%s&type=%s", a.AccessToken, a.FileType)
+
+	/**
+	 * @step
+	 * @构建返回体结构体
+	 **/
+	type UploadMediaOutput struct {
+		ErrCode   int32  `json:"errcode"`
+		ErrMsg    string `json:"errmsg"`
+		Type      string `json:"type"`
+		MediaId   string `json:"media_id"`
+		CreatedAt string `json:"created_at"`
+	}
+
+	/**
+	 * @step
+	 * @发送请求
+	 **/
+	resp := &UploadMediaOutput{}
+
+	/**
+	 * @step
+	 * @设置httpOption
+	 **/
+	mytoolHttpOptions := mytoolHttp.HttpOptions{}
+	httpOptions := []mytoolHttp.HttpOptionFunc{
+		mytoolHttpOptions.SetHeaders(map[string]string{
+			"Content-Type": writer.FormDataContentType(),
+		}),
+	}
+
+	/**
+	 * @step
+	 * @组装请求参数
+	 **/
+	httpClient := mytoolHttp.HttpClient{
+		Method:  "POST",
+		Url:     url,
+		Body:    body,
+		Options: httpOptions,
+		Output:  resp,
+	}
+	httpClient.Request()
+
+	/**
+	 * @step
+	 * @判断结果
+	 **/
+	if resp.ErrCode != 0 {
+		return "", errors.New(resp.ErrMsg)
+	}
+
+	return resp.MediaId, nil
+}
+
+/**
+ * @description: Upload
+ * @author: Jerry.Yang
+ * @date: 2022-10-26 17:28:45
+ * @return {*}
+ */
+func (a *AliUploadLink) Upload() (string, error) {
+
+	/**
+	 * @step
+	 * @定义返回
+	 **/
+	resultUrl := ""
+
+	/**
+	 * @step
+	 * @对link进行urlencode
+	 **/
+	encodeUrl := url.QueryEscape(a.Link)
+
+	/**
+	 * @step
+	 * @判断是否在工作台打开
+	 **/
+	if a.ContainerType != "" {
+		resultUrl = fmt.Sprintf("dingtalk://dingtalkclient/action/openapp?corpid=%s&container_type=%s&app_id=%s&redirect_type=jump&redirect_url=%s", a.CropId, a.ContainerType, a.AgentId, encodeUrl)
+		return resultUrl, nil
+	}
+
+	resultUrl = fmt.Sprintf("dingtalk://dingtalkclient/page/link?url=%s&pc_slide=%t", encodeUrl, a.PcSlide)
+	return resultUrl, nil
+}
+
+/**
  * @description: CreateClient
  * @author: Jerry.Yang
  * @date: 2022-09-22 14:12:39
@@ -318,6 +480,7 @@ func (a *AliOssUploadFromLocalFile) GetFileData() ([]byte, error) {
  * @return {*}
  */
 func (a *AliOssUpLoadFromFileUrl) GetFileData() ([]byte, error) {
+
 	/**
 	 * @step
 	 * @获取网络图片相关的资源
