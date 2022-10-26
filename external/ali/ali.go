@@ -2,13 +2,20 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-26 17:05:18
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-26 17:54:35
+ * @LastEditTime: 2022-10-26 18:15:37
  * @Description: ali
  */
 package ali
 
 type AliInterface interface {
 	Upload() (string, error)
+}
+
+type AliDingdingNoticeInterface interface {
+	NotifyMessage() (bool, error)
+	FormatNotifyMessage() ([]byte, error)
+	CheckParams() error
+	DoNotify(accessToken string, noticeReq []byte) (bool, error)
 }
 
 /**
@@ -56,11 +63,6 @@ type AliOssUploadFromLocalFile struct {
 type AliOssUpLoadFromFileUrl struct {
 	AliOssUpload
 	FileUrl string
-}
-
-type AliDingdingNoticeInterface interface {
-	CheckParams() error
-	NotifyMessage() (bool, error)
 }
 
 type AliUploadMedia struct {

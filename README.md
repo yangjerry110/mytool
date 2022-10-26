@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-19 17:46:05
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-09 17:40:39
+ * @LastEditTime: 2022-10-26 18:26:06
  * @Description: 
 -->
 # my-tool
@@ -188,6 +188,27 @@ func main() {
     // show this
     // {"file":"/Users/admin/go/src/my-tool/logger/logrusLog.go:60","func":"github.com/yangjerry110/mytool/logger.(*LogrusLog).WriteLog","level":"info","msg":"this is test withField","time":"2022-10-09T17:32:59+08:00"}
 
+}
+```
+
+## 8.cache
+>1.默认采用的redis   
+>2.可以自己设置cache的引擎(setCache func)   
+>3.可以单独获取结果和error(getResult func, getErr func) 
+>4.使用默认的方式连接引擎的话，需要使用默认的配置(有相应的default)  
+>5.连接cache引擎的时候，需要传入conf(以yaml的配置方式)
+
+
+```
+package main 
+import (
+    "github.com/yangjerry110/mytool/pkg/cache"
+)
+
+func main() {
+    cache.Client(redisConfPath).Set("test","test",1*time.Minute).GetErr()
+
+    resultInterface,err := cache.Client(redisConfPath).Get("test").Result()
 }
 ```
 

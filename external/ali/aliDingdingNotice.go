@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-10-10 15:36:04
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-26 18:04:33
+ * @LastEditTime: 2022-10-26 18:16:28
  * @Description: ali dingding notice
  */
 package ali
@@ -814,6 +814,16 @@ func (n *NotifyNewsMessage) FormatNotifyMessage() ([]byte, error) {
 		return nil, err
 	}
 	return jsonReq, nil
+}
+
+/**
+ * @description: FormatNotifyMessage
+ * @author: Jerry.Yang
+ * @date: 2022-10-26 18:16:33
+ * @return {*}
+ */
+func (a AliDingdingNotice) FormatNotifyMessage() ([]byte, error) {
+	return nil, nil
 }
 
 /**
