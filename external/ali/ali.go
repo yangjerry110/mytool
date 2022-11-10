@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-26 17:05:18
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-26 18:15:37
+ * @LastEditTime: 2022-11-10 18:28:43
  * @Description: ali
  */
 package ali
@@ -110,6 +110,7 @@ type AliDingdingNotice struct {
 	SingleUrl        string
 	BtnOrientation   string
 	RedisConfPath    string
+	RedisConfName    string
 	DingdingFilePath string
 	FileType         string
 	PcSlide          bool

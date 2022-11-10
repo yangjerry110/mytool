@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-10-13 16:48:51
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-26 15:50:46
+ * @LastEditTime: 2022-11-10 18:24:10
  * @Description: cache base
  */
 package cache
@@ -18,7 +18,7 @@ import (
 
 type CachePkgInterface interface {
 	// 创建链接
-	Client(configPath string) CachePkgInterface
+	Client(filePath string, fileName string) CachePkgInterface
 	CreateDefaultClient() CachePkgInterface
 	// 检查配置
 	CheckConfig() error
@@ -249,15 +249,16 @@ func SetCache(cache ...string) CachePkgInterface {
 }
 
 /**
- * @description: 连接到redis client
- * @param {string} redisConfPath
+ * @description: Client
+ * @param {string} filePath
+ * @param {string} fileName
  * @author: Jerry.Yang
- * @date: 2022-10-26 10:49:46
+ * @date: 2022-11-10 18:24:09
  * @return {*}
  */
-func Client(redisConfPath string) CachePkgInterface {
+func Client(filePath string, fileName string) CachePkgInterface {
 	cachePkg := &CachePkgRedis{}
-	return CreatePkgCache(cachePkg).CachePkgInterface.Client(redisConfPath)
+	return CreatePkgCache(cachePkg).CachePkgInterface.Client(filePath, fileName)
 }
 
 /**
@@ -274,14 +275,15 @@ func CreateDefaultRedisClient(addr string) CachePkgInterface {
 
 /**
  * @description: ClientBigCache
- * @param {string} bigCacheConfPath
+ * @param {string} filePath
+ * @param {string} fileName
  * @author: Jerry.Yang
- * @date: 2022-10-26 15:11:36
+ * @date: 2022-11-10 18:24:35
  * @return {*}
  */
-func ClientBigCache(bigCacheConfPath string) CachePkgInterface {
+func ClientBigCache(filePath string, fileName string) CachePkgInterface {
 	cachePkg := &CachePkgBigCache{}
-	return CreatePkgCache(cachePkg).CachePkgInterface.Client(bigCacheConfPath)
+	return CreatePkgCache(cachePkg).CachePkgInterface.Client(filePath, fileName)
 }
 
 /**
@@ -299,14 +301,15 @@ func ClientDefaultBigCache(eviction time.Duration, cleanTime time.Duration) Cach
 
 /**
  * @description: ClientFreeCache
- * @param {string} freeCacheConfPath
+ * @param {string} filePath
+ * @param {string} fileName
  * @author: Jerry.Yang
- * @date: 2022-10-26 15:50:37
+ * @date: 2022-11-10 18:24:59
  * @return {*}
  */
-func ClientFreeCache(freeCacheConfPath string) CachePkgInterface {
+func ClientFreeCache(filePath string, fileName string) CachePkgInterface {
 	cachePkg := &CachePkgFreeCache{}
-	return CreatePkgCache(cachePkg).CachePkgInterface.Client(freeCacheConfPath)
+	return CreatePkgCache(cachePkg).CachePkgInterface.Client(filePath, fileName)
 }
 
 /**

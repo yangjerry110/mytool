@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-21 15:30:12
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-25 19:26:50
+ * @LastEditTime: 2022-11-10 18:29:12
  * @Description: 企微通知
  */
 package qiwei
@@ -45,7 +45,7 @@ func (q *QiweiNotice) NotifyMessage() (bool, error) {
 	 * @step
 	 * @获取accessToken
 	 **/
-	qiweiCommon := mytoolCommon.QiweiCommon{AppId: q.AppId, CropId: q.CropId, CropSecret: q.CropSecret, RedisConfPath: q.RedisConfPath}
+	qiweiCommon := mytoolCommon.QiweiCommon{AppId: q.AppId, CropId: q.CropId, CropSecret: q.CropSecret, RedisConfPath: q.RedisConfPath, RedisConfName: q.RedisConfName}
 	accessToken, err := qiweiCommon.GetAccessToken()
 	if err != nil {
 		return false, err

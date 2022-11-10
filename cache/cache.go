@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-10-11 18:02:06
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-26 15:03:47
+ * @LastEditTime: 2022-11-10 18:20:26
  * @Description: cache
  */
 package cache
@@ -16,7 +16,7 @@ import (
 
 type CacheInterface interface {
 	// 创建链接
-	Client(configPath string) CacheInterface
+	Client(filePath string, fileName string) CacheInterface
 	CreateDefaultClient() CacheInterface
 	// 检查配置
 	CheckConfig() error

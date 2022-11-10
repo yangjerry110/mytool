@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-27 15:59:26
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-09 19:19:53
+ * @LastEditTime: 2022-11-10 15:14:31
  * @Description:
  */
 package test
@@ -10,14 +10,13 @@ package test
 import (
 	"testing"
 
+	mytoolLogger "github.com/yangjerry110/mytool/logger"
 	"github.com/yangjerry110/mytool/pkg/logger"
 )
 
 func TestLogger(t *testing.T) {
-	// logger.SetOptions([]toolLogger.LoggerOptionFunc{
-	// 	logger.SetIsReportcaller(true),
-	// 	logger.SetLevel(logger.Level(toolLogger.DebugLevel)),
-	// }).WithField("testFields", "testFieldVal").Info("this is test withField")
-
-	logger.WithField("test", "testVal").WithField("test1", "testval").Infof("this is test infof")
+	return
+	logger.SetOptions([]mytoolLogger.LoggerOptionFunc{
+		logger.SetLevel(logger.Level(mytoolLogger.WarnLevel)),
+	}).Error("11111")
 }

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-10-25 17:28:04
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-26 15:03:27
+ * @LastEditTime: 2022-11-10 18:27:01
  * @Description: bigcache
  */
 package bigcache
@@ -33,13 +33,14 @@ const (
 
 /**
  * @description: Client
- * @param {string} configPath
+ * @param {string} filePath
+ * @param {string} fileName
  * @author: Jerry.Yang
- * @date: 2022-10-26 11:50:26
+ * @date: 2022-11-10 18:27:00
  * @return {*}
  */
-func (b *BigCache) Client(configPath string) cache.CacheInterface {
-	yamlConf := conf.YamlConf{YamlFilePath: configPath, Conf: &b}
+func (b *BigCache) Client(filePath string, fileName string) cache.CacheInterface {
+	yamlConf := conf.YamlConf{FilePath: filePath, FileName: fileName, Conf: &b}
 	err := yamlConf.GetConf()
 	if err != nil {
 		b.BigCacheErr = err

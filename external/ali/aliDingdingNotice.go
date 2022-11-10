@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-10-10 15:36:04
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-26 18:16:28
+ * @LastEditTime: 2022-11-10 18:28:51
  * @Description: ali dingding notice
  */
 package ali
@@ -42,7 +42,7 @@ func (a *AliDingdingNotice) NotifyMessage() (bool, error) {
 	 * @step
 	 * @获取accessToken
 	 **/
-	aliCommon := mytoolCommon.AliCommon{AppId: a.AppId, AppKey: a.AppKey, AppSecret: a.AppSecret, RedisConfPath: a.RedisConfPath}
+	aliCommon := mytoolCommon.AliCommon{AppId: a.AppId, AppKey: a.AppKey, AppSecret: a.AppSecret, RedisConfPath: a.RedisConfPath, RedisConfName: a.RedisConfName}
 	accessToken, err := aliCommon.GetAccessToken()
 	if err != nil {
 		return false, err

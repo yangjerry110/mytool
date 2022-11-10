@@ -15,42 +15,6 @@ import (
 	"time"
 )
 
-type (
-	CreateDao struct {
-		ProjectName string
-		DaoName     string
-		ModelName   string
-		AuthorName  []string
-	}
-
-	CreateDaoInfo struct {
-		ProjectName string
-		DaoName     string
-		ModelName   string
-		AuthorName  string
-	}
-
-	CreateDaoList struct {
-		ProjectName string
-		DaoName     string
-		ModelName   string
-		AuthorName  string
-	}
-
-	CreateDaoSave struct {
-		ProjectName string
-		DaoName     string
-		ModelName   string
-		AuthorName  string
-	}
-
-	CreateDaoDeleted struct {
-		ProjectName string
-		DaoName     string
-		ModelName   string
-		AuthorName  string
-	}
-)
 
 /**
  * @description: CreatedDao

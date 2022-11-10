@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-10-12 14:24:55
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-26 15:04:13
+ * @LastEditTime: 2022-11-10 18:27:10
  * @Description: client
  */
 package redis
@@ -35,8 +35,16 @@ type RedisCache struct {
 	MetricsIncludeNotFound bool   `yaml:"metrics_include_not_found"`
 }
 
-func (r *RedisCache) Client(configPath string) cache.CacheInterface {
-	yamlConf := conf.YamlConf{YamlFilePath: configPath, Conf: &r}
+/**
+ * @description: Client
+ * @param {string} filePath
+ * @param {string} fileName
+ * @author: Jerry.Yang
+ * @date: 2022-11-10 18:27:09
+ * @return {*}
+ */
+func (r *RedisCache) Client(filePath string, fileName string) cache.CacheInterface {
+	yamlConf := conf.YamlConf{FilePath: filePath, FileName: fileName, Conf: &r}
 	err := yamlConf.GetConf()
 	if err != nil {
 		r.RedisErr = err

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-22 17:19:49
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-26 18:39:57
+ * @LastEditTime: 2022-11-10 18:18:38
  * @Description: yaml conf
  */
 package conf
@@ -13,12 +13,13 @@ type YamlConf struct{}
 
 /**
  * @description: GetYamlConf
- * @param {string} yamlConfPath
+ * @param {string} filePath
+ * @param {string} fileName
  * @param {interface{}} config
  * @author: Jerry.Yang
- * @date: 2022-09-23 17:54:56
+ * @date: 2022-11-10 18:19:01
  * @return {*}
  */
-func GetYamlConf(yamlConfPath string, config interface{}) error {
-	return CreateConfInterface(&conf.YamlConf{YamlFilePath: yamlConfPath, Conf: &config}).ConfInterface.GetConf()
+func GetYamlConf(filePath string, fileName string, config interface{}) error {
+	return CreateConfInterface(&conf.YamlConf{FilePath: filePath, FileName: fileName, Conf: config}).ConfInterface.GetConf()
 }

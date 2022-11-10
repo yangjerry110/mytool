@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-26 18:43:31
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-26 18:13:45
+ * @LastEditTime: 2022-11-10 18:32:42
  * @Description: ali
  */
 package ali
@@ -52,6 +52,7 @@ type AliDingdingNotice struct {
 	SingleUrl        string
 	BtnOrientation   string
 	RedisConfPath    string
+	RedisConfName    string
 	DingdingFilePath string
 	FileType         string
 	PcSlide          bool
@@ -146,5 +147,5 @@ func AliUploadOssFromFileUrl(accessKeyId string, accessKeySecret string, endPoin
  */
 func (a *AliDingdingNotice) AliDingdingNotice() (bool, error) {
 	return CreateAliDingdingNoticeInterface(&ali.AliDingdingNotice{
-		AppId: a.AppId, CropId: a.CropId, AppKey: a.AppKey, AppSecret: a.AppSecret, AgentId: a.AgentId, AccessToken: a.AccessToken, MsgType: a.MsgType, UserIds: a.UserIds, DeptIds: a.DeptIds, Title: a.Title, ToAllUser: a.ToAllUser, Msg: a.Msg, MediaType: a.MediaType, MediaData: a.MediaData, Duration: a.Duration, MessageUrl: a.MessageUrl, PicUrl: a.PicUrl, SingleTitle: a.SingleTitle, SingleUrl: a.SingleUrl, BtnOrientation: a.BtnOrientation, RedisConfPath: a.RedisConfPath, DingdingFilePath: a.DingdingFilePath, FileType: a.FileType, PcSlide: a.PcSlide, ContainerType: a.ContainerType, RedirectType: a.RedirectType, BtnJsonList: a.BtnJsonList}).AliDingdingNoticeInterface.NotifyMessage()
+		AppId: a.AppId, CropId: a.CropId, AppKey: a.AppKey, AppSecret: a.AppSecret, AgentId: a.AgentId, AccessToken: a.AccessToken, MsgType: a.MsgType, UserIds: a.UserIds, DeptIds: a.DeptIds, Title: a.Title, ToAllUser: a.ToAllUser, Msg: a.Msg, MediaType: a.MediaType, MediaData: a.MediaData, Duration: a.Duration, MessageUrl: a.MessageUrl, PicUrl: a.PicUrl, SingleTitle: a.SingleTitle, SingleUrl: a.SingleUrl, BtnOrientation: a.BtnOrientation, RedisConfPath: a.RedisConfPath, DingdingFilePath: a.DingdingFilePath, FileType: a.FileType, PcSlide: a.PcSlide, ContainerType: a.ContainerType, RedirectType: a.RedirectType, BtnJsonList: a.BtnJsonList, RedisConfName: a.RedisConfName}).AliDingdingNoticeInterface.NotifyMessage()
 }

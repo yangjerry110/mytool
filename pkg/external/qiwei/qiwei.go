@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-26 17:32:01
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-26 18:34:34
+ * @LastEditTime: 2022-11-10 18:32:21
  * @Description:
  */
 package qiwei
@@ -45,6 +45,8 @@ type QiweiNotice struct {
 	AppletPagepath      string
 	QiweiFilePath       string
 	BotUrl              string
+	RedisConfPath       string
+	RedisConfName       string
 	MentionedList       []string
 	MentionedMobileList []string
 }
@@ -67,7 +69,7 @@ func CreateExternalQiweiInterface(externalQiweiInterface qiwei.ExternalQiweiInte
  * @return {*}
  */
 func (q *QiweiNotice) NotifyMessage() (bool, error) {
-	return CreateExternalQiweiInterface(&qiwei.QiweiNotice{AppId: q.AppId, MsgType: q.MsgType, CropId: q.CropId, CropSecret: q.CropSecret, AgentId: q.AgentId, DepartmentIds: q.DepartmentIds, TagIds: q.TagIds, UserIds: q.UserIds, Safe: q.Safe, SendMsg: q.SendMsg, MediaData: q.MediaData, MediaType: q.MediaType, Title: q.Title, Description: q.Description, Url: q.Url, PicUrl: q.PicUrl, EnableIdTrans: q.EnableIdTrans, Btntxt: q.Btntxt, AppletId: q.AppletId, AppletPagepath: q.AppletPagepath, QiweiFilePath: q.QiweiFilePath}).ExternalQiweiInterface.NotifyMessage()
+	return CreateExternalQiweiInterface(&qiwei.QiweiNotice{AppId: q.AppId, MsgType: q.MsgType, CropId: q.CropId, CropSecret: q.CropSecret, AgentId: q.AgentId, DepartmentIds: q.DepartmentIds, TagIds: q.TagIds, UserIds: q.UserIds, Safe: q.Safe, SendMsg: q.SendMsg, MediaData: q.MediaData, MediaType: q.MediaType, Title: q.Title, Description: q.Description, Url: q.Url, PicUrl: q.PicUrl, EnableIdTrans: q.EnableIdTrans, Btntxt: q.Btntxt, AppletId: q.AppletId, AppletPagepath: q.AppletPagepath, QiweiFilePath: q.QiweiFilePath, RedisConfPath: q.RedisConfPath, RedisConfName: q.RedisConfName}).ExternalQiweiInterface.NotifyMessage()
 }
 
 /**
@@ -92,6 +94,6 @@ func (q *QiweiNotice) NotifyMessageBot() (bool, error) {
  * @date: 2022-09-26 16:57:56
  * @return {*}
  */
-func QiweiUploadMedia(appId string, cropId string, cropSecret string, mediaData string, mediaType string, qiweiFilePath string) (string, error) {
-	return CreateExternalQiweiInterface(&qiwei.QiweiNotice{AppId: appId, CropId: cropId, CropSecret: cropSecret, MediaData: mediaData, MediaType: mediaType, QiweiFilePath: qiweiFilePath}).ExternalQiweiInterface.Upload()
+func QiweiUploadMedia(appId string, cropId string, cropSecret string, mediaData string, mediaType string, qiweiFilePath string, redisConfPath string, redisConfName string) (string, error) {
+	return CreateExternalQiweiInterface(&qiwei.QiweiNotice{AppId: appId, CropId: cropId, CropSecret: cropSecret, MediaData: mediaData, MediaType: mediaType, QiweiFilePath: qiweiFilePath, RedisConfPath: redisConfPath, RedisConfName: redisConfName}).ExternalQiweiInterface.Upload()
 }

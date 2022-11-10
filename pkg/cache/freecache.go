@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-10-25 18:01:24
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-26 16:08:37
+ * @LastEditTime: 2022-11-10 18:26:29
  * @Description: freecache
  */
 package cache
@@ -26,16 +26,16 @@ type CachePkgFreeCache struct {
 }
 
 /**
- * @description: CreateBigCacheClient
- * @param {time.Duration} eviction
- * @param {time.Duration} cleanTime
+ * @description: Client
+ * @param {string} filePath
+ * @param {string} fileName
  * @author: Jerry.Yang
- * @date: 2022-10-25 17:44:07
+ * @date: 2022-11-10 18:26:28
  * @return {*}
  */
-func (c *CachePkgFreeCache) Client(configPath string) CachePkgInterface {
+func (c *CachePkgFreeCache) Client(filePath string, fileName string) CachePkgInterface {
 	cacheFreeCache := &mytoolFreecache.FreeCache{}
-	CreateCache(cacheFreeCache).CacheInterface.Client(configPath)
+	CreateCache(cacheFreeCache).CacheInterface.Client(filePath, fileName)
 	c.FreeCache = cacheFreeCache.FreeCache
 	return c
 }

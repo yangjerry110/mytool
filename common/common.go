@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-26 15:09:17
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-25 19:24:28
+ * @LastEditTime: 2022-11-10 18:27:42
  * @Description: common
  */
 package common
@@ -16,6 +16,7 @@ type QiweiCommon struct {
 	CropId        string
 	CropSecret    string
 	RedisConfPath string
+	RedisConfName string
 }
 
 type AliCommon struct {
@@ -23,4 +24,5 @@ type AliCommon struct {
 	AppKey        string
 	AppSecret     string
 	RedisConfPath string
+	RedisConfName string
 }

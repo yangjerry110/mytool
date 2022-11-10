@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-21 17:42:36
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-26 11:08:35
+ * @LastEditTime: 2022-11-10 18:28:19
  * @Description: qiwei common
  */
 package common
@@ -34,7 +34,7 @@ func (q *QiweiCommon) GetAccessToken() (string, error) {
 	 * @step
 	 * @获取缓存里面的accessToken
 	 **/
-	cacheAccessTokenInterface, err := cache.Client(q.RedisConfPath).Get(key).Result()
+	cacheAccessTokenInterface, err := cache.Client(q.RedisConfPath, q.RedisConfPath).Get(key).Result()
 	cacheAccessTokenStr := cacheAccessTokenInterface.(string)
 	if err == nil && cacheAccessTokenStr != "" {
 		return cacheAccessTokenStr, nil
@@ -81,7 +81,7 @@ func (q *QiweiCommon) GetAccessToken() (string, error) {
 	 * @step
 	 * @设置accessToken缓存
 	 **/
-	err = cache.Client(q.RedisConfPath).Set(key, resp.AccessToken, 7100*time.Second).GetErr()
+	err = cache.Client(q.RedisConfPath, q.RedisConfName).Set(key, resp.AccessToken, 7100*time.Second).GetErr()
 	if err != nil {
 		return "", err
 	}

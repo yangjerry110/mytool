@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-10-10 15:41:46
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-26 16:09:52
+ * @LastEditTime: 2022-11-10 18:27:52
  * @Description: ali
  */
 package common
@@ -34,7 +34,7 @@ func (a *AliCommon) GetAccessToken() (string, error) {
 	 * @step
 	 * @获取缓存里面的accessToken
 	 **/
-	cacheAccessTokenInterface, err := cache.Client(a.RedisConfPath).Get(key).Result()
+	cacheAccessTokenInterface, err := cache.Client(a.RedisConfPath, a.RedisConfName).Get(key).Result()
 	cacheAccessTokenStr := cacheAccessTokenInterface.(string)
 	if err == nil && cacheAccessTokenStr != "" {
 		return cacheAccessTokenStr, nil
@@ -81,7 +81,7 @@ func (a *AliCommon) GetAccessToken() (string, error) {
 	 * @step
 	 * @设置accessToken缓存
 	 **/
-	err = cache.Client(a.RedisConfPath).Set(key, resp.AccessToken, 7100*time.Second).GetErr()
+	err = cache.Client(a.RedisConfPath, a.RedisConfName).Set(key, resp.AccessToken, 7100*time.Second).GetErr()
 	if err != nil {
 		return "", err
 	}

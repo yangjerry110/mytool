@@ -14,37 +14,6 @@ import (
 	"strings"
 )
 
-type (
-	CreateApp struct {
-		ProjectName string
-		AppName     string
-		Method      string
-	}
-
-	CreateAppInputVO struct {
-		CreateApp
-		DirName  string
-		FileName string
-	}
-
-	CreateAppOutputVO struct {
-		CreateApp
-		DirName  string
-		FileName string
-	}
-
-	CreateAppRoute struct {
-		CreateApp
-		DirName  string
-		FileName string
-	}
-
-	CreateAppService struct {
-		CreateApp
-		DirName  string
-		FileName string
-	}
-)
 
 /**
  * @description: Create

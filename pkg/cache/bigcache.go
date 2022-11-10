@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-10-25 17:41:47
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-26 16:08:46
+ * @LastEditTime: 2022-11-10 18:26:14
  * @Description: bigcache
  */
 package cache
@@ -25,16 +25,16 @@ type CachePkgBigCache struct {
 }
 
 /**
- * @description: CreateBigCacheClient
- * @param {time.Duration} eviction
- * @param {time.Duration} cleanTime
+ * @description: Client
+ * @param {string} filePath
+ * @param {string} fileName
  * @author: Jerry.Yang
- * @date: 2022-10-25 17:44:07
+ * @date: 2022-11-10 18:26:13
  * @return {*}
  */
-func (b *CachePkgBigCache) Client(configPath string) CachePkgInterface {
+func (b *CachePkgBigCache) Client(filePath string, fileName string) CachePkgInterface {
 	cacheBig := &mytoolBigCache.BigCache{}
-	CreateCache(cacheBig).CacheInterface.Client(configPath)
+	CreateCache(cacheBig).CacheInterface.Client(filePath, fileName)
 	b.BigCache = cacheBig.BigCache
 	return b
 }

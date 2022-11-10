@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-27 18:32:50
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-09 19:35:33
+ * @LastEditTime: 2022-11-10 14:31:19
  * @Description: logrus
  */
 package logger
@@ -15,6 +15,7 @@ import (
 )
 
 type LogrusLogPkg struct {
+	LogLevel logger.Level
 	LoggerPkg
 }
 
@@ -70,7 +71,33 @@ func (l *LogrusLogPkg) CreateOptionPkgInterface(LoggerOptionPkgInterface LoggerO
  * @return {*}
  */
 func (l *LogrusLogPkg) Log(args ...interface{}) error {
-	return l.SetDefaultOptions().SetLoggerOptions().CreateInterface(&logger.LogrusLog{Options: &logger.LogrusOption{LoggerOption: logger.LoggerOption{Options: l.Options}}}).LoggerInterface.SetLevel().SetCallDept().SetWithFields().SetIsReportcaller().SetFormatter().SetOutput().SetLogger().WriteLog(args...)
+	/**
+	 * @step
+	 * @设置配置
+	 **/
+	obj := l.SetDefaultOptions().SetOptions(l.OptionFuns).SetLoggerOptions()
+
+	/**
+	 * @step
+	 * @获取日志等级
+	 **/
+	setLogLevel := l.Options[logger.OPTION_LOGLEVEL].Value.(logger.Level)
+
+	/**
+	 * @step
+	 * @判断当前等级，是否小于设置的日志级别，不是则不操作
+	 **/
+	if l.LogLevel > setLogLevel {
+		return nil
+	}
+
+	/**
+	 * @step
+	 * @写入日志
+	 **/
+	return obj.SetOptions([]logger.LoggerOptionFunc{
+		CreateLoggerOption(&LogrusOptionsPkg{}).SetLevel(Level(l.LogLevel)),
+	}).SetLoggerOptions().CreateInterface(&logger.LogrusLog{Options: &logger.LogrusOption{LoggerOption: logger.LoggerOption{Options: l.Options}}}).LoggerInterface.SetLevel().SetCallDept().SetWithFields().SetIsReportcaller().SetFormatter().SetOutput().SetLogger().WriteLog(args...)
 }
 
 /**
@@ -82,7 +109,34 @@ func (l *LogrusLogPkg) Log(args ...interface{}) error {
  * @return {*}
  */
 func (l *LogrusLogPkg) Logf(format string, args ...interface{}) error {
-	return l.SetDefaultOptions().SetOptions(l.OptionFuns).SetLoggerOptions().CreateInterface(&logger.LogrusLog{Options: &logger.LogrusOption{LoggerOption: logger.LoggerOption{Options: l.Options}}}).LoggerInterface.SetLevel().SetCallDept().SetWithFields().SetIsReportcaller().SetFormatter().SetOutput().SetLogger().WriteLog(fmt.Sprintf(format, args...))
+
+	/**
+	 * @step
+	 * @设置配置
+	 **/
+	obj := l.SetDefaultOptions().SetOptions(l.OptionFuns).SetLoggerOptions()
+
+	/**
+	 * @step
+	 * @获取日志等级
+	 **/
+	setLogLevel := l.Options[logger.OPTION_LOGLEVEL].Value.(logger.Level)
+
+	/**
+	 * @step
+	 * @判断当前等级，是否小于设置的日志级别，不是则不操作
+	 **/
+	if l.LogLevel > setLogLevel {
+		return nil
+	}
+
+	/**
+	 * @step
+	 * @写入日志
+	 **/
+	return obj.SetOptions([]logger.LoggerOptionFunc{
+		CreateLoggerOption(&LogrusOptionsPkg{}).SetLevel(Level(l.LogLevel)),
+	}).SetLoggerOptions().CreateInterface(&logger.LogrusLog{Options: &logger.LogrusOption{LoggerOption: logger.LoggerOption{Options: l.Options}}}).LoggerInterface.SetLevel().SetCallDept().SetWithFields().SetIsReportcaller().SetFormatter().SetOutput().SetLogger().WriteLog(fmt.Sprintf(format, args...))
 }
 
 /**
@@ -93,7 +147,8 @@ func (l *LogrusLogPkg) Logf(format string, args ...interface{}) error {
  * @return {*}
  */
 func (l *LogrusLogPkg) Info(args ...interface{}) error {
-	return l.SetOptions([]logger.LoggerOptionFunc{CreateOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetLevel(Level(logger.InfoLevel))}).Log(args...)
+	l.LogLevel = logger.InfoLevel
+	return l.Log(args...)
 }
 
 /**
@@ -105,7 +160,8 @@ func (l *LogrusLogPkg) Info(args ...interface{}) error {
  * @return {*}
  */
 func (l *LogrusLogPkg) Infof(format string, args ...interface{}) error {
-	return l.SetOptions([]logger.LoggerOptionFunc{CreateOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetLevel(Level(logger.InfoLevel))}).Logf(format, args...)
+	l.LogLevel = logger.InfoLevel
+	return l.Logf(format, args...)
 }
 
 /**
@@ -116,7 +172,8 @@ func (l *LogrusLogPkg) Infof(format string, args ...interface{}) error {
  * @return {*}
  */
 func (l *LogrusLogPkg) Warn(args ...interface{}) error {
-	return l.SetOptions([]logger.LoggerOptionFunc{CreateOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetLevel(Level(logger.WarnLevel))}).Log(args...)
+	l.LogLevel = logger.WarnLevel
+	return l.Log(args...)
 }
 
 /**
@@ -128,7 +185,8 @@ func (l *LogrusLogPkg) Warn(args ...interface{}) error {
  * @return {*}
  */
 func (l *LogrusLogPkg) Warnf(format string, args ...interface{}) error {
-	return l.SetOptions([]logger.LoggerOptionFunc{CreateOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetLevel(Level(logger.WarnLevel))}).Logf(format, args...)
+	l.LogLevel = logger.WarnLevel
+	return l.Logf(format, args...)
 }
 
 /**
@@ -139,7 +197,8 @@ func (l *LogrusLogPkg) Warnf(format string, args ...interface{}) error {
  * @return {*}
  */
 func (l *LogrusLogPkg) Trace(args ...interface{}) error {
-	return l.SetOptions([]logger.LoggerOptionFunc{CreateOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetLevel(Level(logger.TraceLevel))}).Log(args...)
+	l.LogLevel = logger.TraceLevel
+	return l.Log(args...)
 }
 
 /**
@@ -151,7 +210,8 @@ func (l *LogrusLogPkg) Trace(args ...interface{}) error {
  * @return {*}
  */
 func (l *LogrusLogPkg) Tracef(format string, args ...interface{}) error {
-	return l.SetOptions([]logger.LoggerOptionFunc{CreateOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetLevel(Level(logger.TraceLevel))}).Logf(format, args...)
+	l.LogLevel = logger.TraceLevel
+	return l.Logf(format, args...)
 }
 
 /**
@@ -162,7 +222,8 @@ func (l *LogrusLogPkg) Tracef(format string, args ...interface{}) error {
  * @return {*}
  */
 func (l *LogrusLogPkg) Debug(args ...interface{}) error {
-	return l.SetOptions([]logger.LoggerOptionFunc{CreateOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetLevel(Level(logger.DebugLevel))}).Log(args...)
+	l.LogLevel = logger.DebugLevel
+	return l.Log(args...)
 }
 
 /**
@@ -174,7 +235,8 @@ func (l *LogrusLogPkg) Debug(args ...interface{}) error {
  * @return {*}
  */
 func (l *LogrusLogPkg) Debugf(format string, args ...interface{}) error {
-	return l.SetOptions([]logger.LoggerOptionFunc{CreateOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetLevel(Level(logger.DebugLevel))}).Logf(format, args...)
+	l.LogLevel = logger.DebugLevel
+	return l.Logf(format, args...)
 }
 
 /**
@@ -185,7 +247,8 @@ func (l *LogrusLogPkg) Debugf(format string, args ...interface{}) error {
  * @return {*}
  */
 func (l *LogrusLogPkg) Error(args ...interface{}) error {
-	return l.SetOptions([]logger.LoggerOptionFunc{CreateOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetLevel(Level(logger.ErrorLevel))}).Log(args...)
+	l.LogLevel = logger.ErrorLevel
+	return l.Log(args...)
 }
 
 /**
@@ -197,7 +260,8 @@ func (l *LogrusLogPkg) Error(args ...interface{}) error {
  * @return {*}
  */
 func (l *LogrusLogPkg) Errorf(format string, args ...interface{}) error {
-	return l.SetOptions([]logger.LoggerOptionFunc{CreateOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetLevel(Level(logger.ErrorLevel))}).Logf(format, args...)
+	l.LogLevel = logger.ErrorLevel
+	return l.Logf(format, args...)
 }
 
 /**
@@ -208,7 +272,8 @@ func (l *LogrusLogPkg) Errorf(format string, args ...interface{}) error {
  * @return {*}
  */
 func (l *LogrusLogPkg) Fatal(args ...interface{}) error {
-	return l.SetOptions([]logger.LoggerOptionFunc{CreateOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetLevel(Level(logger.FatalLevel))}).Log(args...)
+	l.LogLevel = logger.FatalLevel
+	return l.Log(args...)
 }
 
 /**
@@ -220,7 +285,8 @@ func (l *LogrusLogPkg) Fatal(args ...interface{}) error {
  * @return {*}
  */
 func (l *LogrusLogPkg) Fatalf(format string, args ...interface{}) error {
-	return l.SetOptions([]logger.LoggerOptionFunc{CreateOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetLevel(Level(logger.FatalLevel))}).Logf(format, args...)
+	l.LogLevel = logger.FatalLevel
+	return l.Logf(format, args...)
 }
 
 /**
@@ -231,7 +297,8 @@ func (l *LogrusLogPkg) Fatalf(format string, args ...interface{}) error {
  * @return {*}
  */
 func (l *LogrusLogPkg) Panic(args ...interface{}) error {
-	return l.SetOptions([]logger.LoggerOptionFunc{CreateOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetLevel(Level(logger.PanicLevel))}).Log(args...)
+	l.LogLevel = logger.PanicLevel
+	return l.Log(args...)
 }
 
 /**
@@ -243,7 +310,8 @@ func (l *LogrusLogPkg) Panic(args ...interface{}) error {
  * @return {*}
  */
 func (l *LogrusLogPkg) Panicf(format string, args ...interface{}) error {
-	return l.SetOptions([]logger.LoggerOptionFunc{CreateOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetLevel(Level(logger.PanicLevel))}).Logf(format, args...)
+	l.LogLevel = logger.PanicLevel
+	return l.Logf(format, args...)
 }
 
 /**
@@ -314,7 +382,7 @@ func (l *LogrusLogPkg) SetLoggerOptions() LoggerPkgInterface {
  */
 func (l *LogrusLogPkg) SetDefaultOptions() LoggerPkgInterface {
 	setDeafaultOptionFuncs := []logger.LoggerOptionFunc{
-		CreateLoggerOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetLevel(Level(logger.WarnLevel)),
+		CreateLoggerOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetLevel(Level(logger.TraceLevel)),
 		CreateLoggerOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetFormatter(logger.LOGRUS_FORMATTER_JSON),
 		CreateLoggerOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetIsReportcaller(true),
 		CreateLoggerOptionPkgInterface(&LogrusOptionsPkg{}).LoggerOptionPkgInterface.SetOutput(os.Stdout),

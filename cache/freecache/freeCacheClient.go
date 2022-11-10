@@ -1,3 +1,10 @@
+/*
+ * @Author: Jerry.Yang
+ * @Date: 2022-10-25 17:50:33
+ * @LastEditors: Jerry.Yang
+ * @LastEditTime: 2022-11-10 18:26:49
+ * @Description:
+ */
 package freecache
 
 import (
@@ -17,8 +24,16 @@ type FreeCache struct {
 	Timer        freecache.Timer
 }
 
-func (f *FreeCache) Client(configPath string) cache.CacheInterface {
-	yamlConf := conf.YamlConf{YamlFilePath: configPath, Conf: &f}
+/**
+ * @description: Client
+ * @param {string} filePath
+ * @param {string} fileName
+ * @author: Jerry.Yang
+ * @date: 2022-11-10 18:26:49
+ * @return {*}
+ */
+func (f *FreeCache) Client(filePath string, fileName string) cache.CacheInterface {
+	yamlConf := conf.YamlConf{FilePath: filePath, FileName: fileName, Conf: &f}
 	err := yamlConf.GetConf()
 	if err != nil {
 		f.FreeCacheErr = err

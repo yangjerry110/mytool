@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-10-13 16:46:14
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-26 15:08:20
+ * @LastEditTime: 2022-11-10 18:23:20
  * @Description: redis cache
  */
 package cache
@@ -35,9 +35,9 @@ type CachePkgRedis struct {
 }
 
 // 创建链接
-func (c *CachePkgRedis) Client(configPath string) CachePkgInterface {
+func (c *CachePkgRedis) Client(filePath string, fileName string) CachePkgInterface {
 	cacheRedis := &mytoolRedis.RedisCache{}
-	CreateCache(cacheRedis).CacheInterface.Client(configPath)
+	CreateCache(cacheRedis).CacheInterface.Client(filePath, fileName)
 	c.RedisClient = cacheRedis.RedisClient
 	return c
 }

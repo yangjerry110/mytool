@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-21 17:23:18
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-26 18:03:33
+ * @LastEditTime: 2022-11-10 11:45:35
  * @Description: notice test
  */
 package test
@@ -16,7 +16,7 @@ import (
 )
 
 func TestQiweiNotice(t *testing.T) {
-
+	return
 	aliUploadLocaFile := ali.AliOssUploadFromLocalFile{
 		LocalFilePath: "/Users/admin/Desktop/1.png",
 	}

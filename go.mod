@@ -13,4 +13,6 @@ require (
 	github.com/sirupsen/logrus v1.9.0 // indirect
 	golang.org/x/time v0.0.0-20220920022843-2ce7c2934d45 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
+	gorm.io/driver/mysql v1.4.3 // indirect
+	gorm.io/gorm v1.24.1 // indirect
 )
