@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-11-10 15:14:40
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-11-10 18:14:57
+ * @LastEditTime: 2022-11-11 18:03:36
  * @Description: conf test
  */
 package test
@@ -15,30 +15,53 @@ import (
 	mytoolPkgConf "github.com/yangjerry110/mytool/conf"
 )
 
+type Redis struct {
+	NetWork string `yaml:"network"`
+	Addr    string `yaml:"addr"`
+}
+
+type MysqlTest struct {
+	Dsn string `yaml:"dsn"`
+}
+
+type Test struct {
+	Redis     Redis     `yaml:"redis.yaml"`
+	MysqlTest MysqlTest `yaml:"mysql.yaml"`
+}
+
 func TestConf(t *testing.T) {
 
-	type Test struct {
-		NetWork string `yaml:"network"`
-		Addr    string `yaml:"addr"`
-	}
+	// mysqlTest := &MysqlTest{}
+	// confObj1 := mytoolPkgConf.Conf{
+	// 	FilePath:  "/Users/admin/go/src/my-tool/test/conf",
+	// 	FileName:  "mysql.yaml",
+	// 	FileType:  "yaml",
+	// 	Intervals: time.Duration(2),
+	// 	Data:      mysqlTest,
+	// }
+	// confObj1.GetNewConf()
 
 	TestVal := &Test{}
-	confObj := mytoolPkgConf.Conf{
-		FilePath:  "/Users/admin/go/src/my-tool/test/conf",
-		FileName:  "redis.yaml",
+	confObj := mytoolPkgConf.PathConf{
+		FilePath: "/Users/admin/go/src/my-tool/test/conf",
+		//FileName:  "redis.yaml",
 		FileType:  "yaml",
-		Intervals: time.Duration(5),
+		Intervals: time.Duration(2),
 		Data:      TestVal,
 	}
+	// a := confObj.Init(TestVal).GetParseConf()
 
-	confObj.GetHotUpdateConf()
-
-	//mytoolPkgConf.GetYamlConf("/Users/admin/go/src/my-tool/test/conf/redis.yaml", TestVal)
+	confObj.GetNewConf()
 
 	timeTickers := time.NewTicker(time.Second * 1)
 	for range timeTickers.C {
-		fmt.Printf("testVal : %+v", TestVal)
+		// fmt.Printf("testVal : %+v", a.(*Test))
+		// fmt.Print("\r\n")
+
+		fmt.Printf("test : %+v", TestVal)
 		fmt.Print("\r\n")
+
+		return
 	}
 
 }

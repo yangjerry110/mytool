@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-11-07 15:01:27
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-11-10 18:25:23
+ * @LastEditTime: 2022-11-15 10:26:29
  * @Description:  mysql
  */
 package db
@@ -44,7 +44,7 @@ func (d *DbMysql) Client(yamlFilePath string, yamlFileName string, dbName string
 	 * @获取配置
 	 **/
 	yamlConf := conf.YamlConf{FilePath: yamlFilePath, FileName: yamlFileName, Conf: &mysqlConfs}
-	err := yamlConf.GetConf()
+	err := yamlConf.GetConf(mysqlConfs)
 	if err != nil {
 		return nil, err
 	}

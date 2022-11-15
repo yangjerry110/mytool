@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-10-25 17:28:04
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-11-10 18:27:01
+ * @LastEditTime: 2022-11-11 16:07:27
  * @Description: bigcache
  */
 package bigcache
@@ -41,7 +41,7 @@ const (
  */
 func (b *BigCache) Client(filePath string, fileName string) cache.CacheInterface {
 	yamlConf := conf.YamlConf{FilePath: filePath, FileName: fileName, Conf: &b}
-	err := yamlConf.GetConf()
+	err := yamlConf.GetConf(b)
 	if err != nil {
 		b.BigCacheErr = err
 		return b

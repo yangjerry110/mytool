@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-10-25 17:50:33
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-11-10 18:26:49
+ * @LastEditTime: 2022-11-11 16:07:21
  * @Description:
  */
 package freecache
@@ -34,7 +34,7 @@ type FreeCache struct {
  */
 func (f *FreeCache) Client(filePath string, fileName string) cache.CacheInterface {
 	yamlConf := conf.YamlConf{FilePath: filePath, FileName: fileName, Conf: &f}
-	err := yamlConf.GetConf()
+	err := yamlConf.GetConf(f)
 	if err != nil {
 		f.FreeCacheErr = err
 		return f

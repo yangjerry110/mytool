@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-10-12 14:24:55
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-11-10 18:27:10
+ * @LastEditTime: 2022-11-11 16:07:09
  * @Description: client
  */
 package redis
@@ -45,7 +45,7 @@ type RedisCache struct {
  */
 func (r *RedisCache) Client(filePath string, fileName string) cache.CacheInterface {
 	yamlConf := conf.YamlConf{FilePath: filePath, FileName: fileName, Conf: &r}
-	err := yamlConf.GetConf()
+	err := yamlConf.GetConf(r)
 	if err != nil {
 		r.RedisErr = err
 		return r

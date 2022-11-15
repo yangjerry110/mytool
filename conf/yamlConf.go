@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-22 17:15:12
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-11-10 18:17:36
+ * @LastEditTime: 2022-11-15 14:28:55
  * @Description: yaml conf
  */
 package conf
@@ -31,12 +31,33 @@ type YamlConf struct {
 }
 
 /**
+ * @description: Init
+ * @param {interface{}} conf
+ * @author: Jerry.Yang
+ * @date: 2022-11-15 14:29:02
+ * @return {*}
+ */
+func (y *YamlConf) Init(conf interface{}) ConfInterface {
+	return y
+}
+
+/**
+ * @description: GetParseConf
+ * @author: Jerry.Yang
+ * @date: 2022-11-15 14:29:10
+ * @return {*}
+ */
+func (y *YamlConf) GetParseConf() interface{} {
+	return y.Conf
+}
+
+/**
  * @description: GetHotUpdateConf
  * @author: Jerry.Yang
  * @date: 2022-11-10 18:17:57
  * @return {*}
  */
-func (y *YamlConf) GetHotUpdateConf() error {
+func (y *YamlConf) GetNewConf() error {
 	conf := &Conf{
 		FilePath:  y.FilePath,
 		FileName:  y.FileName,
@@ -44,7 +65,7 @@ func (y *YamlConf) GetHotUpdateConf() error {
 		Intervals: y.Intervals,
 		Data:      y.Conf,
 	}
-	return conf.GetHotUpdateConf()
+	return conf.GetNewConf()
 }
 
 /**
@@ -53,7 +74,7 @@ func (y *YamlConf) GetHotUpdateConf() error {
  * @date: 2022-09-22 17:19:26
  * @return {*}
  */
-func (y *YamlConf) GetConf() error {
+func (y *YamlConf) GetConf(conf interface{}) error {
 	/**
 	 * @step
 	 * @获取yaml文件的数据

@@ -2,31 +2,23 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-26 15:15:25
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-11-10 18:18:24
+ * @LastEditTime: 2022-11-15 14:28:22
  * @Description: conf
  */
 package conf
 
 import (
+	"errors"
 	"fmt"
 	"os"
-	"sync/atomic"
 	"time"
 )
 
 type ConfInterface interface {
-	GetHotUpdateConf() error
-	GetConf() error
-}
-
-/**
- * @description: 需要通知更新的对象
- * @author: Jerry.Yang
- * @date: 2022-11-10 16:58:23
- * @return {*}
- */
-type Notifyer interface {
-	Callback(c *Conf) error
+	Init(conf interface{}) ConfInterface
+	GetNewConf() error
+	GetConf(conf interface{}) error
+	GetParseConf() interface{}
 }
 
 /**
@@ -42,26 +34,18 @@ type Conf struct {
 	Intervals      time.Duration
 	Data           interface{}
 	LastModityTime time.Time
-	NotifyerList   []Notifyer
 }
 
 /**
- * @description: ConfigStore
+ * @description: Init
+ * @param {interface{}} conf
  * @author: Jerry.Yang
- * @date: 2022-11-10 18:13:33
+ * @date: 2022-11-15 14:28:28
  * @return {*}
  */
-type ConfigStore struct {
-	Config atomic.Value
+func (c *Conf) Init(conf interface{}) ConfInterface {
+	return c
 }
-
-/**
- * @description: ConfigStore
- * @author: Jerry.Yang
- * @date: 2022-11-10 18:13:26
- * @return {*}
- */
-var configStore = &ConfigStore{}
 
 /**
  * @description: GetHotUpdateConf
@@ -69,13 +53,13 @@ var configStore = &ConfigStore{}
  * @date: 2022-11-10 18:13:19
  * @return {*}
  */
-func (c *Conf) GetHotUpdateConf() error {
+func (c *Conf) GetNewConf() error {
 
 	/**
 	 * @step
 	 * @获取配置
 	 **/
-	err := c.GetConf()
+	err := c.GetConf(c.Data)
 	if err != nil {
 		return err
 	}
@@ -84,14 +68,24 @@ func (c *Conf) GetHotUpdateConf() error {
 	 * @step
 	 * @添加观察者
 	 **/
-	c.AddNotifyer(configStore)
+	//c.AddNotifyer(configStore)
 
 	/**
 	 * @step
 	 * @添加一个协程，热更新配置文件
 	 **/
-	go c.GetConfTimer()
+	go c.RelodConf()
 	return nil
+}
+
+/**
+ * @description: GetConfAtomic
+ * @author: Jerry.Yang
+ * @date: 2022-11-11 11:26:23
+ * @return {*}
+ */
+func (c *Conf) GetParseConf() interface{} {
+	return c.Data
 }
 
 /**
@@ -100,7 +94,8 @@ func (c *Conf) GetHotUpdateConf() error {
  * @date: 2022-11-10 17:15:51
  * @return {*}
  */
-func (c *Conf) GetConf() error {
+func (c *Conf) GetConf(conf interface{}) error {
+
 	/**
 	 * @step
 	 * @根据type，获取文件内容
@@ -108,11 +103,12 @@ func (c *Conf) GetConf() error {
 	switch c.FileType {
 	case "yaml":
 		yamlConf := YamlConf{FilePath: c.FilePath, FileName: c.FileName, Conf: c.Data}
-		yamlConfErr := yamlConf.GetConf()
+		yamlConfErr := yamlConf.GetConf(c.Data)
 		if yamlConfErr != nil {
 			return yamlConfErr
 		}
 	default:
+		return errors.New("GetConf Err : no match fileType")
 	}
 	return nil
 }
@@ -123,7 +119,7 @@ func (c *Conf) GetConf() error {
  * @date: 2022-11-10 17:15:57
  * @return {*}
  */
-func (c *Conf) GetConfTimer() error {
+func (c *Conf) RelodConf() error {
 
 	/**
 	 * @step
@@ -175,7 +171,7 @@ func (c *Conf) GetConfTimer() error {
 			 * @step
 			 * @当更新的时候，重新解析
 			 **/
-			err = c.GetConf()
+			err = c.GetConf(c.Data)
 			if err != nil {
 				return err
 			}
@@ -184,35 +180,12 @@ func (c *Conf) GetConfTimer() error {
 			 * @step
 			 * @通知订阅者
 			 **/
-			for _, notifyer := range c.NotifyerList {
-				notifyer.Callback(c)
-			}
+			// for _, notifyer := range c.NotifyerList {
+			// 	notifyer.Callback(c)
+			// }
 		}
 
 	}
 	//timeTickers.Stop()
-	return nil
-}
-
-/**
- * @description: AddNotifyer
- * @param {Notifyer} n
- * @author: Jerry.Yang
- * @date: 2022-11-10 17:56:09
- * @return {*}
- */
-func (c *Conf) AddNotifyer(n Notifyer) {
-	c.NotifyerList = append(c.NotifyerList, n)
-}
-
-/**
- * @description: Callback
- * @param {*Conf} conf
- * @author: Jerry.Yang
- * @date: 2022-11-10 17:56:17
- * @return {*}
- */
-func (c *ConfigStore) Callback(conf *Conf) error {
-	configStore.Config.Store(conf.Data)
 	return nil
 }
