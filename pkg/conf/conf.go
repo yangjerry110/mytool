@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-23 14:44:20
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-11-15 14:45:40
+ * @LastEditTime: 2022-11-15 18:55:30
  * @Description: conf
  */
 package conf
@@ -75,5 +75,5 @@ func Init(filepath string, fileName string, fileType string, intervals time.Dura
 		FileType:  fileType,
 		Intervals: intervals,
 	}
-	return mytoolInitConf
+	return CreateConfInterface(mytoolInitConf).ConfInterface.Init(conf)
 }
