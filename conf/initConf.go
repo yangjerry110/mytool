@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-11-11 15:14:45
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-11-15 14:54:03
+ * @LastEditTime: 2022-11-15 14:58:51
  * @Description: init
  */
 package conf
@@ -236,6 +236,16 @@ func (i *InitConf) GetStoreKey() string {
  */
 func (i *InitConf) AddNotifyer(n Notifyer) {
 	i.NotifyerList = append(i.NotifyerList, n)
+}
+
+/**
+ * @description: GetErr
+ * @author: Jerry.Yang
+ * @date: 2022-11-15 14:58:56
+ * @return {*}
+ */
+func (i *InitConf) GetErr() error {
+	return i.Error
 }
 
 /**

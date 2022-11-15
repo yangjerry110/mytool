@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-22 17:15:12
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-11-15 14:28:55
+ * @LastEditTime: 2022-11-15 14:59:15
  * @Description: yaml conf
  */
 package conf
@@ -93,5 +93,15 @@ func (y *YamlConf) GetConf(conf interface{}) error {
 	if err != nil {
 		return err
 	}
+	return nil
+}
+
+/**
+ * @description: GetErr
+ * @author: Jerry.Yang
+ * @date: 2022-11-15 14:59:23
+ * @return {*}
+ */
+func (y *YamlConf) GetErr() error {
 	return nil
 }

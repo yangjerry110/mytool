@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-26 15:15:25
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-11-15 14:54:58
+ * @LastEditTime: 2022-11-15 14:57:48
  * @Description: conf
  */
 package conf
@@ -19,6 +19,7 @@ type ConfInterface interface {
 	GetNewConf() error
 	GetConf(conf interface{}) error
 	GetParseConf() interface{}
+	GetErr() error
 }
 
 /**
@@ -193,4 +194,14 @@ func (c *Conf) RelodConf() error {
 	}
 	//timeTickers.Stop()
 	return nil
+}
+
+/**
+ * @description: GetErr
+ * @author: Jerry.Yang
+ * @date: 2022-11-15 14:58:20
+ * @return {*}
+ */
+func (c *Conf) GetErr() error {
+	return c.Error
 }
