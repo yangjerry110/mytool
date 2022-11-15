@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-11-11 15:14:45
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-11-15 14:26:56
+ * @LastEditTime: 2022-11-15 14:54:03
  * @Description: init
  */
 package conf
@@ -23,6 +23,7 @@ type InitConf struct {
 	Intervals      time.Duration
 	LastModityTime time.Time
 	NotifyerList   []Notifyer
+	Error          error
 }
 
 /**
@@ -66,7 +67,8 @@ func (i *InitConf) Init(conf interface{}) ConfInterface {
 	 * @step
 	 * @获取一遍数据
 	 **/
-	i.GetConf(conf)
+	err := i.GetConf(conf)
+	i.Error = err
 
 	/**
 	 * @step
@@ -161,6 +163,7 @@ func (i *InitConf) ReloadConf(conf interface{}) error {
 		 **/
 		fileObj, err := os.Open(fmt.Sprintf("%s/%s", i.FilePath, i.FileName))
 		if err != nil {
+			i.Error = err
 			//timeTickers.Stop()
 			return err
 		}
@@ -173,6 +176,7 @@ func (i *InitConf) ReloadConf(conf interface{}) error {
 		fileInfo, err := fileObj.Stat()
 		if err != nil {
 			//timeTickers.Stop()
+			i.Error = err
 			return err
 		}
 
@@ -195,6 +199,7 @@ func (i *InitConf) ReloadConf(conf interface{}) error {
 			 **/
 			err = i.GetConf(conf)
 			if err != nil {
+				i.Error = err
 				return err
 			}
 

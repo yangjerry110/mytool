@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-26 15:15:25
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-11-15 14:28:22
+ * @LastEditTime: 2022-11-15 14:54:58
  * @Description: conf
  */
 package conf
@@ -34,6 +34,7 @@ type Conf struct {
 	Intervals      time.Duration
 	Data           interface{}
 	LastModityTime time.Time
+	Error          error
 }
 
 /**
@@ -61,6 +62,7 @@ func (c *Conf) GetNewConf() error {
 	 **/
 	err := c.GetConf(c.Data)
 	if err != nil {
+		c.Error = err
 		return err
 	}
 
@@ -140,6 +142,7 @@ func (c *Conf) RelodConf() error {
 		fileObj, err := os.Open(fmt.Sprintf("%s/%s", c.FilePath, c.FileName))
 		if err != nil {
 			//timeTickers.Stop()
+			c.Error = err
 			return err
 		}
 		defer fileObj.Close()
@@ -151,6 +154,7 @@ func (c *Conf) RelodConf() error {
 		fileInfo, err := fileObj.Stat()
 		if err != nil {
 			//timeTickers.Stop()
+			c.Error = err
 			return err
 		}
 
@@ -173,6 +177,7 @@ func (c *Conf) RelodConf() error {
 			 **/
 			err = c.GetConf(c.Data)
 			if err != nil {
+				c.Error = err
 				return err
 			}
 
