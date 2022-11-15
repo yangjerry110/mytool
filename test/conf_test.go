@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-11-10 15:14:40
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-11-11 18:03:36
+ * @LastEditTime: 2022-11-15 19:02:28
  * @Description: conf test
  */
 package test
@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	mytoolPkgConf "github.com/yangjerry110/mytool/conf"
+	mytoolPkgConf "github.com/yangjerry110/mytool/pkg/conf"
 )
 
 type Redis struct {
@@ -31,37 +31,17 @@ type Test struct {
 
 func TestConf(t *testing.T) {
 
-	// mysqlTest := &MysqlTest{}
-	// confObj1 := mytoolPkgConf.Conf{
-	// 	FilePath:  "/Users/admin/go/src/my-tool/test/conf",
-	// 	FileName:  "mysql.yaml",
-	// 	FileType:  "yaml",
-	// 	Intervals: time.Duration(2),
-	// 	Data:      mysqlTest,
-	// }
-	// confObj1.GetNewConf()
-
-	TestVal := &Test{}
-	confObj := mytoolPkgConf.PathConf{
-		FilePath: "/Users/admin/go/src/my-tool/test/conf",
-		//FileName:  "redis.yaml",
-		FileType:  "yaml",
-		Intervals: time.Duration(2),
-		Data:      TestVal,
+	type TestConf struct {
+		Addr    string `yaml:"addr"`
+		Network string `yaml:"network"`
 	}
-	// a := confObj.Init(TestVal).GetParseConf()
 
-	confObj.GetNewConf()
+	testConf := &TestConf{}
+	mytoolPkgConf.Init("/Users/admin/go/src/my-tool/test/conf", "redis.yaml", "yaml", time.Second*2, testConf)
 
-	timeTickers := time.NewTicker(time.Second * 1)
-	for range timeTickers.C {
-		// fmt.Printf("testVal : %+v", a.(*Test))
-		// fmt.Print("\r\n")
+	result := mytoolPkgConf.GetParseConf("/Users/admin/go/src/my-tool/test/conf", "redis.yaml")
 
-		fmt.Printf("test : %+v", TestVal)
-		fmt.Print("\r\n")
-
-		return
-	}
+	fmt.Printf("result: %+v", result)
+	fmt.Print("\r\n")
 
 }

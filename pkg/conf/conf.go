@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-23 14:44:20
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-11-15 18:55:30
+ * @LastEditTime: 2022-11-15 18:59:38
  * @Description: conf
  */
 package conf
@@ -18,6 +18,7 @@ type ConfInterface interface {
 	GetYamlConf(yamlConfPath string, config interface{}) error
 	GetConf(filepath string, fileName string, fileType string, intervals time.Duration, conf interface{}) error
 	Init(filepath string, fileName string, fileType string, intervals time.Duration, conf interface{}) mytoolConf.ConfInterface
+	GetParseConf(filepath string, fileName string) interface{}
 }
 
 type Conf struct {
@@ -76,4 +77,20 @@ func Init(filepath string, fileName string, fileType string, intervals time.Dura
 		Intervals: intervals,
 	}
 	return CreateConfInterface(mytoolInitConf).ConfInterface.Init(conf)
+}
+
+/**
+ * @description: GetParseConf
+ * @param {string} filepath
+ * @param {string} fileName
+ * @author: Jerry.Yang
+ * @date: 2022-11-15 19:00:04
+ * @return {*}
+ */
+func GetParseConf(filepath string, fileName string) interface{} {
+	mytoolInitConf := &mytoolConf.InitConf{
+		FilePath: filepath,
+		FileName: fileName,
+	}
+	return CreateConfInterface(mytoolInitConf).ConfInterface.GetParseConf()
 }
