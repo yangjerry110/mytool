@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-27 18:32:50
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-11-10 14:31:19
+ * @LastEditTime: 2022-11-16 17:15:32
  * @Description: logrus
  */
 package logger
@@ -18,6 +18,8 @@ type LogrusLogPkg struct {
 	LogLevel logger.Level
 	LoggerPkg
 }
+
+var logrusLogPkg = &LogrusLogPkg{}
 
 /**
  * @description: CreatePkgInterface
@@ -356,7 +358,7 @@ func (l *LogrusLogPkg) WithError(err error) LoggerPkgInterface {
  * @return {*}
  */
 func (l *LogrusLogPkg) SetOptions(options []logger.LoggerOptionFunc) LoggerPkgInterface {
-	l.OptionFuns = append(l.OptionFuns, options...)
+	logrusLogPkg.OptionFuns = append(logrusLogPkg.OptionFuns, options...)
 	return l
 }
 

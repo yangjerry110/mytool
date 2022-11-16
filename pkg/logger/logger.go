@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-27 18:26:53
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-10-09 17:31:14
+ * @LastEditTime: 2022-11-16 17:16:37
  * @Description: logger
  */
 package logger
@@ -59,7 +59,7 @@ type Level uint32
  * @date: 2022-09-29 19:12:05
  * @return {*}
  */
-var defaultLogger = CreateLogger(&LogrusLogPkg{})
+var defaultLogger = CreateLogger(logrusLogPkg)
 
 /**
  * @description: CreatePkgInterface
