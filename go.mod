@@ -10,6 +10,8 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/sirupsen/logrus v1.9.0
 	gopkg.in/yaml.v2 v2.4.0
+	gorm.io/driver/mysql v1.4.6
+	gorm.io/gorm v1.24.5
 )
 
 require (
@@ -20,6 +22,4 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8 // indirect
 	golang.org/x/time v0.0.0-20220920022843-2ce7c2934d45 // indirect
-	gorm.io/driver/mysql v1.4.6 // indirect
-	gorm.io/gorm v1.24.5 // indirect
 )
