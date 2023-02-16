@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-20 11:30:16
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-02-16 17:02:58
+ * @LastEditTime: 2023-02-16 17:07:17
  * @Description: encrty 加密
  */
 package perm
@@ -44,7 +44,7 @@ func (r *PermRsa) Encrty(permPath string, inputStr string) (string, error) {
 	 * @step
 	 * @判断文件是否存在
 	 **/
-	publicPermPath := fmt.Sprintf("%s/public.perm", permPath)
+	publicPermPath := fmt.Sprintf("%s/public.pem", permPath)
 	_, err := os.Stat(publicPermPath)
 	if err != nil {
 		if os.IsNotExist(err) {
@@ -97,7 +97,7 @@ func (r *PermRsa) DoRsaEncrty(permPath string, inputStr string) (string, error) 
 	 * @step
 	 * @打开公钥文件
 	 **/
-	file, err := os.Open(fmt.Sprintf("%s/public.perm", permPath))
+	file, err := os.Open(fmt.Sprintf("%s/public.pem", permPath))
 	if err != nil {
 		return "", err
 	}

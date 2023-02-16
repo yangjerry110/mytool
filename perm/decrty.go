@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-20 19:28:19
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-26 16:28:20
+ * @LastEditTime: 2023-02-16 17:07:54
  * @Description: decrty 解密
  */
 package perm
@@ -44,10 +44,11 @@ func (r *PermRsa) Decrty(permPath string, inputStr string) (string, error) {
 	 * @step
 	 * @判断文件是否存在
 	 **/
-	_, err := os.Stat(fmt.Sprintf("%s/private.perm", permPath))
+	privatePath := fmt.Sprintf("%s/private.pem", permPath)
+	_, err := os.Stat(privatePath)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return "", errors.New("permPath is err; private.perm is not exist!")
+			return "", errors.New(fmt.Sprintf("permPath is err; %s is not exist!", privatePath))
 		}
 		return "", err
 	}
