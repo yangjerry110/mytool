@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-20 11:30:16
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-09-26 16:28:37
+ * @LastEditTime: 2023-02-16 17:02:58
  * @Description: encrty 加密
  */
 package perm
@@ -44,10 +44,11 @@ func (r *PermRsa) Encrty(permPath string, inputStr string) (string, error) {
 	 * @step
 	 * @判断文件是否存在
 	 **/
-	_, err := os.Stat(fmt.Sprintf("%s/public.perm", permPath))
+	publicPermPath := fmt.Sprintf("%s/public.perm", permPath)
+	_, err := os.Stat(publicPermPath)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return "", errors.New("permPath is err; public.perm is not exist!")
+			return "", errors.New(fmt.Sprintf("permPath is err; %s is not exist!", publicPermPath))
 		}
 		return "", err
 	}

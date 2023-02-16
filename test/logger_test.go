@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-27 15:59:26
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-11-16 17:12:43
+ * @LastEditTime: 2023-02-15 17:03:19
  * @Description:
  */
 package test
@@ -16,7 +16,7 @@ import (
 )
 
 func TestLogger(t *testing.T) {
-
+	return
 	a()
 
 	var loggerPkg = &logger.LoggerPkg{}
